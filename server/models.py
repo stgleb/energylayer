@@ -1,5 +1,7 @@
 import argparse
 
+import time
+
 from server import app
 from flask_sqlalchemy import SQLAlchemy
 
@@ -14,7 +16,10 @@ class User(db.Model):
     user_name = db.Column(db.String(255), unique=True)
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
+    social_id = db.Column(db.String(64), nullable=False, unique=True)
+    nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(255), unique=True)
+    registration_date = db.Column(db.Integer)
     devices = db.relationship('Device', backref='person',
                               lazy='dynamic')
 
@@ -23,6 +28,19 @@ class User(db.Model):
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
+        self.registration_date = int(time.time())
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
 
     def __repr__(self):
         return "User %s %d".format(self.user_name, self.id)
