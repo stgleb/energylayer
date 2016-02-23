@@ -1,17 +1,24 @@
 import argparse
-
 import time
 
-from server import app
-from flask_sqlalchemy import SQLAlchemy
+from flask.ext.login import UserMixin
+from flask.ext.security import RoleMixin
+from server import db
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db = SQLAlchemy(app)
+roles_users = db.Table('roles_users',
+        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
 
-class User(db.Model):
+class Role(db.Model, RoleMixin):
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(255), unique=True)
     first_name = db.Column(db.String(255))
@@ -20,33 +27,29 @@ class User(db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(255), unique=True)
     registration_date = db.Column(db.Integer)
+    password = db.Column(db.String(255))
+    active = db.Column(db.Boolean())
     devices = db.relationship('Device', backref='person',
                               lazy='dynamic')
 
-    def __init__(self, user_name, email, first_name="", last_name=""):
-        self.user_name = user_name
+    def get_auth_token(self):
+        return "abcd"
+
+    def get_id(self):
+        return 1
+
+    def __init__(self, email, password, first_name="", last_name=""):
         self.email = email
+        self.password = password
         self.first_name = first_name
         self.last_name = last_name
         self.registration_date = int(time.time())
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return unicode(self.id)
 
     def __repr__(self):
         return "User %s %d".format(self.user_name, self.id)
 
 
-class Devices(db.Model):
+class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(64), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -79,4 +82,4 @@ def main():
         db.create_all()
 
 if __name__ == '__main__':
-    main()
+    db.create_all()

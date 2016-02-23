@@ -1,4 +1,18 @@
-from server import app
+from flask.ext.login import login_required, current_user
+from flask_login import login_user
+from flask_login import logout_user
+from flask import request
+from flask import session
+from flask import render_template
+from flask import url_for
+from flask import redirect
+from flask import g
+
+from server import app, login_manager
+from server.forms import LoginForm
+from server.models import User
+from server.persistence.token import login_serializer
+from server.persistence.user import get_user_by_id
 
 
 @app.route('/api/measurement/<device_uuid>', methods=['POST'])
@@ -54,13 +68,48 @@ def attach_device_to_user(user_id, device_uuid):
     raise NotImplementedError()
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/', methods=['GET'])
+@login_required
+def index():
+    """
+    Home page
+    :return:
+    """
+    return render_template('index.html')
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+
+    return redirect(url_for('login'))
+
+
+@app.route('/login', methods=['POST', 'GET'])
+@login_manager.unauthorized_handler
 def login():
     """
     Login user
     :return:
     """
-    raise NotImplementedError()
+    # TODO: return user with real id for the sake of login.
+    # TODO: implement registration functionality.
+    form = LoginForm()
+
+    if form.validate():
+        if login_user(form.user, remember=True):
+            return redirect(url_for('index'))
+
+    return render_template('login.html', form=form)
+
+
+@login_manager.user_loader
+def _load_user(user_id):
+    id = session['user_id']
+    if id:
+        return User(email="aaa", password="bbb")
+    else:
+        return None
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -72,11 +121,35 @@ def register():
     raise NotImplementedError()
 
 
-@app.route('/', methods=['GET'])
-def index():
-    """
-    Home page
-    :return:
-    """
-    raise NotImplementedError()
+@login_manager.token_loader
+def get_token_by_id(token):
+    max_age = app.config["REMEMBER_COOKIE_DURATION"].total_seconds()
 
+    # Decrypt the Security Token, data = [username, hashpass]
+    data = login_serializer.loads(token, max_age=max_age)
+
+    # Find the User
+    user = User.get(data[0])
+
+    # Check Password and return user or None
+    if user and data[1] == user.password:
+        return user
+
+    return None
+
+
+# @login_manager.request_loader
+# def load_user(request):
+#     token = request.headers.get('Authorization')
+#
+#     if token is None:
+#         token = request.args.get('token')
+#
+#     if token is not None:
+#         username, password = token.split(":")  # naive token
+#         user_entry = User.get(username)
+#         if user_entry is not None:
+#             user = User(user_entry[0], user_entry[1])
+#             if user.password == password:
+#                 return user
+#     return None
