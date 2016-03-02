@@ -1,4 +1,4 @@
-from flask.ext.login import login_required, current_user
+from flask.ext.login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 from flask import request
@@ -6,13 +6,12 @@ from flask import session
 from flask import render_template
 from flask import url_for
 from flask import redirect
-from flask import g
 
 from server import app, login_manager
-from server.forms import LoginForm
+from server.forms import LoginForm, SignupForm
 from server.models import User
 from server.persistence.token import login_serializer
-from server.persistence.user import get_user_by_id
+from server.utils import register_user
 
 
 @app.route('/api/measurement/<device_uuid>', methods=['POST'])
@@ -96,11 +95,30 @@ def login():
     # TODO: implement registration functionality.
     form = LoginForm()
 
-    if form.validate():
-        if login_user(form.user, remember=True):
-            return redirect(url_for('index'))
+    if request.method == 'POST':
+        if form.validate():
+            if login_user(form.user, remember=True):
+                return redirect(url_for('index'))
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', login_form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """
+    Register new user in system.
+    :return:
+    """
+    form = SignupForm()
+
+    if request.method == 'POST':
+        if form.validate():
+            user = register_user(form)
+
+            if login_user(user, remember=True):
+                return redirect(url_for('index'))
+
+    return render_template('login.html', register_form=form)
 
 
 @login_manager.user_loader
@@ -110,15 +128,6 @@ def _load_user(user_id):
         return User(email="aaa", password="bbb")
     else:
         return None
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    """
-    Register new user in system.
-    :return:
-    """
-    raise NotImplementedError()
 
 
 @login_manager.token_loader

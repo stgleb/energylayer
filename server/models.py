@@ -19,12 +19,14 @@ class Role(db.Model, RoleMixin):
 
 
 class User(db.Model, UserMixin):
+    __table_args__ = {'extend_existing': True}
+
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(255), unique=True)
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    social_id = db.Column(db.String(64), nullable=False, unique=True)
-    nickname = db.Column(db.String(64), nullable=False)
+    # social_id = db.Column(db.String(64), nullable=False, unique=True)
+    # nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(255), unique=True)
     registration_date = db.Column(db.Integer)
     password = db.Column(db.String(255))
@@ -36,7 +38,7 @@ class User(db.Model, UserMixin):
         return "abcd"
 
     def get_id(self):
-        return 1
+        return self.id
 
     def __init__(self, email, password, first_name="", last_name=""):
         self.email = email
@@ -50,6 +52,8 @@ class User(db.Model, UserMixin):
 
 
 class Device(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(64), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -60,6 +64,8 @@ class Device(db.Model):
 
 
 class Metrics(db.Model):
+    __table_args__ = {'extend_existing': True}
+
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(64))
     time_stamp = db.Column(db.Integer)
@@ -83,3 +89,4 @@ def main():
 
 if __name__ == '__main__':
     db.create_all()
+

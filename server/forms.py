@@ -1,4 +1,5 @@
 from flask_wtf import Form
+from server.utils import compare_password, hash_password
 from wtforms import StringField, BooleanField
 from wtforms import PasswordField
 from wtforms import validators
@@ -15,21 +16,25 @@ class LoginForm(Form):
         self.user = None
 
     def validate(self):
-        if (self.email.data is None
-            or self.password.data is None):
-            return False
+        return_value = True
+        user = User.query.filter_by(email=self.email.data).first()
 
-        # if user is None:
-        #     self.email.errors = ('Unknown username')
-        #     return False
-        #
-        # if not user.password != self.password.data:
-        #     self.password.errors = ('Invalid password')
-        #     return False
-        user = User(email=self.email.data, password=self.password.data)
+        # Check if all required fields are there
+        if user is None:
+            self.email.errors = ('Email not found')
+            return_value = False
+
+        if self.password.data is None:
+            self.password.errors = ('Invalid password')
+            return_value = False
+
+        if user and not compare_password(user, self.password.data):
+            self.password.errors = ('Wrong password')
+            return_value = False
+
         self.user = user
 
-        return True
+        return return_value
 
 
 class SignupForm(Form):
@@ -47,12 +52,24 @@ class SignupForm(Form):
         Form.__init__(self, *args, **kwargs)
 
     def validate(self):
-        if not Form.validate(self):
-            return False
+        return_value = True
 
-        user = User.query.filter_by(email=self.email.data.lower()).first()
+        user = User.query.filter_by(email=self.email.
+                                    data.lower()).first()
         if user:
-            self.email.errors.append("That email is already taken")
-            return False
-        else:
-            return True
+            self.email.errors = ("That email is already taken")
+            return_value = False
+
+        if not self.lastname.data:
+            self.lastname.errors = ("Enter last name")
+            return_value = False
+
+        if not self.firstname.data:
+            self.firstname.errors = ("Enter first name")
+            return_value = False
+
+        if not self.password.data:
+            self.password.errors = ("Empty password is not allowed")
+            return_value = False
+
+        return return_value
