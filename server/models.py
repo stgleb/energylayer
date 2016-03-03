@@ -5,10 +5,10 @@ from flask.ext.login import UserMixin
 from flask.ext.security import RoleMixin
 from server import db
 
-
-roles_users = db.Table('roles_users',
-        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+#
+# roles_users = db.Table('roles_users',
+#         db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+#         db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
 
 class Role(db.Model, RoleMixin):
@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(255), unique=True)
+    username = db.Column(db.String(255), unique=True)
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     # social_id = db.Column(db.String(64), nullable=False, unique=True)
@@ -40,15 +40,16 @@ class User(db.Model, UserMixin):
     def get_id(self):
         return self.id
 
-    def __init__(self, email, password, first_name="", last_name=""):
+    def __init__(self, email, password, username="", first_name="", last_name=""):
         self.email = email
         self.password = password
+        self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.registration_date = int(time.time())
 
     def __repr__(self):
-        return "User %s %d".format(self.user_name, self.id)
+        return "{0}".format(self.first_name)
 
 
 class Device(db.Model):

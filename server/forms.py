@@ -38,6 +38,8 @@ class LoginForm(Form):
 
 
 class SignupForm(Form):
+    username = StringField("Username",
+                           [validators.DataRequired("Please enter your username name.")])
     firstname = StringField("First name",
                             [validators.DataRequired("Please enter your first name.")])
     lastname = StringField("Last name",
@@ -66,6 +68,10 @@ class SignupForm(Form):
 
         if not self.firstname.data:
             self.firstname.errors = ("Enter first name")
+            return_value = False
+
+        if not self.username.data:
+            self.username.errors = ("Enter username")
             return_value = False
 
         if not self.password.data:

@@ -15,8 +15,9 @@ def register_user(form):
 
         user = User(email=form.email.data,
                     password=password_hash,
+                    username=form.username.data,
                     first_name=form.firstname.data,
-                    last_name=form.lastname.data, )
+                    last_name=form.lastname.data)
         db.session.add(user)
         db.session.commit()
     except Exception as e:
@@ -29,4 +30,10 @@ def register_user(form):
 
 def compare_password(user, password):
     return user.password == hash_password(password)
+
+
+def get_user_by_id(user_id):
+    user = User.query.filter_by(id=user_id).first()
+
+    return user
 

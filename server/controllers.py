@@ -11,7 +11,7 @@ from server import app, login_manager
 from server.forms import LoginForm, SignupForm
 from server.models import User
 from server.persistence.token import login_serializer
-from server.utils import register_user
+from server.utils import register_user, get_user_by_id
 
 
 @app.route('/api/measurement/<device_uuid>', methods=['POST'])
@@ -91,8 +91,6 @@ def login():
     Login user
     :return:
     """
-    # TODO: return user with real id for the sake of login.
-    # TODO: implement registration functionality.
     form = LoginForm()
 
     if request.method == 'POST':
@@ -123,11 +121,9 @@ def register():
 
 @login_manager.user_loader
 def _load_user(user_id):
-    id = session['user_id']
-    if id:
-        return User(email="aaa", password="bbb")
-    else:
-        return None
+    user = get_user_by_id(user_id)
+
+    return user
 
 
 @login_manager.token_loader

@@ -24,35 +24,63 @@
     <![endif]-->
 </head>
 <body>
-<div id="contextPath" data-contextpath="" class="none"></div>
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Energylayer</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Live Chart</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                      <a href="{{ url_for('logout') }}"><b>Logout</b></a>
-                        <ul id="login-dp" class="dropdown-menu">
-                            <li>
-                                 <div class="row">
-                                 </div>
-                            </li>
-                        </ul>
-                    </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+<!--<div id="contextPath" data-contextpath="" class="none"></div>-->
+<!--<nav class="navbar navbar-default" role="navigation">-->
+    <!--<div class="container-fluid">-->
+        <!--<div class="navbar-header">-->
+            <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">-->
+                <!--<span class="sr-only">Toggle navigation</span>-->
+                <!--<span class="icon-bar"></span>-->
+                <!--<span class="icon-bar"></span>-->
+                <!--<span class="icon-bar"></span>-->
+            <!--</button>-->
+            <!--<a class="navbar-brand" href="#">Energylayer</a>-->
+        <!--</div>-->
+        <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+            <!--<ul class="nav navbar-nav">-->
+                <!--<li class="active"><a href="#">Live Chart</a></li>-->
+            <!--</ul>-->
+            <!--<ul class="nav navbar-nav navbar-right">-->
+                    <!--{% if current_user.is_authenticated %}-->
+                        <!--<li>-->
+                            <!--<p>Hello, {{ current_user.name }}</p>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="{{ url_for('logout') }}"><b>Logout</b></a>-->
+                        <!--</li>-->
+                    <!--{% else %}-->
+
+                    <!--{% endif %}-->
+            <!--</ul>-->
+        <!--</div>&lt;!&ndash; /.navbar-collapse &ndash;&gt;-->
+    <!--</div>&lt;!&ndash; /.container-fluid &ndash;&gt;-->
+<!--</nav>-->
+ <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">EnergyLayer</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+          <li><a href="#">
+              Hello, {{ current_user.username }}</a>
+          </li>
+          <li><a href="{{ url_for('logout') }}">
+              Logout</a>
+          </li>
+        {% else %}
+            <li>
+                <a href="{{ url_for('index') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+            </li>
+            <li>
+                <a href="{{ url_for('index') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+            </li>
+        {% endif %}
+    </ul>
+  </div>
 </nav>
 <div class="container">
     <div class="jumbotron">

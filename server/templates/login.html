@@ -19,6 +19,17 @@
         <div id="signup">
             <h1>Sign Up for Free</h1>
             <form action="{{ url_for('register') }}" method="post">
+                <div class="field-wrap">
+                    <label>
+                        Username<span class="req">*</span>
+                    </label>
+                    <input type="username" name="username"/>
+                        <div class="error">
+                        {% if register_form and register_form.username.errors|length > 0  %}
+                            {{ register_form.username.errors }}
+                        {% endif %}
+                        </div>
+                </div>
                 <div class="top-row">
                     <div class="field-wrap">
                         <label>
