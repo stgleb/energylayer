@@ -2,12 +2,11 @@ from flask.ext.login import login_required
 from flask_login import login_user, current_user
 from flask_login import logout_user
 from flask import request
-from flask import session
 from flask import render_template
 from flask import url_for
 from flask import redirect
 
-from server import app, login_manager, db
+from server import app, login_manager
 from server.forms import LoginForm, SignupForm, EditForm
 from server.models import User
 from server.persistence.token import login_serializer

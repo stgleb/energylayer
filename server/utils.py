@@ -23,8 +23,6 @@ def register_user(form):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-    finally:
-            db.session.close()
 
     return user
 

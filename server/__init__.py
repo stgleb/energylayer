@@ -14,6 +14,5 @@ db = SQLAlchemy(app)
 db.Session(expire_on_commit=False)
 
 from server import controllers
-login_manager.login_view = 'login'
 db.create_all()
 

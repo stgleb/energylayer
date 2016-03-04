@@ -2,6 +2,7 @@ import argparse
 import time
 
 from flask.ext.login import UserMixin
+from flask.ext.login import make_secure_token
 from flask.ext.security import RoleMixin
 from server import db
 
@@ -35,7 +36,7 @@ class User(db.Model, UserMixin):
                               lazy='dynamic')
 
     def get_auth_token(self):
-        return "abcd"
+        return make_secure_token(self.username)
 
     def get_id(self):
         return self.id

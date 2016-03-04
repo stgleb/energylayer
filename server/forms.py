@@ -50,6 +50,8 @@ class SignupForm(Form):
                          validators.Email("Please enter your email address.")])
     password = PasswordField('Password',
                              [validators.DataRequired("Please enter a password.")])
+    password_confirm = PasswordField('Password',
+                                     [validators.DataRequired("Please enter a password.")])
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
@@ -77,6 +79,10 @@ class SignupForm(Form):
 
         if not self.password.data:
             self.password.errors = ("Empty password is not allowed")
+            return_value = False
+
+        if self.password_confirm.data != self.password.data:
+            self.password.errors = ("Passwords do not match")
             return_value = False
 
         return return_value
