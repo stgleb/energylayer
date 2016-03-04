@@ -68,6 +68,9 @@
           <li><a href="#">
               Hello, {{ current_user.username }}</a>
           </li>
+          <li><a href="{{ url_for('edit_user') }}">
+              Settings</a>
+          </li>
           <li><a href="{{ url_for('logout') }}">
               Logout</a>
           </li>

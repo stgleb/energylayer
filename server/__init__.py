@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 login_manager = LoginManager()
 login_manager.init_app(app)
 db = SQLAlchemy(app)
+db.Session(expire_on_commit=False)
 
 from server import controllers
 login_manager.login_view = 'login'

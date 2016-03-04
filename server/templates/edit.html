@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Sign-Up/Login Form</title>
+    <title>Edit profile</title>
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/css/normalize.css">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -11,57 +11,41 @@
 </head>
 <body>
 <div class="form">
-    <ul class="tab-group">
-        <li class="tab active"><a href="#signup">Sign Up</a></li>
-        <li class="tab"><a href="#login">Log In</a></li>
-    </ul>
     <div class="tab-content">
         <div id="signup">
-            <h1>Sign Up for Free</h1>
-            <form action="{{ url_for('register') }}" method="post">
+            <h1>Edit profile</h1>
+            <form action="{{ url_for('edit_user') }}" method="post">
                 <div class="field-wrap">
-                    <label>
-                        Username<span class="req">*</span>
-                    </label>
-                    <input type="username" name="username"/>
+                    <input type="username" name="username" value="{{ current_user.username }}"/>
                         <div class="error">
-                        {% if register_form and register_form.username.errors|length > 0  %}
-                            {{ register_form.username.errors }}
+                        {% if form and form.username.errors|length > 0  %}
+                            {{ form.username.errors }}
                         {% endif %}
                         </div>
                 </div>
                 <div class="top-row">
                     <div class="field-wrap">
-                        <label>
-                            First Name<span class="req">*</span>
-                        </label>
-                        <input type="text" name="firstname"/>
+                        <input type="text" name="firstname" value="{{ current_user.first_name }}"/>
                         <div class="error">
-                        {% if register_form and register_form.firstname.errors|length > 0  %}
-                            {{ register_form.firstname.errors }}
+                        {% if form and form.firstname.errors|length > 0  %}
+                            {{ form.firstname.errors }}
                         {% endif %}
                         </div>
                     </div>
                     <div class="field-wrap">
-                        <label>
-                            Last Name<span class="req">*</span>
-                        </label>
-                        <input type="text" name="lastname"/>
+                        <input type="text" name="lastname" value="{{ current_user.last_name }}"/>
                         <div class="error">
-                        {% if register_form and register_form.lastname.errors|length > 0  %}
-                            {{ register_form.lastname.errors }}
+                        {% if form and form.lastname.errors|length > 0  %}
+                            {{ form.lastname.errors }}
                         {% endif %}
                         </div>
                     </div>
                 </div>
                 <div class="field-wrap">
-                    <label>
-                        Email Address<span class="req">*</span>
-                    </label>
-                    <input type="email" name="email"/>
+                    <input type="email" name="email" value="{{ current_user.email }}"/>
                         <div class="error">
-                        {% if register_form and register_form.email.errors|length > 0  %}
-                            {{ register_form.email.errors }}
+                        {% if form and form.email.errors|length > 0  %}
+                            {{ form.email.errors }}
                         {% endif %}
                         </div>
                 </div>
@@ -69,10 +53,10 @@
                     <label>
                         Set A Password<span class="req">*</span>
                     </label>
-                    <input type="password" name="password"/>
+                    <input type="password" name="password" value=""/>
                         <div class="error">
-                        {% if register_form and register_form.password.errors|length > 0  %}
-                            {{ register_form.password.errors }}
+                        {% if form and form.password.errors|length > 0  %}
+                            {{ form.password.errors }}
                         {% endif %}
                         </div>
                 </div>
@@ -80,10 +64,10 @@
                     <label>
                         Password confirm<span class="req">*</span>
                     </label>
-                    <input type="password" name="password_confirm"/>
+                    <input type="password" name="password_confirm" value=""/>
                     <div class="error">
-                        {% if register_form and register_form.password_confirm.errors|length > 0 %}
-                            {{ register_form.password_confirm.errors }}
+                        {% if login_form and login_form.password_confirm.errors|length > 0 %}
+                            {{ login_form.password_confirm.errors }}
                         {% endif %}
                     </div>
                 </div>

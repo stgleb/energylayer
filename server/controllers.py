@@ -1,5 +1,5 @@
 from flask.ext.login import login_required
-from flask_login import login_user
+from flask_login import login_user, current_user
 from flask_login import logout_user
 from flask import request
 from flask import session
@@ -7,11 +7,11 @@ from flask import render_template
 from flask import url_for
 from flask import redirect
 
-from server import app, login_manager
-from server.forms import LoginForm, SignupForm
+from server import app, login_manager, db
+from server.forms import LoginForm, SignupForm, EditForm
 from server.models import User
 from server.persistence.token import login_serializer
-from server.utils import register_user, get_user_by_id
+from server.utils import register_user, get_user_by_id, update_user_profile
 
 
 @app.route('/api/measurement/<device_uuid>', methods=['POST'])
@@ -82,6 +82,21 @@ def logout():
     logout_user()
 
     return redirect(url_for('login'))
+
+
+@app.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit_user():
+    form = EditForm()
+
+    if request.method == 'POST':
+        if form.validate():
+            update_user_profile(form, current_user.id)
+            return render_template('index.html')
+        else:
+            return render_template('edit.html', form=form)
+    else:
+        return render_template('edit.html', form=form)
 
 
 @app.route('/login', methods=['POST', 'GET'])
