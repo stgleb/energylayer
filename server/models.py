@@ -1,10 +1,14 @@
 import argparse
 import time
 
-from flask.ext.login import UserMixin
+from server.application import app
+from flask.ext.security import UserMixin
 from flask.ext.login import make_secure_token
 from flask.ext.security import RoleMixin
-from server import db
+from flask.ext.sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy(app)
+db.Session(expire_on_commit=False)
 
 
 roles_users = db.Table('roles_users',
@@ -18,20 +22,36 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
 
 class User(db.Model, UserMixin):
     __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), unique=True)
+    username = db.Column(db.String(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    # social_id = db.Column(db.String(64), nullable=False, unique=True)
-    # nickname = db.Column(db.String(64), nullable=False)
+
+    # TODO: add Oauth support with Flask-Social
+    # social_id = db.Column(db.String(64), unique=True)
+    # nickname = db.Column(db.String(64))
     email = db.Column(db.String(255), unique=True)
     registration_date = db.Column(db.Integer)
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
+    confirmed_at = db.Column(db.DateTime)
+    last_login_at = db.Column(db.DateTime)
+    current_login_at = db.Column(db.DateTime)
+    last_login_ip = db.Column(db.String(40))
+    current_login_ip = db.Column(db.String(40))
+    login_count = db.Column(db.Integer)
+
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
+
     devices = db.relationship('Device', backref='person',
                               lazy='dynamic')
 
@@ -41,12 +61,14 @@ class User(db.Model, UserMixin):
     def get_id(self):
         return self.id
 
-    def __init__(self, email, password, username="", first_name="", last_name=""):
+    def __init__(self, email, password, username="", first_name="", last_name="", active=False, roles=[]):
         self.email = email
         self.password = password
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
+        self.active = active
+        self.roles = roles
         self.registration_date = int(time.time())
 
     def __repr__(self):

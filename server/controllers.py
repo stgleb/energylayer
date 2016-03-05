@@ -1,4 +1,4 @@
-from flask.ext.login import login_required
+from flask_security import login_required
 from flask_login import login_user, current_user
 from flask_login import logout_user
 from flask import request
@@ -97,66 +97,66 @@ def edit_user():
     else:
         return render_template('edit.html', form=form)
 
-
-@app.route('/login', methods=['POST', 'GET'])
-@login_manager.unauthorized_handler
-def login():
-    """
-    Login user
-    :return:
-    """
-    form = LoginForm()
-
-    if request.method == 'POST':
-        if form.validate():
-            if login_user(form.user, remember=True):
-                return redirect(url_for('index'))
-
-    return render_template('login.html', login_form=form)
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    """
-    Register new user in system.
-    :return:
-    """
-    form = SignupForm()
-
-    if request.method == 'POST':
-        if form.validate():
-            user = register_user(form)
-
-            if login_user(user, remember=True):
-                return redirect(url_for('index'))
-
-    return render_template('login.html', register_form=form)
-
-
-@login_manager.user_loader
-def _load_user(user_id):
-    user = get_user_by_id(user_id)
-
-    return user
-
-
-@login_manager.token_loader
-def get_token_by_id(token):
-    max_age = app.config["REMEMBER_COOKIE_DURATION"].total_seconds()
-
-    # Decrypt the Security Token, data = [username, hashpass]
-    data = login_serializer.loads(token, max_age=max_age)
-
-    # Find the User
-    user = User.get(data[0])
-
-    # Check Password and return user or None
-    if user and data[1] == user.password:
-        return user
-
-    return None
-
-
+#
+# @app.route('/login', methods=['POST', 'GET'])
+# @login_manager.unauthorized_handler
+# def login():
+#     """
+#     Login user
+#     :return:
+#     """
+#     form = LoginForm()
+#
+#     if request.method == 'POST':
+#         if form.validate():
+#             if login_user(form.user, remember=True):
+#                 return redirect(url_for('index'))
+#
+#     return render_template('login.html', login_form=form)
+#
+#
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     """
+#     Register new user in system.
+#     :return:
+#     """
+#     form = SignupForm()
+#
+#     if request.method == 'POST':
+#         if form.validate():
+#             user = register_user(form)
+#
+#             if login_user(user, remember=True):
+#                 return redirect(url_for('index'))
+#
+#     return render_template('login.html', register_form=form)
+#
+#
+# @login_manager.user_loader
+# def _load_user(user_id):
+#     user = get_user_by_id(user_id)
+#
+#     return user
+#
+#
+# @login_manager.token_loader
+# def get_token_by_id(token):
+#     max_age = app.config["REMEMBER_COOKIE_DURATION"].total_seconds()
+#
+#     # Decrypt the Security Token, data = [username, hashpass]
+#     data = login_serializer.loads(token, max_age=max_age)
+#
+#     # Find the User
+#     user = User.get(data[0])
+#
+#     # Check Password and return user or None
+#     if user and data[1] == user.password:
+#         return user
+#
+#     return None
+#
+#
 # @login_manager.request_loader
 # def load_user(request):
 #     token = request.headers.get('Authorization')

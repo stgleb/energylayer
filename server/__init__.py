@@ -1,17 +1,23 @@
+from flask.ext.mail import Mail
+from flask.ext.security import Security
 from server import config
-from flask import Flask
 from flask.ext.login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
+from server.security import ExtendedRegisterForm, user_datastore
+from server.application import app
+from server.models import db
 
-app = Flask(__name__, template_folder='templates', static_folder='static',
-            static_url_path='/static')
 
-app.config.from_object(config)
-login_manager = LoginManager()
-login_manager.init_app(app)
-db = SQLAlchemy(app)
-db.Session(expire_on_commit=False)
+login_manager = LoginManager(app=app)
 
 from server import controllers
-# db.create_all()
 
+security = Security(app, user_datastore, register_form=ExtendedRegisterForm,
+                    confirm_register_form=ExtendedRegisterForm)
+mail = Mail(app)
+
+
+@security.context_processor
+def security_context_processor():
+    return dict(
+        register_form=ExtendedRegisterForm
+    )

@@ -29,10 +29,6 @@ class LoginForm(Form):
             self.password.errors = ('Invalid password')
             return_value = False
 
-        if user and not compare_password(user, self.password.data):
-            self.password.errors = ('Wrong password')
-            return_value = False
-
         self.user = user
 
         return return_value

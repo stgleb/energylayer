@@ -1,5 +1,4 @@
 import hashlib
-from flask.ext.login import current_user
 from server.models import db, User
 
 
