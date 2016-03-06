@@ -1,16 +1,23 @@
+import json
+
 import io
 
 from flask_security import login_required
 from flask_login import current_user
 from flask_login import logout_user
-from flask import request, send_file
+from flask import request, send_file, Response
 from flask import render_template
 from flask import url_for
 from flask import redirect
 
 from server import app
 from server.forms import EditForm
-from server.utils import update_user_profile, save_measurement
+from server.utils import update_user_profile
+from server.utils import save_measurement
+from server.utils import get_measurements_from_device
+from server.utils import get_devices_per_user
+from server.utils import get_user_list
+from server.utils import attach_device_to_user as attach_device
 from server.utils import get_or_create_device
 
 
@@ -22,7 +29,7 @@ def handle_data_from_device(device_id, data_string):
     :param data_string HEX string with format
 
     0000 1111 2222 3333 4444 5555 6666 7777
-    GPIO  V     A    T   -----------------
+    GPIO  V    A    T  Reserved for another sensors
 
     V - Voltage
     A - Power
@@ -46,24 +53,32 @@ def handle_data_from_device(device_id, data_string):
     return 'Created', 201
 
 
-@app.route('/api/measurement/<device_uuid>', methods=['POST'])
-def receive_measurements(device_uuid):
+@app.route('/api/measurement/<device_uuid>/', methods=['GET'])
+@app.route('/api/measurement/<device_uuid>/<timestamp>', methods=['GET'])
+def get_measurements(device_uuid, timestamp=0):
     """
-    Accept measurement data from device
-    :param device_uuid:
-    :return:
+    Get device measurements from given timestamp
+    :param device_uuid
+    :param timestamp time since measurements
+    should be given.
+    :return json list [
+        {
+            "voltage": 220,
+            "power": 20,
+            "temperature": 22,
+            "gpio", 10,
+            "timestamp": 1234567
+        }
+    ]:
     """
-    raise NotImplementedError()
+    measurements = get_measurements_from_device(device_id=device_uuid,
+                                                since=timestamp)
 
+    response = Response(response=json.dumps(measurements),
+                        status=200,
+                        mimetype="application/json")
 
-@app.route('/api/measurement/<device_uuid>/<time_stamp>', methods=['GET'])
-def send_measurement(device_uuid, time_stamp=0):
-    """
-    Send device measurements from given timestamp
-    :param device_uuid:
-    :return:
-    """
-    raise NotImplementedError()
+    return response
 
 
 @app.route('/api/<user_id>/device', methods=['GET'])
@@ -72,7 +87,12 @@ def get_devices_list(user_id):
     Get list of user's devices
     :return:
     """
-    raise NotImplementedError()
+    devices = get_devices_per_user(user_id)
+    response = Response(response=json.dumps(devices),
+                        status=200,
+                        mimetype="application/json")
+
+    return response
 
 
 @app.route('/api/user', methods=['GET'])
@@ -81,7 +101,13 @@ def get_users():
     Gives list of users in the system
     :return:
     """
-    raise NotImplementedError()
+    users = get_user_list()
+
+    response = Response(response=json.dumps(users),
+                        status=200,
+                        mimetype='application/json')
+
+    return response
 
 
 @app.route('/api/user/<user_id>', methods=['GET'])
@@ -96,7 +122,9 @@ def get_user_details(user_id):
 
 @app.route('/api/user/<user_id>/<device_uuid>', methods=['PATCH'])
 def attach_device_to_user(user_id, device_uuid):
-    raise NotImplementedError()
+    attach_device(user_id=user_id, device_id=device_uuid)
+
+    return 'Device added', 200
 
 
 @app.route('/', methods=['GET'])

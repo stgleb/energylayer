@@ -92,3 +92,60 @@ def save_measurement(device, gpio, voltage, power, temperature):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
+
+
+def get_measurements_from_device(device_id, since=0):
+    device = Device.query.filter_by(uuid=device_id).first()
+    measurements = [m for m in device.measurements if m.timestamp > since]
+
+    def measurement_to_dto(m):
+        return {
+            "voltage": m.voltage,
+            "power": m.power,
+            "temperature": m.temperature,
+            "gpio": m.gpio,
+            "timestamp": m.timestamp
+        }
+
+    return [measurement_to_dto(m) for m in measurements]
+
+
+def get_devices_per_user(user_id):
+    user = User.query.filter_by(id=id).first()
+    # TODO: add exception raising in user not found
+
+    def device_to_dto(device):
+        return {
+            "device_id": device.id,
+            "ip_addr": device.ip_addr
+        }
+
+    devices = [device_to_dto(d) for d in user.devices]
+
+    return devices
+
+
+def get_user_list():
+    users = User.query.all()
+
+    def user_to_dto(user):
+        return {
+            "id": user.id,
+            "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email
+        }
+
+    return [user_to_dto(u) for u in users]
+
+
+def attach_device_to_user(user_id, device_id):
+    device = get_or_create_device(device_id=device_id)
+    user = User.query.filter_by(id=user_id).first()
+
+    try:
+        user.devices.append(device)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
