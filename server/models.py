@@ -1,6 +1,7 @@
 import argparse
 import time
 
+from flask import url_for
 from hashlib import md5
 from server.application import app
 from flask.ext.security import UserMixin
@@ -64,6 +65,11 @@ class User(db.Model, UserMixin):
 
     @property
     def avatar(self, size=256):
+
+        # If there is avatar in database use it
+        # or use Gravatar instead
+        if self.avatar_image:
+            return url_for('get_avatar')
         image_url = 'http://www.gravatar.com/avatar/' + \
                     md5(self.email.encode('utf-8')).hexdigest() + \
                     '?d=mm&s=' + str(128)

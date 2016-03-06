@@ -1,3 +1,5 @@
+import io
+
 from flask_security import login_required
 from flask_login import login_user, current_user
 from flask_login import logout_user
@@ -108,8 +110,7 @@ def get_avatar():
     :return:
     """
     avatar = current_user.avatar_image
-
-    return send_file(avatar,
+    return send_file(io.BytesIO(avatar),
                      attachment_filename='avatar.png',
                      mimetype='image/png')
 

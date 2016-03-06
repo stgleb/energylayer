@@ -10,9 +10,9 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 
 class ExtendedRegisterForm(RegisterForm):
-    username = StringField('Last Name', [Required()])
+    username = StringField('Username', [Required()])
     first_name = StringField('First Name', [])
-    last_name = StringField('Username', [])
+    last_name = StringField('Last Name', [])
 
 
 

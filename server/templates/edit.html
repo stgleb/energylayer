@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="form">
@@ -10,44 +13,48 @@
         <div id="signup">
             <h1>Edit profile</h1>
             <div>
-              <img src="{{ current_user.avatar}}" class="avatar">
-              <!--<img src="{{ url_for('get_avatar') }}" class="avatar">-->
+                <img src="{{ current_user.avatar}}" width="128" height="128" class="avatar">
+                <!--<img src="{{ url_for('get_avatar') }}" class="avatar" width="128" height="128">-->
             </div>
             <form action="{{ url_for('edit_user') }}" method="post" enctype="multipart/form-data">
                 <input type="file" name="avatar" id="avatar">
                 <div class="field-wrap">
+                    <label>Username:</label>
                     <input type="username" name="username" value="{{ current_user.username }}"/>
-                        <div class="error">
-                        {% if form and form.username.errors|length > 0  %}
-                            {{ form.username.errors }}
+                    <div class="error">
+                        {% if form and form.username.errors|length > 0 %}
+                        {{ form.username.errors }}
                         {% endif %}
-                        </div>
+                    </div>
                 </div>
                 <div class="top-row">
                     <div class="field-wrap">
+                        <label>Firstname:</label>
                         <input type="text" name="firstname" value="{{ current_user.first_name }}"/>
                         <div class="error">
-                        {% if form and form.firstname.errors|length > 0  %}
+                            {% if form and form.firstname.errors|length > 0 %}
                             {{ form.firstname.errors }}
-                        {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="field-wrap">
+                        <label>Lastname:</label>
                         <input type="text" name="lastname" value="{{ current_user.last_name }}"/>
                         <div class="error">
-                        {% if form and form.lastname.errors|length > 0  %}
+                            {% if form and form.lastname.errors|length > 0 %}
                             {{ form.lastname.errors }}
-                        {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
                 <div class="field-wrap">
+                    <label>Email:</label>
                     <input type="email" name="email" value="{{ current_user.email }}"/>
-                        <div class="error">
-                        {% if form and form.email.errors|length > 0  %}
-                            {{ form.email.errors }}
+                    <div class="error">
+                        {% if form and form.email.errors|length > 0 %}
+                        {{ form.email.errors }}
                         {% endif %}
-                        </div>
+                    </div>
                 </div>
                 <p class="forgot"><a href="{{ url_for('index') }}">Back</a></p>
                 <button type="submit" class="button button-block"/>
