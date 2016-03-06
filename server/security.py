@@ -1,19 +1,10 @@
-from flask.ext.security import RegisterForm, SQLAlchemyUserDatastore, Security
-from flask.ext.security.forms import Required
+from flask.ext.security import SQLAlchemyUserDatastore
 from server.application import app
 # Setup Flask-Security
 from server.models import Role, db
 from server.models import User
-from wtforms import StringField
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-
-
-class ExtendedRegisterForm(RegisterForm):
-    username = StringField('Username', [Required()])
-    first_name = StringField('First Name', [])
-    last_name = StringField('Last Name', [])
-
 
 
 @app.before_first_request

@@ -1,18 +1,16 @@
 import io
 
 from flask_security import login_required
-from flask_login import login_user, current_user
+from flask_login import current_user
 from flask_login import logout_user
 from flask import request, send_file
 from flask import render_template
 from flask import url_for
 from flask import redirect
 
-from server import app, login_manager
-from server.forms import LoginForm, SignupForm, EditForm
-from server.models import User
-from server.persistence.token import login_serializer
-from server.utils import register_user, get_user_by_id, update_user_profile
+from server import app
+from server.forms import EditForm
+from server.utils import update_user_profile
 
 
 @app.route('/api/measurement/<device_uuid>', methods=['POST'])

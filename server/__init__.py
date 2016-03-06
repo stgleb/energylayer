@@ -1,8 +1,9 @@
 from flask.ext.mail import Mail
 from flask.ext.security import Security
 from server import config
+from server.forms import ExtendedRegisterForm
 from flask.ext.login import LoginManager
-from server.security import ExtendedRegisterForm, user_datastore
+from server.security import user_datastore
 from server.application import app
 from server.models import db
 from flask_bootstrap import Bootstrap
