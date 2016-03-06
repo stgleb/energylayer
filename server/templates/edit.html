@@ -14,7 +14,6 @@
             <h1>Edit profile</h1>
             <div>
                 <img src="{{ current_user.avatar}}" width="128" height="128" class="avatar">
-                <!--<img src="{{ url_for('get_avatar') }}" class="avatar" width="128" height="128">-->
             </div>
             <form action="{{ url_for('edit_user') }}" method="post" enctype="multipart/form-data">
                 <input type="file" name="avatar" id="avatar">

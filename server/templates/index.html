@@ -5,8 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Energylayer</title>
-
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/css/main.css" type="text/css">
     <link rel="stylesheet" href="/static/css/jquery-ui.css">
     <script src="/static/js/jquery.js" type="text/javascript"></script>
@@ -24,37 +27,6 @@
     <![endif]-->
 </head>
 <body>
-<!--<div id="contextPath" data-contextpath="" class="none"></div>-->
-<!--<nav class="navbar navbar-default" role="navigation">-->
-    <!--<div class="container-fluid">-->
-        <!--<div class="navbar-header">-->
-            <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">-->
-                <!--<span class="sr-only">Toggle navigation</span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-            <!--</button>-->
-            <!--<a class="navbar-brand" href="#">Energylayer</a>-->
-        <!--</div>-->
-        <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
-            <!--<ul class="nav navbar-nav">-->
-                <!--<li class="active"><a href="#">Live Chart</a></li>-->
-            <!--</ul>-->
-            <!--<ul class="nav navbar-nav navbar-right">-->
-                    <!--{% if current_user.is_authenticated %}-->
-                        <!--<li>-->
-                            <!--<p>Hello, {{ current_user.name }}</p>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href="{{ url_for('logout') }}"><b>Logout</b></a>-->
-                        <!--</li>-->
-                    <!--{% else %}-->
-
-                    <!--{% endif %}-->
-            <!--</ul>-->
-        <!--</div>&lt;!&ndash; /.navbar-collapse &ndash;&gt;-->
-    <!--</div>&lt;!&ndash; /.container-fluid &ndash;&gt;-->
-<!--</nav>-->
  <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -67,6 +39,9 @@
         {% if current_user.is_authenticated %}
           <li><a href="#">
               Hello, {{ current_user.username }}</a>
+          </li>
+          <li>
+              <img src="{{ current_user.avatar}}" width="40" height="40" class="avatar">
           </li>
           <li><a href="{{ url_for('edit_user') }}">
               Settings</a>
