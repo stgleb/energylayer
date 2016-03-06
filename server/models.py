@@ -1,6 +1,7 @@
 import argparse
 import time
 
+from hashlib import md5
 from server.application import app
 from flask.ext.security import UserMixin
 from flask.ext.login import make_secure_token
@@ -60,6 +61,14 @@ class User(db.Model, UserMixin):
 
     def get_id(self):
         return self.id
+
+    @property
+    def avatar(self, size=256):
+        image_url = 'http://www.gravatar.com/avatar/' + \
+                    md5(self.email.encode('utf-8')).hexdigest() + \
+                    '?d=mm&s=' + str(128)
+
+        return image_url
 
     def __init__(self, email, password, username="", first_name="", last_name="", active=False, roles=[]):
         self.email = email
