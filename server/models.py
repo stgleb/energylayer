@@ -54,7 +54,7 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
-    devices = db.relationship('Device', backref='person',
+    devices = db.relationship('Device', backref='user',
                               lazy='dynamic')
 
     def get_auth_token(self):
@@ -96,19 +96,34 @@ class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(64), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    ip_addr = db.Column(db.String(40))
+    measurements = db.relationship('Measurement', backref='device',
+                                   lazy='dynamic')
 
-    def __init__(self, uuid, user_id):
+    def __init__(self, uuid, ip_addr):
         self.uuid = uuid
-        self.user_id = user_id
+        self.ip_addr = ip_addr
 
 
-class Metrics(db.Model):
+class Measurement(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(64))
     time_stamp = db.Column(db.Integer)
-    measurement = db.Column(db.Float)
+    gpio = db.Column(db.Integer)
+    voltage = db.Column(db.Integer)
+    power = db.Column(db.Integer)
+    temperature = db.Column(db.Integer)
+    device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
+
+    def __init__(self, device_id, gpio, voltage, power, temperature):
+        self.device_id = device_id
+        self.gpio = gpio
+        self.voltage = voltage
+        self.power = power
+        self.temperature = temperature
+        self.temperature = int(time.time())
 
 
 def parse_args():

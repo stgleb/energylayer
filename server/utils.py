@@ -1,5 +1,5 @@
 import hashlib
-from server.models import db, User
+from server.models import db, User, Device, Measurement
 
 
 def hash_password(password):
@@ -58,6 +58,37 @@ def update_user_profile(form, user_id, image_data=None):
         if image_data:
             user.avatar_image = image_data.stream.read()
 
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+
+
+def get_or_create_device(device_id, device_ip=None):
+    device = Device.query.filter_by(uuid=device_id).first()
+
+    if device:
+        return device
+
+    try:
+        device = Device(uuid=device_id, ip_addr=device_ip)
+        db.session.add(device)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+
+    return device
+
+
+def save_measurement(device, gpio, voltage, power, temperature):
+    measurement = Measurement(device_id=device.id,
+                              gpio=gpio,
+                              voltage=voltage,
+                              power=power,
+                              temperature=temperature)
+
+    try:
+        db.session.add(measurement)
+        device.measurements.append(measurement)
         db.session.commit()
     except Exception as e:
         db.session.rollback()
