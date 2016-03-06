@@ -9,10 +9,12 @@
     <div class="tab-content">
         <div id="signup">
             <h1>Edit profile</h1>
-            <form action="{{ url_for('edit_user') }}" method="post">
-                <div>
-                  <img src="{{ current_user.avatar}}" class="avatar">
-                </div>
+            <div>
+              <img src="{{ current_user.avatar}}" class="avatar">
+              <!--<img src="{{ url_for('get_avatar') }}" class="avatar">-->
+            </div>
+            <form action="{{ url_for('edit_user') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="avatar" id="avatar">
                 <div class="field-wrap">
                     <input type="username" name="username" value="{{ current_user.username }}"/>
                         <div class="error">
@@ -49,7 +51,7 @@
                 </div>
                 <p class="forgot"><a href="{{ url_for('index') }}">Back</a></p>
                 <button type="submit" class="button button-block"/>
-                Get Started</button>
+                Apply</button>
             </form>
         </div>
     </div><!-- tab-content -->

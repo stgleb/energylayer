@@ -36,16 +36,28 @@ def get_user_by_id(user_id):
     return user
 
 
-def update_user_profile(form, user_id):
+def update_user_profile(form, user_id, image_data=None):
     try:
         user = User.query.filter_by(id=user_id).first()
-        user.email = form.email.data
-        user.first_name = form.firstname.data
-        user.last_name = form.lastname.data
-        user.username = form.username.data
-        user.email = form.email.data
-        password_hash = hash_password(form.password.data)
-        user.password = password_hash
+
+        if form.email.data:
+            user.email = form.email.data
+
+        if form.firstname.data:
+            user.first_name = form.firstname.data
+
+        if form.lastname.data:
+            user.last_name = form.lastname.data
+
+        if form.username.data:
+            user.username = form.username.data
+
+        if form.email.data:
+            user.email = form.email.data
+
+        if image_data:
+            user.avatar_image = image_data.stream.read()
+
         db.session.commit()
     except Exception as e:
         db.session.rollback()

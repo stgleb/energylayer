@@ -1,7 +1,7 @@
 from flask.ext.login import current_user
 from flask_wtf import Form
 from server.utils import compare_password, hash_password
-from wtforms import StringField, BooleanField
+from wtforms import StringField, BooleanField, FileField
 from wtforms import PasswordField
 from wtforms import validators
 from server.models import User
@@ -86,19 +86,13 @@ class SignupForm(Form):
 
 class EditForm(Form):
     username = StringField("Username",
-                           [validators.DataRequired("Please enter your username name.")])
+                           [])
     firstname = StringField("First name",
-                            [validators.DataRequired("Please enter your first name.")])
+                            [])
     lastname = StringField("Last name",
-                           [validators.DataRequired("Please enter your last name.")])
+                           [])
     email = StringField("Email",
-                        [validators.DataRequired("Please enter your email address."),
-                         validators.Email("Please enter your email address.")])
-    password = PasswordField('Password',
-                             [validators.DataRequired("Please enter a password.")])
-    password_confirm = PasswordField('Password Confirm',
-                                     [validators.DataRequired("Please enter a password "
-                                                              "confirmation.")])
+                        [validators.Email("Please enter your email address.")])
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
@@ -118,22 +112,5 @@ class EditForm(Form):
             other_user.username == current_user.username):
             self.username.errors = ("That username is already taken")
             return_value = False
-
-        if not self.lastname.data:
-            self.lastname.errors = ("Enter last name")
-            return_value = False
-
-        if not self.firstname.data:
-            self.firstname.errors = ("Enter first name")
-            return_value = False
-
-        if not self.username.data:
-            self.username.errors = ("Enter username")
-            return_value = False
-
-        if not self.password.data or not self.password_confirm.data:
-            if self.password_confirm.data != self.password.data:
-                self.password.errors = ("Passwords do not match")
-                return_value = False
 
         return return_value
