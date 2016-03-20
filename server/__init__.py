@@ -12,7 +12,8 @@ from flask_bootstrap import Bootstrap
 
 login_manager = LoginManager(app=app)
 
-from server import controllers
+from server.controllers import *
+from server.oauth.controllers import *
 
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm,
                     confirm_register_form=ExtendedRegisterForm)
@@ -27,3 +28,5 @@ def security_context_processor():
     )
 
 app.secret_key = os.urandom(24)
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
+

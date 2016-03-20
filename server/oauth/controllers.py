@@ -1,13 +1,8 @@
-import json
-
-import io
-
 from flask import redirect
 from flask import request, url_for
-from flask import send_file
 from flask import session
 from flask.ext.login import current_user
-
+from flask_login import login_user
 from requests_oauthlib import OAuth1Session, OAuth2Session
 
 from server import app
@@ -16,16 +11,19 @@ from server.oauth.oauth_config import FACEBOOK_AUTHORIZE_URL
 from server.oauth.oauth_config import FACEBOOK_BASE_URL
 from server.oauth.oauth_config import FACEBOOK_CONSUMER_KEY
 from server.oauth.oauth_config import FACEBOOK_SECRET_KEY
-from server.oauth.oauth_config import FACEBOOK_API_VERSION
 from server.oauth.oauth_config import TWITTER_ACCESS_TOKEN_URL
 from server.oauth.oauth_config import TWITTER_AUTHORIZATION_URL
-from server.oauth.oauth_config import TWITTER_BASE_URL
 from server.oauth.oauth_config import TWITTER_CONSUMER_KEY
 from server.oauth.oauth_config import TWITTER_REQUEST_TOKEN_URL
 from server.oauth.oauth_config import TWITTER_SECRET_KEY
-from server.oauth.utils import twitter_get_user_details
-from server.oauth.utils import twitter_get_or_create_user
-from server.oauth.utils import twitter_connect_to_profile
+
+from server.oauth.twitter_utils import twitter_get_user_details
+from server.oauth.twitter_utils import twitter_get_or_create_user
+from server.oauth.twitter_utils import twitter_connect_to_profile
+
+from server.oauth.facebook_utils import facebook_get_user_details
+from server.oauth.facebook_utils import facebook_get_or_create_user
+from server.oauth.facebook_utils import facebook_connect_to_profile
 
 
 @app.route('/oauth/twitter')
@@ -63,16 +61,23 @@ def twitter_callback():
                             client_secret=TWITTER_SECRET_KEY,
                             resource_owner_key=resource_owner_key,
                             resource_owner_secret=resource_owner_secret)
-
+    details = twitter_get_user_details(twitter)
     # If user is not logged in then register via OAuth or login.
-    if not current_user:
-        details = twitter_get_user_details(twitter)
-        user = twitter_get_or_create_user(details=details,
-                                          token=session['twitter_keys'])
+    if current_user.is_anonymous:
+        _, user = twitter_get_or_create_user(details=details,
+                                             token=session['twitter_keys'])
+        login_user(user)
     else:
-        # Attach social account to existing user profile.
+        try:
+            # Attach social account to existing user profile.
+            twitter_connect_to_profile(current_user, details,
+                                       (resource_owner_key,
+                                        resource_owner_secret))
+        except Exception as e:
+            redirect(url_for('profile'),
+                     oauth_error='Profile is already in use')
 
-    return json.dumps(details)
+    return redirect(url_for('index'))
 
 
 @app.route('/oauth/facebook')
@@ -84,21 +89,14 @@ def facebook_oauth():
                              )
 
     authorization_url, state = facebook.authorization_url(FACEBOOK_AUTHORIZE_URL)
-
     # State is used to prevent CSRF, keep this for later.
     session['facebook_oauth_state'] = state
+
     return redirect(authorization_url)
 
 
 @app.route("/callback/facebook", methods=["GET"])
 def facebook_callback():
-    """ Step 3: Retrieving an access token.
-
-    The user has been redirected back from the provider to your registered
-    callback URL. With this redirection comes an authorization code included
-    in the redirect URL. We will use that to obtain an access token.
-    """
-
     facebook = OAuth2Session(FACEBOOK_CONSUMER_KEY,
                              state=session['facebook_oauth_state'],
                              redirect_uri='http://0.0.0.0:5000' +
@@ -108,17 +106,20 @@ def facebook_callback():
                                  client_secret=FACEBOOK_SECRET_KEY,
                                  authorization_response=request.url
                                  )
-
-    # At this point you can fetch protected resources but lets save
-    # the token and show how this is done from a persisted token
-    # in /profile.
     session['facebook_oauth_token'] = token
-    r = facebook.get(FACEBOOK_BASE_URL + '/me')
-    user_id = r.json()['id']
-    r3 = facebook.get(FACEBOOK_BASE_URL + FACEBOOK_API_VERSION + user_id + '/picture')
-    print(r3.content)
+    details = facebook_get_user_details(facebook)
 
-    return send_file(io.BytesIO(r3.content),
-                     attachment_filename='avatar.png',
-                     mimetype='image/png')
-    return str(r2.json())
+    if current_user.is_anonymous:
+        _, user = facebook_get_or_create_user(details=details,
+                                              token=token)
+        login_user(user, True)
+    else:
+        try:
+            facebook_connect_to_profile(current_user,
+                                        details=details,
+                                        token=token)
+        except Exception as e:
+            redirect(url_for('profile'),
+                     oauth_error='Profile is already in use')
+
+    return redirect(url_for('index'))

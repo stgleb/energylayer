@@ -33,10 +33,10 @@ class User(db.Model, UserMixin):
     __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255))
+    username = db.Column(db.Unicode(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    email = db.Column(db.String(255), unique=True)
+    email = db.Column(db.String(255))
     registration_date = db.Column(db.Integer)
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
@@ -92,16 +92,16 @@ class User(db.Model, UserMixin):
 class SocialProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     social_id = db.Column(db.String(64), unique=True)
-    nickname = db.Column(db.String(64))
+    nickname = db.Column(db.Unicode(64))
     access_token = db.Column(db.String(256), unique=True)
     expires_at = db.Column(db.Integer)
     expires_in = db.Column(db.Integer)
     avatar = db.Column(db.LargeBinary)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User',
-                           backref=db.backref('social_profile',
-                                              lazy='dynamic'))
+    # user = db.relationship('User',
+    #                        backref=db.backref('social_profile',
+    #                                           lazy='dynamic'))
 
 
 class Device(db.Model):

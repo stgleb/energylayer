@@ -1,7 +1,9 @@
 import json
+import os
+
 import requests
 
-from server.oauth import TWITTER_BASE_URL
+from server.oauth.oauth_config import TWITTER_BASE_URL
 from server.models import User
 from server.models import SocialProfile
 from server.models import db
@@ -10,13 +12,13 @@ from server.models import db
 def twitter_get_user_details(session):
     user_info_url = TWITTER_BASE_URL + '/account/settings.json'
     r = session.get(user_info_url)
-    user_info = json.loads(r.content)
+    user_info = json.loads(r.content.decode('utf-8'))
     screen_name = user_info['screen_name']
     user_details_url = TWITTER_BASE_URL + \
                        '/users/show.json?screen_name={0}'. \
                            format(screen_name)
     r = session.get(user_details_url)
-    details = json.loads(r.content)
+    details = json.loads(r.content.decode('utf-8'))
 
     return details
 
@@ -33,17 +35,19 @@ def twitter_get_or_create_user(details, token):
     if social_profile:
         user = social_profile.user
 
-        return user
+        return False, user
 
-    user = User(email="",
+    user = User(email=os.urandom(12),
+                password='',
                 first_name=first_name,
                 last_name=last_name,
                 active=True)
+
     image = requests.get(profile_image_url)
     social_profile = SocialProfile()
     social_profile.social_id = id_str
     social_profile.nickname = screen_name
-    social_profile.access_token = token
+    social_profile.access_token = str(token)
     user.social_profiles.append(social_profile)
     social_profile.user = user
     social_profile.avatar = image.content
@@ -55,25 +59,32 @@ def twitter_get_or_create_user(details, token):
     except Exception as e:
         db.session.rollback()
 
-    return user
+    return True, user
 
 
 def twitter_connect_to_profile(user, details, token):
     id_str = details['id_str']
     screen_name = details['screen_name']
     profile_image_url = details['profile_image_url']
+    social_profile = SocialProfile.query.filter_by(social_id=id_str).first()
+
+    if social_profile and  social_profile.user.id == user.id:
+        return True
+
+    if social_profile:
+        raise Exception("Social profile already in use")
 
     image = requests.get(profile_image_url)
 
-    social_profile = SocialProfile()
-    social_profile.social_id = id_str
-    social_profile.nickname = screen_name
-    social_profile.access_token = token
-    social_profile.user = user
-    social_profile.avatar = image.content
-    user.social_profiles.append(social_profile)
-
     try:
+        social_profile = SocialProfile()
+        social_profile.social_id = id_str
+        social_profile.nickname = screen_name
+        social_profile.access_token = str(token)
+        social_profile.user = user
+        social_profile.avatar = image.content
+        user.social_profiles.append(social_profile)
+
         db.session.add(user)
         db.session.add(social_profile)
         db.session.commit()
