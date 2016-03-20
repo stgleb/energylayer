@@ -168,8 +168,12 @@ def get_avatar():
     Gets avatar image from database.
     :return:
     """
-    avatar = current_user.avatar_image
+    if current_user.avatar_image:
+        avatar = current_user.avatar_image
+    elif current_user.social_profiles:
+        profile = current_user.social_profiles[0]
+        avatar = profile.avatar
+
     return send_file(io.BytesIO(avatar),
                      attachment_filename='avatar.png',
                      mimetype='image/png')
-

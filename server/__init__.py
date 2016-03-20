@@ -1,3 +1,5 @@
+import os
+
 from flask.ext.mail import Mail
 from flask.ext.security import Security
 from server import config
@@ -23,3 +25,5 @@ def security_context_processor():
     return dict(
         register_form=ExtendedRegisterForm
     )
+
+app.secret_key = os.urandom(24)

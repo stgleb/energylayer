@@ -36,10 +36,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-
-    # TODO: add Oauth support with Flask-Social
-    # social_id = db.Column(db.String(64), unique=True)
-    # nickname = db.Column(db.String(64))
     email = db.Column(db.String(255), unique=True)
     registration_date = db.Column(db.Integer)
     password = db.Column(db.String(255))
@@ -56,6 +52,9 @@ class User(db.Model, UserMixin):
 
     devices = db.relationship('Device', backref='user',
                               lazy='dynamic')
+
+    social_profiles = db.relationship('SocialProfile', backref='user',
+                                      lazy='dynamic')
 
     def get_auth_token(self):
         return make_secure_token(self.username)
@@ -88,6 +87,21 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return "{0}".format(self.first_name)
+
+
+class SocialProfile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    social_id = db.Column(db.String(64), unique=True)
+    nickname = db.Column(db.String(64))
+    access_token = db.Column(db.String(256), unique=True)
+    expires_at = db.Column(db.Integer)
+    expires_in = db.Column(db.Integer)
+    avatar = db.Column(db.LargeBinary)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User',
+                           backref=db.backref('social_profile',
+                                              lazy='dynamic'))
 
 
 class Device(db.Model):
