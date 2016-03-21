@@ -137,6 +137,7 @@ def disconnect(provider_name):
     try:
         if profile:
             current_user.social_profiles.remove(profile[0])
+
             db.session.commit()
     except Exception as e:
         db.session.rollback()

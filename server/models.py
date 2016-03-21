@@ -67,7 +67,7 @@ class User(db.Model, UserMixin):
 
         # If there is avatar in database use it
         # or use Gravatar instead
-        if self.avatar_image:
+        if self.avatar_image or self.social_profiles.count():
             return url_for('get_avatar')
         image_url = 'http://www.gravatar.com/avatar/' + \
                     md5(self.email.encode('utf-8')).hexdigest() + \

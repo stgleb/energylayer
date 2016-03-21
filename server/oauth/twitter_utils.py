@@ -38,7 +38,7 @@ def twitter_get_or_create_user(details, token):
 
         return False, user
 
-    user = User(email=os.urandom(12),
+    user = User(email='',
                 password='',
                 first_name=first_name,
                 last_name=last_name,
