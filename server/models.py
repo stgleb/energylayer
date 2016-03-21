@@ -54,7 +54,7 @@ class User(db.Model, UserMixin):
                               lazy='dynamic')
 
     social_profiles = db.relationship('SocialProfile', backref='user',
-                                      lazy='dynamic')
+                                      lazy='dynamic', cascade='all,delete-orphan')
 
     def get_auth_token(self):
         return make_secure_token(self.username)
@@ -92,6 +92,7 @@ class User(db.Model, UserMixin):
 class SocialProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     social_id = db.Column(db.String(64), unique=True)
+    provider_name = db.Column(db.String(64))
     nickname = db.Column(db.Unicode(64))
     access_token = db.Column(db.String(256), unique=True)
     expires_at = db.Column(db.Integer)

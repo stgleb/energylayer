@@ -1,0 +1,2 @@
+FACEBOOK = 'facebook'
+TWITTER = 'twitter'

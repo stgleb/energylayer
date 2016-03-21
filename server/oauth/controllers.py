@@ -2,10 +2,13 @@ from flask import redirect
 from flask import request, url_for
 from flask import session
 from flask.ext.login import current_user
+from flask.ext.login import login_required
 from flask_login import login_user
 from requests_oauthlib import OAuth1Session, OAuth2Session
 
 from server import app
+from server import db
+
 from server.oauth.oauth_config import FACEBOOK_ACCESS_TOKEN_URL
 from server.oauth.oauth_config import FACEBOOK_AUTHORIZE_URL
 from server.oauth.oauth_config import FACEBOOK_BASE_URL
@@ -123,3 +126,19 @@ def facebook_callback():
                      oauth_error='Profile is already in use')
 
     return redirect(url_for('index'))
+
+
+@app.route('/disconnect/<provider_name>')
+@login_required
+def disconnect(provider_name):
+    profiles = current_user.social_profiles
+    profile = [p for p in profiles if p.provider_name == provider_name]
+
+    try:
+        if profile:
+            current_user.social_profiles.remove(profile[0])
+            db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+
+    return redirect(url_for('edit_user'))

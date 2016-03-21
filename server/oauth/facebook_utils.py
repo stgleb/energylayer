@@ -4,6 +4,7 @@ from server.oauth.oauth_config import FACEBOOK_BASE_URL
 from server.models import User
 from server.models import SocialProfile
 from server.models import db
+from server.oauth.providers import FACEBOOK
 
 
 def facebook_get_user_details(session):
@@ -49,6 +50,7 @@ def facebook_get_or_create_user(details, token):
     social_profile.access_token = str(token)
     user.social_profiles.append(social_profile)
     social_profile.user = user
+    social_profile.provider_name = FACEBOOK
     social_profile.avatar = picture
 
     try:
@@ -68,7 +70,7 @@ def facebook_connect_to_profile(user, details, token):
 
     social_profile = SocialProfile.query.filter_by(social_id=user_id).first()
 
-    if social_profile and social_profile.user.id == user.id:
+    if social_profile and social_profile.user_id and social_profile.user_id == user.id:
         return True
 
     if social_profile:
@@ -81,6 +83,7 @@ def facebook_connect_to_profile(user, details, token):
         social_profile.access_token = str(token)
         social_profile.avatar = picture
         social_profile.user = user
+        social_profile.provider_name = FACEBOOK
         user.social_profiles.append(social_profile)
 
         db.session.add(user)

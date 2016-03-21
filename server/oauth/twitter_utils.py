@@ -7,6 +7,7 @@ from server.oauth.oauth_config import TWITTER_BASE_URL
 from server.models import User
 from server.models import SocialProfile
 from server.models import db
+from server.oauth.providers import TWITTER
 
 
 def twitter_get_user_details(session):
@@ -50,6 +51,7 @@ def twitter_get_or_create_user(details, token):
     social_profile.access_token = str(token)
     user.social_profiles.append(social_profile)
     social_profile.user = user
+    social_profile.provider_name = TWITTER
     social_profile.avatar = image.content
 
     try:
@@ -68,7 +70,8 @@ def twitter_connect_to_profile(user, details, token):
     profile_image_url = details['profile_image_url']
     social_profile = SocialProfile.query.filter_by(social_id=id_str).first()
 
-    if social_profile and  social_profile.user.id == user.id:
+    if social_profile and social_profile.user_id and \
+                    social_profile.user_id == user.id:
         return True
 
     if social_profile:
@@ -83,6 +86,7 @@ def twitter_connect_to_profile(user, details, token):
         social_profile.access_token = str(token)
         social_profile.user = user
         social_profile.avatar = image.content
+        social_profile.provider_name = TWITTER
         user.social_profiles.append(social_profile)
 
         db.session.add(user)
