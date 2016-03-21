@@ -10,7 +10,7 @@
 <body>
 <div class="form">
     <div class="tab-content">
-        <div id="signup">
+        <div id="edit">
             <h1>Edit profile</h1>
             <div>
                 <img src="{{ current_user.avatar}}" width="128" height="128" class="avatar">
@@ -59,6 +59,46 @@
                 <button type="submit" class="button button-block"/>
                 Apply</button>
             </form>
+        <div>
+            <p>
+                <a href="{{ url_for('facebook_connect') }}">
+                    Connect Facebook profile:
+                    <img border="0" alt="Facebook" src="{{ request.url_root }}static/img/facebook.png" width="64" height="64">
+                </a>
+                {% if facebook_already_used %}
+                    <div>This social account is already used</div>
+                {% endif %}
+                {% if facebook_connected %}
+                    <div>This social account was successfully connected</div>
+                {% endif %}
+                <br>
+                <a href="{{ url_for('disconnect', provider_name='facebook')}}">
+                    Disconnect Facebook profile:
+                </a>
+                {% if facebook_disconnected %}
+                    <div>This social account was successfully disconnected</div>
+                {% endif %}
+            </p>
+            <p>
+                <a href="{{ url_for('twitter_connect') }}">
+                    Connect Twitter profile:
+                    <img border="0" alt="Twitter" src="{{ request.url_root }}static/img/twitter.png" width="64" height="64">
+                </a>
+                {% if twitter_already_used %}
+                    <div>This social account is already used</div>
+                {% endif %}
+                {% if twitter_connected %}
+                    <div>This social account was successfully connected</div>
+                {% endif %}
+                <br>
+                <a href="{{ url_for('disconnect', provider_name='twitter') }}">
+                    Disconnect Twitter profile:
+                </a>
+                {% if twitter_disconnected %}
+                    <div>This social account was successfully disconnected</div>
+                {% endif %}
+            </p>
+        </div>
         </div>
     </div><!-- tab-content -->
 </div> <!-- /form -->

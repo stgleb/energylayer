@@ -1,4 +1,4 @@
-from flask import redirect
+from flask import redirect, render_template
 from flask import request, url_for
 from flask import session
 from flask.ext.login import current_user
@@ -6,7 +6,7 @@ from flask.ext.login import login_required
 from flask_login import login_user
 from requests_oauthlib import OAuth1Session, OAuth2Session
 
-from server import app
+from server import app, EditForm
 from server import db
 
 from server.oauth.oauth_config import FACEBOOK_ACCESS_TOKEN_URL
@@ -30,7 +30,7 @@ from server.oauth.facebook_utils import facebook_connect_to_profile
 
 
 @app.route('/oauth/twitter')
-def twitter_access():
+def twitter_connect():
     oauth = OAuth1Session(TWITTER_CONSUMER_KEY, client_secret=TWITTER_SECRET_KEY)
     fetch_response = oauth.fetch_request_token(TWITTER_REQUEST_TOKEN_URL)
 
@@ -70,23 +70,26 @@ def twitter_callback():
         _, user = twitter_get_or_create_user(details=details,
                                              token=session['twitter_keys'])
         login_user(user)
+        return redirect(url_for('index'))
     else:
+        form = EditForm()
+
         try:
             # Attach social account to existing user profile.
             twitter_connect_to_profile(current_user, details,
                                        (resource_owner_key,
                                         resource_owner_secret))
+            return render_template('edit.html', form=form, twitter_connected=True)
         except Exception as e:
-            redirect(url_for('profile'),
-                     oauth_error='Profile is already in use')
-
-    return redirect(url_for('index'))
+            return render_template('edit.html', form=form, twitter_already_used=True)
 
 
 @app.route('/oauth/facebook')
-def facebook_oauth():
+def facebook_connect():
+    redirect_base = request.url_root[:-1]
+
     facebook = OAuth2Session(FACEBOOK_CONSUMER_KEY,
-                             redirect_uri='http://0.0.0.0:5000' +
+                             redirect_uri=redirect_base +
                                           url_for('facebook_callback'),
                              scope=['email', 'public_profile']
                              )
@@ -100,9 +103,11 @@ def facebook_oauth():
 
 @app.route("/callback/facebook", methods=["GET"])
 def facebook_callback():
+    redirect_base = request.url_root[:-1]
+
     facebook = OAuth2Session(FACEBOOK_CONSUMER_KEY,
                              state=session['facebook_oauth_state'],
-                             redirect_uri='http://0.0.0.0:5000' +
+                             redirect_uri=redirect_base +
                                           url_for('facebook_callback'),
                              scope=['email', 'public_profile', 'user_about_me'])
     token = facebook.fetch_token(FACEBOOK_BASE_URL + FACEBOOK_ACCESS_TOKEN_URL,
@@ -116,23 +121,25 @@ def facebook_callback():
         _, user = facebook_get_or_create_user(details=details,
                                               token=token)
         login_user(user, True)
+        return redirect(url_for('index'))
     else:
+        form = EditForm()
+
         try:
             facebook_connect_to_profile(current_user,
                                         details=details,
                                         token=token)
+            return render_template('edit.html', form=form, facebook_connected=True)
         except Exception as e:
-            redirect(url_for('profile'),
-                     oauth_error='Profile is already in use')
-
-    return redirect(url_for('index'))
+            return render_template('edit.html', form=form, facebook_already_used=True)
 
 
-@app.route('/disconnect/<provider_name>')
+@app.route('/oauth/disconnect/<provider_name>')
 @login_required
 def disconnect(provider_name):
     profiles = current_user.social_profiles
     profile = [p for p in profiles if p.provider_name == provider_name]
+    form = EditForm()
 
     try:
         if profile:
@@ -142,4 +149,7 @@ def disconnect(provider_name):
     except Exception as e:
         db.session.rollback()
 
-    return redirect(url_for('edit_user'))
+    if provider_name == 'facebook':
+        return render_template('edit.html', form=form, facebook_disconnected=True)
+    else:
+        return render_template('edit.html', form=form, twitter_disconnected=True)

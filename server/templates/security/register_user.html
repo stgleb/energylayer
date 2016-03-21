@@ -18,3 +18,17 @@
   {{ render_field(register_user_form.submit) }}
 </form>
 {% include "security/_menu.html" %}
+<div>
+    <p>
+        <a href="/oauth/facebook">
+            Register with Facebook:
+            <img border="0" alt="Facebook" src="{{ request.url_root }}static/img/facebook.png" width="64" height="64">
+        </a>
+    </p>
+    <p>
+        <a href="/oauth/twitter">
+            Register with Twitter:
+            <img border="0" alt="Twitter" src="{{ request.url_root }}static/img/twitter.png" width="64" height="64">
+        </a>
+    </p>
+</div>

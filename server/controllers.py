@@ -5,12 +5,12 @@ import io
 from flask_security import login_required
 from flask_login import current_user
 from flask_login import logout_user
-from flask import request, send_file, Response
+from flask import request, send_file, Response, send_from_directory
 from flask import render_template
 from flask import url_for
 from flask import redirect
 
-from server import app
+from server import app, security
 from server.forms import EditForm
 from server.utils import update_user_profile
 from server.utils import save_measurement
@@ -141,7 +141,7 @@ def index():
 def logout():
     logout_user()
 
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -171,9 +171,20 @@ def get_avatar():
     if current_user.avatar_image:
         avatar = current_user.avatar_image
     elif current_user.social_profiles:
-        profile = current_user.social_profiles[0]
-        avatar = profile.avatar
+        avatars = [p.avatar for p in current_user.social_profiles if p.avatar]
+
+        if avatars:
+            avatar = avatars[0]
+        else:
+            avatar = ''
+    else:
+        avatar = ''
 
     return send_file(io.BytesIO(avatar),
                      attachment_filename='avatar.png',
                      mimetype='image/png')
+
+
+@app.route('/static/<path>', methods=['GET'])
+def static_content(path):
+    return send_from_directory(app.static_folder, path)
