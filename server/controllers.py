@@ -137,6 +137,16 @@ def index():
     return render_template('_index.html')
 
 
+@app.route('/dashboard', methods=['GET'])
+@login_required
+def dashboard():
+    """
+    Home page
+    :return:
+    """
+    return render_template('dashboard_pages/dashboard.html')
+
+
 @app.route('/home', methods=['GET'])
 def index2():
     """

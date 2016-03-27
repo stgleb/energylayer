@@ -3,7 +3,7 @@
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as a module.
-        define('pnotify.nonblock', ['jquery', 'pnotify'], factory);
+        define('pnotify.nonblock', ['jquery', 'pnotify.core.js'], factory);
     } else {
         // Browser globals
         factory(jQuery, PNotify);

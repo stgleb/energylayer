@@ -1,0 +1,65 @@
+<section id="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="block-left">
+							<nav class="navbar navbar-default" role="navigation">
+							  <div class="container-fluid">
+								<!-- Brand and toggle get grouped for better mobile display -->
+								<div class="navbar-header">
+								  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								  </button>
+								  <div class="nav-logo navbar-left">
+									<a href="#"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo"></a>
+								  </div>
+								</div>
+
+								<!-- Collect the nav links, forms, and other content for toggling -->
+								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								  <ul class="nav navbar-nav navbar-right">
+									<li class="menu-item active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+									<!--<li class="menu-item"><a href="#">Features</a></li>-->
+									<li class="menu-item"><a href="#">Charts</a></li>
+									<li class="menu-item"><a href="#">Devices</a></li>
+                                      {% if current_user.is_authenticated %}
+                                      <!--<li class="menu-item"><a href="#">-->
+                                          <!--Hello, {{ current_user.first_name }}</a>-->
+                                      <!--</li>-->
+                                      <li class="menu-item">
+                                          <a href="{{ url_for('edit_user') }}">
+                                            <img src="{{ current_user.avatar}}" width="40" height="40" class="avatar">
+                                          </a>
+                                      </li>
+                                      <li class="menu-item">
+                                          <a href="{{ url_for('edit_user') }}">
+                                            Settings
+                                          </a>
+                                      </li>
+                                      <li class="menu-item"><a href="{{ url_for('logout') }}">
+                                          Logout</a>
+                                      </li>
+                                      {% else %}
+                                      <li class="menu-item">
+                                          <a href="{{ url_for('index') }}"><span
+                                                  class="glyphicon glyphicon-user"></span> Sign Up</a>
+                                      </li>
+                                      <li class="menu-item">
+                                          <a href="{{ url_for('index') }}"><span
+                                                  class="glyphicon glyphicon-log-in"></span> Login</a>
+                                      </li>
+                                      {% endif %}
+								  </ul>
+								</div><!-- /.navbar-collapse -->
+							  </div><!-- /.container-fluid -->
+							</nav>
+                        </div>
+                    </div><!-- .col-md-6 -->
+
+
+                </div><!-- .row close -->
+            </div><!-- .container close -->
+        </section><!-- #heder close -->
