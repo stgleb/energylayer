@@ -134,7 +134,16 @@ def index():
     Home page
     :return:
     """
-    return render_template('index.html')
+    return render_template('_index.html')
+
+
+@app.route('/home', methods=['GET'])
+def index2():
+    """
+    Home page
+    :return:
+    """
+    return render_template('_index.html')
 
 
 @app.route('/logout')
@@ -154,7 +163,7 @@ def edit_user():
             image_data = request.files.get('avatar')
             update_user_profile(form, current_user.id,
                                 image_data=image_data)
-            return render_template('index.html')
+            return redirect(url_for('index'))
         else:
             return render_template('edit.html', form=form)
     else:

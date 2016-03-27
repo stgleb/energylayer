@@ -1,0 +1,1 @@
+Dashboard pages made of Gentalela Allela example.
