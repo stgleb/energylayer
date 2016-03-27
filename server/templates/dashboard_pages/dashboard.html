@@ -52,7 +52,7 @@
                     <div class="navbar nav_title" style="border: 0;">
                         <!-- <a href="../dashboard.html" class="site_title"><i class="fa fa-paw">k</i> <span>Energylayer</span></a>  -->
 						<!-- <a href="../dashboard.html" class="site_title"><img src="../img/small_logo.png" alt="logo" class="small_logo"><span> Energylayer</span></a> -->
-			            <div class="small_logo"> 	<a href="../index.html"><img src="../img/big_logo.png" alt="logo"> </a>   </div>  
+			            <div class="small_logo"> 	<a href="../index.html"><img src="{{ url_for('static', filename='img/big_logo.png') }}" alt="logo"> </a>   </div>
                     </div>
                     <div class="clearfix"></div>
 
@@ -221,7 +221,12 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{ url_for('static', filename='dashboard/images/img.jpg') }}" alt="">John Doe
+                                    <img src="{{ current_user.avatar }}" alt=""/>
+                                    {% if current_user.username %}
+                                        {{ current_user.username }}
+                                    {% else %}
+                                        {{ current_user.first_name }}
+                                    {% endif %}
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
@@ -424,13 +429,8 @@
 								</div>
                             </div>						                       
                     </div>
-				
-				
+
 				<!-- End of the gauge-->
-			
-						
-						
-						
 						
                             <div class="clearfix"></div>
                         </div>
@@ -505,7 +505,8 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div id="world-map-gdp" class="col-md-8 col-sm-12 col-xs-12" style="height:230px;"></div>
+                                            <div id="world-map-gdp" class="col-md-8 col-sm-12 col-xs-12" style="height:230px;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -793,13 +794,13 @@
     </script>
 
     <!-- worldmap -->
-    <script type="text/javascript" src="url_for('static', filename='dashboard/js/maps/jquery-jvectormap-2.0.3.min.js') }}"></script>
-    <script type="text/javascript" src="url_for('static', filename='dashboard/js/maps/gdp-data.js') }}"></script>
-    <script type="text/javascript" src="url_for('static', filename='dashboard/js/maps/jquery-jvectormap-world-mill-en.js') }}"></script>
-    <script type="text/javascript" src="url_for('static', filename='dashboard/js/maps/jquery-jvectormap-us-aea-en.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dashboard/js/maps/jquery-jvectormap-2.0.3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dashboard/js/maps/gdp-data.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dashboard/js/maps/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dashboard/js/maps/jquery-jvectormap-us-aea-en.js') }}"></script>
 
     <!-- pace -->
-    <script src="url_for('static', filename='dashboard/js/pace/pace.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='dashboard/js/pace/pace.min.js') }}"></script>
     <script>
         $(function () {
             $('#world-map-gdp').vectorMap({
@@ -820,7 +821,7 @@
         });
     </script>
     <!-- skycons -->
-    <script src="url_for('static', filename='dashboard/js/skycons/skycons.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='dashboard/js/skycons/skycons.min.js') }}"></script>
     <script>
         var icons = new Skycons({
                 "color": "#73879C"
