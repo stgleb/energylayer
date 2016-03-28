@@ -1,8 +1,8 @@
 from flask.ext.security import SQLAlchemyUserDatastore
 from server.application import app
 # Setup Flask-Security
-from server.models import Role, db
-from server.models import User
+from server.persistence.models import Role, db
+from server.persistence.models import User
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 

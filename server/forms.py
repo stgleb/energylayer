@@ -2,9 +2,9 @@ from flask.ext.login import current_user
 from flask.ext.security import RegisterForm
 from flask.ext.security.forms import Required
 from flask_wtf import Form
+from server.persistence.models import User
 from wtforms import StringField
 from wtforms import validators
-from server.models import User
 
 
 class ExtendedRegisterForm(RegisterForm):

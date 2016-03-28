@@ -1,5 +1,5 @@
 import hashlib
-from server.models import db, User, Device, Measurement
+from server.persistence.models import db, User, Device, Measurement
 
 
 def hash_password(password):

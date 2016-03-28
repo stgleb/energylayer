@@ -1,10 +1,8 @@
-import os
-
 from server.oauth.oauth_config import FACEBOOK_BASE_URL
-from server.models import User
-from server.models import SocialProfile
-from server.models import db
 from server.oauth.providers import FACEBOOK
+from server.persistence.models import SocialProfile
+from server.persistence.models import User
+from server.persistence.models import db
 
 
 def facebook_get_user_details(session):

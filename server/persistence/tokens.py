@@ -1,6 +1,6 @@
 from itsdangerous import URLSafeTimedSerializer
 from server import login_manager, app
-from server.models import User
+from server.persistence.models import User
 
 login_serializer = URLSafeTimedSerializer(app.secret_key)
 

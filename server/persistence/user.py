@@ -1,8 +1,4 @@
-
-from server import db
-from server import login_manager
-from server.models import User
-from server.models import Device
+from server.persistence.models import User
 
 
 def get_user_by_id(email):
