@@ -8,8 +8,10 @@ from requests_oauthlib import OAuth1Session, OAuth2Session
 
 from server import app, EditForm
 from server import db
+from server.oauth.google_utils import google_get_user_details, google_get_or_create_user, google_connect_to_profile
 
-from server.oauth.oauth_config import FACEBOOK_ACCESS_TOKEN_URL
+from server.oauth.oauth_config import FACEBOOK_ACCESS_TOKEN_URL, GOOGLE_CONSUMER_KEY, GOOGLE_SCOPE, GOOGLE_TOKEN_URL, \
+    GOOGLE_SECRET_KEY, GOOGLE_AUTH_URL, GOOGLE_REDIRECT_URI
 from server.oauth.oauth_config import FACEBOOK_AUTHORIZE_URL
 from server.oauth.oauth_config import FACEBOOK_BASE_URL
 from server.oauth.oauth_config import FACEBOOK_CONSUMER_KEY
@@ -19,6 +21,7 @@ from server.oauth.oauth_config import TWITTER_AUTHORIZATION_URL
 from server.oauth.oauth_config import TWITTER_CONSUMER_KEY
 from server.oauth.oauth_config import TWITTER_REQUEST_TOKEN_URL
 from server.oauth.oauth_config import TWITTER_SECRET_KEY
+from server.oauth.providers import TWITTER, FACEBOOK, GOOGLE
 
 from server.oauth.twitter_utils import twitter_get_user_details
 from server.oauth.twitter_utils import twitter_get_or_create_user
@@ -134,6 +137,54 @@ def facebook_callback():
             return render_template('edit.html', form=form, facebook_already_used=True)
 
 
+@app.route('/oauth/google')
+def google_connect():
+    google = OAuth2Session(GOOGLE_CONSUMER_KEY,
+                           redirect_uri=GOOGLE_REDIRECT_URI + url_for('google_callback'),
+                           scope=GOOGLE_SCOPE
+                           )
+
+    authorization_url, state = google.authorization_url(
+                GOOGLE_AUTH_URL,
+                access_type="offline", approval_prompt="force")
+
+    session['google_oauth_state'] = state
+    return redirect(authorization_url)
+
+
+@app.route('/callback/google')
+def google_callback():
+    google = OAuth2Session(GOOGLE_CONSUMER_KEY,
+                           state=session['google_oauth_state'],
+                           redirect_uri=GOOGLE_REDIRECT_URI +
+                                        url_for('google_callback'),
+                           scope=GOOGLE_SCOPE)
+
+    token = google.fetch_token(
+        GOOGLE_TOKEN_URL,
+        authorization_response=request.url,
+        client_secret=GOOGLE_SECRET_KEY)
+
+    session['google_oauth_token'] = token
+    details = google_get_user_details(google)
+
+    if current_user.is_anonymous:
+        _, user = google_get_or_create_user(details=details,
+                                            token=token)
+        login_user(user, True)
+        return redirect(url_for('index'))
+    else:
+        form = EditForm()
+
+        try:
+            google_connect_to_profile(current_user,
+                                      details=details,
+                                      token=token)
+            return render_template('edit.html', form=form, google_connected=True)
+        except Exception as e:
+            return render_template('edit.html', form=form, google_already_used=True)
+
+
 @app.route('/oauth/disconnect/<provider_name>')
 @login_required
 def disconnect(provider_name):
@@ -149,7 +200,9 @@ def disconnect(provider_name):
     except Exception as e:
         db.session.rollback()
 
-    if provider_name == 'facebook':
+    if provider_name == FACEBOOK:
         return render_template('edit.html', form=form, facebook_disconnected=True)
-    else:
+    elif provider_name == TWITTER:
         return render_template('edit.html', form=form, twitter_disconnected=True)
+    elif GOOGLE:
+        return render_template('edit.html', form=form, google_disconnected=True)

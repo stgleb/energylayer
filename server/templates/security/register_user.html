@@ -20,15 +20,21 @@
 {% include "security/_menu.html" %}
 <div>
     <p>
-        <a href="/oauth/facebook">
+        <a href="{{ url_for('facebook_connect') }}">
             Register with Facebook:
-            <img border="0" alt="Facebook" src="{{ request.url_root }}static/img/facebook.png" width="64" height="64">
+            <img border="0" alt="Facebook" src="{{ url_for('static', filename='img/facebook.png') }}" width="64" height="64">
         </a>
     </p>
     <p>
-        <a href="/oauth/twitter">
+        <a href="{{ url_for('twitter_connect') }}">
             Register with Twitter:
-            <img border="0" alt="Twitter" src="{{ request.url_root }}static/img/twitter.png" width="64" height="64">
+            <img border="0" alt="Twitter" src="{{ url_for('static', filename='img/twitter.png') }}" width="64" height="64">
+        </a>
+    </p>
+        <p>
+        <a href="{{ url_for('google_connect') }}">
+            Register with Google:
+            <img border="0" alt="Google" src="{{ url_for('static', filename='img/google.png') }}" width="64" height="64">
         </a>
     </p>
 </div>

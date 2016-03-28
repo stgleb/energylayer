@@ -63,7 +63,7 @@
             <p>
                 <a href="{{ url_for('facebook_connect') }}">
                     Connect Facebook profile:
-                    <img border="0" alt="Facebook" src="{{ request.url_root }}static/img/facebook.png" width="64" height="64">
+                    <img border="0" alt="Facebook" src="{{ url_for('static', filename='img/facebook.png') }}" width="64" height="64">
                 </a>
                 {% if facebook_already_used %}
                     <div>This social account is already used</div>
@@ -82,7 +82,7 @@
             <p>
                 <a href="{{ url_for('twitter_connect') }}">
                     Connect Twitter profile:
-                    <img border="0" alt="Twitter" src="{{ request.url_root }}static/img/twitter.png" width="64" height="64">
+                    <img border="0" alt="Twitter" src="{{ url_for('static', filename='img/twitter.png') }}" width="64" height="64">
                 </a>
                 {% if twitter_already_used %}
                     <div>This social account is already used</div>
@@ -95,6 +95,25 @@
                     Disconnect Twitter profile:
                 </a>
                 {% if twitter_disconnected %}
+                    <div>This social account was successfully disconnected</div>
+                {% endif %}
+            </p>
+            <p>
+                <a href="{{ url_for('google_connect') }}">
+                    Connect Google profile:
+                    <img border="0" alt="Google" src="{{ url_for('static', filename='img/google.png') }}" width="64" height="64">
+                </a>
+                {% if google_already_used %}
+                    <div>This social account is already used</div>
+                {% endif %}
+                {% if google_connected %}
+                    <div>This social account was successfully connected</div>
+                {% endif %}
+                <br>
+                <a href="{{ url_for('disconnect', provider_name='google') }}">
+                    Disconnect Google profile:
+                </a>
+                {% if google_disconnected %}
                     <div>This social account was successfully disconnected</div>
                 {% endif %}
             </p>
