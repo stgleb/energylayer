@@ -2,7 +2,6 @@ import random
 import uuid
 
 from config import DEVICE_COUNT
-from config import SERVER_URL
 
 from locust import Locust
 from locust import TaskSet
@@ -41,7 +40,7 @@ class MyTaskSet(TaskSet):
         for device_id in devices:
             url = url.format(device_id=device_id,
                              data=data)
-            
+
             r = self.client.get(url=url)
             print(r.content)
 
