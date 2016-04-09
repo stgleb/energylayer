@@ -63,3 +63,5 @@ target/
 *.db
 /venv
 /idea
+venv/
+test-venv/
