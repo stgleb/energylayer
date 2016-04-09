@@ -1,5 +1,4 @@
 import random
-import requests
 import uuid
 
 from config import DEVICE_COUNT
@@ -40,9 +39,10 @@ class MyTaskSet(TaskSet):
         data = self.get_random_data()
 
         for device_id in devices:
-            url = SERVER_URL + url.format(device_id=device_id,
-                                          data=data)
-            r = requests.get(url=url)
+            url = url.format(device_id=device_id,
+                             data=data)
+            
+            r = self.client.get(url=url)
             print(r.content)
 
 
