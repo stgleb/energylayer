@@ -6,7 +6,7 @@ from server import get_or_create_device
 from server import get_measurements_from_device
 from server import get_devices_per_user
 from server import get_user_list
-from server import attach_device
+from server import attach_device_to_user as attach_device
 from server import app
 
 
@@ -76,7 +76,12 @@ def get_devices_list(user_id):
     Get list of user's devices
     :return:
     """
-    devices = get_devices_per_user(user_id)
+    try:
+        devices = get_devices_per_user(user_id)
+    except Exception:
+        return Response(status=404,
+                        response="User not found")
+
     response = Response(response=json.dumps(devices),
                         status=200,
                         mimetype="application/json")

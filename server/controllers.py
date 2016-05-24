@@ -1,5 +1,3 @@
-import json
-
 import io
 
 from flask_security import login_required

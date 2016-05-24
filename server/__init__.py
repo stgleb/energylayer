@@ -14,6 +14,7 @@ login_manager = LoginManager(app=app)
 from server.controllers import *
 from server.oauth.controllers import *
 from server.admin import *
+from server.utils import *
 
 security = Security(app, user_datastore, register_form=ExtendedRegisterForm,
                     confirm_register_form=ExtendedRegisterForm)

@@ -112,7 +112,9 @@ def get_measurements_from_device(device_id, since=0):
 
 def get_devices_per_user(user_id):
     user = User.query.filter_by(id=id).first()
-    # TODO: add exception raising in user not found
+
+    if user is None:
+        return Exception('User not found')
 
     def device_to_dto(device):
         return {
