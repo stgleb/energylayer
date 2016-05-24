@@ -1,13 +1,15 @@
 import json
 
 from flask import request, Response
-from server import save_measurement
+
+from server import attach_device_to_user as attach_device
+from server import app
 from server import get_or_create_device
 from server import get_measurements_from_device
 from server import get_devices_per_user
 from server import get_user_list
-from server import attach_device_to_user as attach_device
-from server import app
+from server import get_user
+from server import save_measurement
 
 
 @app.route('/rs/data/post/<device_id>/<data_string>')
@@ -74,6 +76,7 @@ def get_measurements(device_uuid, timestamp=0):
 def get_devices_list(user_id):
     """
     Get list of user's devices
+
     :return:
     """
     try:
@@ -93,6 +96,7 @@ def get_devices_list(user_id):
 def get_users():
     """
     Gives list of users in the system
+
     :return:
     """
     users = get_user_list()
@@ -108,10 +112,15 @@ def get_users():
 def get_user_details(user_id):
     """
     Get details of particular user
+
     :param user_id:
     :return:
     """
-    raise NotImplementedError()
+    user = get_user(user_id=user_id)
+
+    return Response(response=json.dumps(user),
+                    status=200,
+                    mimetype='application/json')
 
 
 @app.route('/api/user/<user_id>/<device_uuid>', methods=['PATCH'])

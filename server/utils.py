@@ -151,3 +151,16 @@ def attach_device_to_user(user_id, device_id):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
+
+
+def get_user(user_id):
+    user = User.query.filter_by(id=user_id).first()
+
+    user_dto = dict()
+    user_dto['username'] = user.username
+    user_dto['first_name'] = user.first_name
+    user_dto['last_name'] = user.last_name
+    user_dto['email'] = user.email
+    user_dto['devices'] = get_devices_per_user(user_id=user_id)
+
+    return user_dto
