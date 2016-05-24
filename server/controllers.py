@@ -5,20 +5,14 @@ import io
 from flask_security import login_required
 from flask_login import current_user
 from flask_login import logout_user
-from flask import request, send_file, Response, send_from_directory
+from flask import request, send_file, send_from_directory
 from flask import render_template
 from flask import url_for
 from flask import redirect
 
-from server import app, security
+from server import app
 from server.forms import EditForm
 from server.utils import update_user_profile
-from server.utils import save_measurement
-from server.utils import get_measurements_from_device
-from server.utils import get_devices_per_user
-from server.utils import get_user_list
-from server.utils import attach_device_to_user as attach_device
-from server.utils import get_or_create_device
 
 
 @app.route('/', methods=['GET'])
