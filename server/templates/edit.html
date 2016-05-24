@@ -3,17 +3,18 @@
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
             integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
             crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="prfile-page">
 <div class="form">
     <div class="tab-content">
         <div id="edit">
             <h1>Edit profile</h1>
-            <div>
-                <img src="{{ current_user.avatar}}" width="128" height="128" class="avatar">
+            <div class="thumb">
+                <img src="{{ current_user.avatar }}" width="128" height="128" class="avatar">
             </div>
             <form action="{{ url_for('edit_user') }}" method="post" enctype="multipart/form-data">
                 <input type="file" name="avatar" id="avatar">
@@ -22,7 +23,7 @@
                     <input type="username" name="username" value="{{ current_user.username }}"/>
                     <div class="error">
                         {% if form and form.username.errors|length > 0 %}
-                        {{ form.username.errors }}
+                            {{ form.username.errors }}
                         {% endif %}
                     </div>
                 </div>
@@ -32,7 +33,7 @@
                         <input type="text" name="firstname" value="{{ current_user.first_name }}"/>
                         <div class="error">
                             {% if form and form.firstname.errors|length > 0 %}
-                            {{ form.firstname.errors }}
+                                {{ form.firstname.errors }}
                             {% endif %}
                         </div>
                     </div>
@@ -41,7 +42,7 @@
                         <input type="text" name="lastname" value="{{ current_user.last_name }}"/>
                         <div class="error">
                             {% if form and form.lastname.errors|length > 0 %}
-                            {{ form.lastname.errors }}
+                                {{ form.lastname.errors }}
                             {% endif %}
                         </div>
                     </div>
@@ -51,7 +52,7 @@
                     <input type="email" name="email" value="{{ current_user.email }}"/>
                     <div class="error">
                         {% if form and form.email.errors|length > 0 %}
-                        {{ form.email.errors }}
+                            {{ form.email.errors }}
                         {% endif %}
                     </div>
                 </div>
@@ -59,68 +60,71 @@
                 <button type="submit" class="button button-block"/>
                 Apply</button>
             </form>
-        <div>
-            <p>
-                <a href="{{ url_for('facebook_connect') }}">
-                    Connect Facebook profile:
-                    <img border="0" alt="Facebook" src="{{ url_for('static', filename='img/facebook.png') }}" width="64" height="64">
-                </a>
-                {% if facebook_already_used %}
-                    <div>This social account is already used</div>
-                {% endif %}
+            <div class="nav-block">
+                <p>
+                    <a href="{{ url_for('facebook_connect') }}" class="fb-button">
+                        <span>Connect Facebook profile:</span>
+                        <img border="0" alt="Facebook" src="{{ url_for('static', filename='img/facebook.png') }}"
+                             width="64" height="64">
+                    </a>
+                    {% if facebook_already_used %}
+                        <div>This social account is already used</div>
+                    {% endif %}
                 {% if facebook_connected %}
                     <div>This social account was successfully connected</div>
                 {% endif %}
                 <br>
-                <a href="{{ url_for('disconnect', provider_name='facebook')}}">
-                    Disconnect Facebook profile:
+                <a href="{{ url_for('disconnect', provider_name='facebook') }}" class="cansel-button">
+                    <span>Disconnect Facebook profile:</span>
                 </a>
                 {% if facebook_disconnected %}
                     <div>This social account was successfully disconnected</div>
                 {% endif %}
-            </p>
-            <p>
-                <a href="{{ url_for('twitter_connect') }}">
-                    Connect Twitter profile:
-                    <img border="0" alt="Twitter" src="{{ url_for('static', filename='img/twitter.png') }}" width="64" height="64">
-                </a>
-                {% if twitter_already_used %}
-                    <div>This social account is already used</div>
-                {% endif %}
+                </p>
+                <p>
+                    <a href="{{ url_for('twitter_connect') }}" class="tw-button">
+                        <span>Connect Twitter profile:</span>
+                        <img border="0" alt="Twitter" src="{{ url_for('static', filename='img/twitter.png') }}"
+                             width="64" height="64">
+                    </a>
+                    {% if twitter_already_used %}
+                        <div>This social account is already used</div>
+                    {% endif %}
                 {% if twitter_connected %}
                     <div>This social account was successfully connected</div>
                 {% endif %}
                 <br>
-                <a href="{{ url_for('disconnect', provider_name='twitter') }}">
-                    Disconnect Twitter profile:
+                <a href="{{ url_for('disconnect', provider_name='twitter') }}" class="cansel-button">
+                    <span>Disconnect Twitter profile:</span>
                 </a>
                 {% if twitter_disconnected %}
                     <div>This social account was successfully disconnected</div>
                 {% endif %}
-            </p>
-            <p>
-                <a href="{{ url_for('google_connect') }}">
-                    Connect Google profile:
-                    <img border="0" alt="Google" src="{{ url_for('static', filename='img/google.png') }}" width="64" height="64">
-                </a>
-                {% if google_already_used %}
-                    <div>This social account is already used</div>
-                {% endif %}
+                </p>
+                <p>
+                    <a href="{{ url_for('google_connect') }}" class="go-button">
+                        <span>Connect Google profile:</span>
+                        <img border="0" alt="Google" src="{{ url_for('static', filename='img/google.png') }}" width="64"
+                             height="64">
+                    </a>
+                    {% if google_already_used %}
+                        <div>This social account is already used</div>
+                    {% endif %}
                 {% if google_connected %}
                     <div>This social account was successfully connected</div>
                 {% endif %}
                 <br>
-                <a href="{{ url_for('disconnect', provider_name='google') }}">
-                    Disconnect Google profile:
+                <a href="{{ url_for('disconnect', provider_name='google') }}" class="cansel-button">
+                    <span>Disconnect Google profile:</span>
                 </a>
                 {% if google_disconnected %}
                     <div>This social account was successfully disconnected</div>
                 {% endif %}
-            </p>
-            <p>
-                <a href="{{ url_for('index') }}">Home page</a>
-            </p>
-        </div>
+                </p>
+                <p>
+                    <a href="{{ url_for('index') }}">Home page</a>
+                </p>
+            </div>
         </div>
     </div><!-- tab-content -->
 </div> <!-- /form -->

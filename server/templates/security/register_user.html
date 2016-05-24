@@ -1,7 +1,13 @@
 <head>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+<body class="register-page">
 {% from "security/_macros.html" import render_field_with_errors, render_field %}
 {% include "security/_messages.html" %}
 <h1>Register</h1>
@@ -20,20 +26,20 @@
 {% include "security/_menu.html" %}
 <div>
     <p>
-        <a href="{{ url_for('facebook_connect') }}">
-            Register with Facebook:
+        <a href="{{ url_for('facebook_connect') }}" class="fb-button">
+            <span>Register with Facebook:</span>
             <img border="0" alt="Facebook" src="{{ url_for('static', filename='img/facebook.png') }}" width="64" height="64">
         </a>
     </p>
     <p>
-        <a href="{{ url_for('twitter_connect') }}">
-            Register with Twitter:
+        <a href="{{ url_for('twitter_connect') }}" class="tw-button">
+            <span>Register with Twitter:</span>
             <img border="0" alt="Twitter" src="{{ url_for('static', filename='img/twitter.png') }}" width="64" height="64">
         </a>
     </p>
         <p>
-        <a href="{{ url_for('google_connect') }}">
-            Register with Google:
+        <a href="{{ url_for('google_connect') }}" class="go-button">
+            <span>Register with Google:</span>
             <img border="0" alt="Google" src="{{ url_for('static', filename='img/google.png') }}" width="64" height="64">
         </a>
     </p>
