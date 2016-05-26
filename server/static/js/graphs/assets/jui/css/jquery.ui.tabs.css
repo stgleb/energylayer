@@ -1,0 +1,72 @@
+/*!
+ * jQuery UI Tabs 1.8.23
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Tabs#theming
+ */
+ 
+.ui-tabs { }
+.ui-tabs .ui-tabs-nav { border-bottom: 1px solid #ddd; margin-bottom: 5px; }
+.ui-tabs .ui-tabs-nav li {  margin-bottom: -1px; float: left; }
+
+.ui-tabs .ui-tabs-nav li a {
+  display: block;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-state-hover a {
+  text-decoration: none;
+  background-color: #eeeeee;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+  padding-right: 12px;
+  padding-left: 12px;
+  margin-right: 2px;
+  
+  padding-top: 8px;
+  padding-bottom: 8px;
+  line-height: 18px;
+  border: 1px solid transparent;
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.ui-tabs .ui-tabs-nav li a:hover {
+  border-color: #eeeeee #eeeeee #dddddd;
+}
+
+.ui-tabs .ui-tabs-nav .ui-tabs-selected a,
+.ui-tabs .ui-tabs-nav .ui-tabs-selected a:hover {
+  color: #555555;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected { }
+
+.ui-tabs .ui-tabs-nav li.ui-state-hover a {
+  border-color: #eeeeee #eeeeee #dddddd;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected.ui-state-hover a {
+  color: #555555;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
+.ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
+.ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; }
+
+.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
+.ui-tabs .ui-tabs-hide { display: none !important; }

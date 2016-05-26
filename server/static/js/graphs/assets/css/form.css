@@ -1,0 +1,307 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ *
+ * MoonCake v1.1 - Form Stylesheet
+ *
+ * This file is part of MoonCake, an Admin template build for sale at ThemeForest.
+ * For questions, suggestions or support request, please mail me at maimairel@yahoo.com
+ *
+ * Development Started:
+ * July 28, 2012
+ * Last Update:
+ * October 10, 2012
+ *
+ */
+
+/* Form Widget Whitespace
+================================================== */
+
+.dropdown-menu form, 
+.dropdown-menu .form-search, 
+.dropdown-menu .form-horizontal, 
+.dropdown-menu .form-vertical, 
+.dropdown-menu .form-inline, 
+.widget form, 
+.widget .form-search, 
+.widget .form-horizontal, 
+.widget .form-vertical, 
+.widget .form-inline
+{
+    margin-bottom: 0;
+}
+
+.widget .form-container .control-group, 
+.widget .form-container .form-actions
+{
+    margin: 0;
+}
+
+.widget .form-container .control-group
+{
+    padding: 16px 20px;
+    border-top: 1px solid #ccc;
+}
+
+.widget .form-container fieldset legend
+{
+    border-top: 1px solid #ccc;
+}
+
+.widget .form-container input, 
+.widget .form-container textarea, 
+.widget .form-container select, 
+.widget .form-container .help-inline, 
+.widget .form-container .uneditable-input, 
+.widget .form-container .input-prepend,  
+.widget .form-container .input-append
+{
+    margin-bottom: 0;
+}
+
+.widget .form-container input + .radio, 
+.widget .form-container textarea + .radio, 
+.widget .form-container select + .radio,  
+.widget .form-container .uneditable-input + .radio, 
+.widget .form-container .input-prepend + .radio,  
+.widget .form-container .input-append + .radio, 
+.widget .form-container input + .checkbox, 
+.widget .form-container textarea + .checkbox, 
+.widget .form-container select + .checkbox,  
+.widget .form-container .uneditable-input + .checkbox, 
+.widget .form-container .input-prepend + .checkbox,  
+.widget .form-container .input-append + .checkbox
+{
+    margin-top: 9px;
+}
+
+/* Form Tweaks
+================================================== */
+
+label
+{
+    cursor: pointer;
+}
+
+.help-block, 
+.help-inline
+{
+    color: #888;
+    font-size: 11px;
+}
+
+.widget .form-container .help-block
+{
+    margin-bottom: 0;
+    margin-top: 9px;
+}
+
+.widget .form-container .form-horizontal .control-label
+{
+    text-align: left;
+    width: 120px;
+}
+
+.widget .form-container .form-horizontal .controls
+{
+    margin-left: 140px;
+}
+
+.widget .form-container .form-horizontal .form-actions
+{
+    padding-left: 160px;
+}
+
+textarea
+{
+    resize: none;
+    height: 6em;
+}
+
+.row-fluid input[class*="span"], 
+.row-fluid select[class*="span"], 
+.row-fluid textarea[class*="span"], 
+.row-fluid .uneditable-input[class*="span"], 
+.row-fluid .input-prepend [class*="span"], 
+.row-fluid .input-append [class*="span"]
+{
+    min-height: 28px;
+}
+
+select, input[type="file"]
+{
+    height: 28px;
+    line-height: 28px;
+}
+
+/* Form Customization
+================================================== */
+
+.widget .form-container legend
+{
+    margin-bottom: 0;
+    background: #fafafa repeat-x left bottom;
+    background-image: -ms-linear-gradient(top, #ffffff, #f2f2f2);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+    background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+    background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+    background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+    background-image: linear-gradient(top, #ffffff, #f2f2f2);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#f2f2f2', GradientType=0);
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+    line-height: 20px;
+    padding: 8px;
+    padding-left: 20px;
+    border: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* Custom Form Elements
+================================================== */
+
+label .required
+{
+    color: #f00;
+    font-size: 11px;
+    vertical-align: text-top;
+}
+
+/* External Form Elements
+================================================== */
+
+.select2-container[class*="span"]
+{
+    float: none;
+    margin-left: 0;
+    min-height: 0;
+}
+
+.control-group .controls .ui-slider
+{
+    margin: 10px 0 21px;
+}
+
+.control-group .controls .star-rating-control
+{
+    margin-top: 5px;
+    display: block;
+}
+
+.control-group .controls .ui-progressbar, 
+.control-group .controls .progress
+{
+    margin-top: 6px;
+}
+
+.radio .ibutton-container, 
+.checkbox .ibutton-container
+{
+    margin-left: -18px;
+    vertical-align: middle;
+}
+
+.radio .uniform-radio, 
+.checkbox .uniform-checker
+{
+    float: left;
+    margin-left: -18px;
+}
+
+.form-search .radio .uniform-radio, 
+.form-search .radio .ibutton-container, 
+.form-search .checkbox .uniform-checker, 
+.form-search .checkbox .ibutton-container, 
+.form-inline .radio .uniform-radio, 
+.form-inline .radio .ibutton-container, 
+.form-inline .checkbox .uniform-checker, 
+.form-inline .checkbox .ibutton-container
+{
+    margin-right: 3px;
+    margin-left: 0;
+}
+
+.radio .uniform-radio input[type="radio"], 
+.checkbox .uniform-checker input[type="checkbox"]
+{
+    float: none;
+    margin: 0;
+}
+
+/* Media Queries
+================================================== */
+
+@media (max-width: 767px)
+{
+    .input-large, .input-xlarge, .input-xxlarge
+    {
+        min-height: 28px;
+    }
+
+    .widget .form-container .input-large, 
+	.widget .form-container .input-xlarge, 
+	.widget .form-container .input-xxlarge, 
+	.widget .form-container input[class*="span"], 
+	.widget .form-container select[class*="span"], 
+	.widget .form-container textarea[class*="span"], 
+	.widget .form-container .uneditable-input
+    {
+        margin-bottom: 9px;
+    }
+}
+
+@media (max-width: 480px)
+{
+    .widget .form-container .form-horizontal .form-actions
+    {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .widget .form-container .form-horizontal .controls
+    {
+        margin-left: 0;
+    }
+}
+
+/* Below is a fix from Bootstrap 2.1.2
+================================================== */
+
+.row-fluid .controls-row [class*="span"] + [class*="span"]
+{
+    margin-left: 2.127659574468085%;
+}
+
+.row-fluid .controls-row [class*="span"]
+{
+    float: left;
+}
+
+@media (min-width: 1200px)
+{
+    .row-fluid .controls-row [class*="span"] + [class*="span"]
+    {
+        margin-left: 2.564102564102564%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px)
+{
+    .row-fluid .controls-row [class*="span"] + [class*="span"]
+    {
+        margin-left: 2.7624309392265194%;
+    }
+}
+
+@media (max-width: 767px)
+{
+    .row-fluid .controls-row [class*="span"], 
+	.row-fluid .controls-row [class*="span"] + [class*="span"]
+    {
+        margin-left: 0;
+    }
+}
+
+/* Remove when upgrading bootstrap to 2.1.2 */

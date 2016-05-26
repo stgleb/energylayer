@@ -1,0 +1,119 @@
+/*!
+ * jQuery UI Dialog 1.8.23
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Dialog#theming
+ */
+ 
+.ui-dialog
+{
+	position: absolute;
+	width: 300px;
+	overflow: hidden;
+	background-color: #ffffff;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	*border: 1px solid #999;
+	/* IE6-7 */
+
+	-webkit-border-radius: 6px !important;
+	-moz-border-radius: 6px !important;
+	border-radius: 6px !important;
+
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	background-clip: padding-box;
+}
+
+.ui-dialog .ui-dialog-titlebar
+{
+	padding: 9px 15px;
+	border-bottom: 1px solid #cdcdcd;
+
+	background-image: -ms-linear-gradient(top, #f8f8f8, #e8e8e8);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#e8e8e8));
+	background-image: -webkit-linear-gradient(top, #f8f8f8, #e8e8e8);
+	background-image: -o-linear-gradient(top, #f8f8f8, #e8e8e8);
+	background-image: -moz-linear-gradient(top, #f8f8f8, #e8e8e8);
+	background-image: linear-gradient(top, #f8f8f8, #e8e8e8);
+	
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#e8e8e8', GradientType=0);
+	
+	background-repeat: repeat-x;
+	background-position: left bottom;
+	
+	text-shadow: 0 1px #fff;
+	font-weight: bold;
+	font-size: 12px;
+	
+	min-height: 20px;
+	line-height: 22px;
+	vertical-align: middle;
+	position: relative;
+	
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 1px 8px rgba(0, 0, 0, 0.1);
+	   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 1px 8px rgba(0, 0, 0, 0.1);
+	     -o-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 1px 8px rgba(0, 0, 0, 0.1);
+	        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 1px 8px rgba(0, 0, 0, 0.1);
+	
+	-webkit-border-radius: 6px 6px 0 0;
+	   -moz-border-radius: 6px 6px 0 0;
+	     -o-border-radius: 6px 6px 0 0;
+	        border-radius: 6px 6px 0 0;
+}
+
+.ui-dialog .ui-dialog-title { } 
+
+.ui-dialog .ui-dialog-titlebar-close
+{
+	float: right;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 18px;
+	color: black;
+	text-shadow: 0 1px 0 white;
+	margin-top: 2px;
+	opacity: 0.2;
+	filter: alpha(opacity=20);
+}
+
+.ui-dialog .ui-dialog-titlebar-close span { }
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { }
+
+.ui-dialog .ui-dialog-content
+{
+	position: relative;
+	overflow: auto;
+	padding: 15px;
+}
+
+.ui-dialog .ui-dialog-buttonpane
+{
+	padding: 14px 15px 15px !important;
+	margin-bottom: 0;
+	text-align: right;
+	background-color: #f5f5f5;
+	border-top: 1px solid #ddd;
+	-webkit-border-radius: 0 0 6px 6px;
+	-moz-border-radius: 0 0 6px 6px;
+	border-radius: 0 0 6px 6px;
+	-webkit-box-shadow: inset 0 1px 0 #ffffff;
+	-moz-box-shadow: inset 0 1px 0 #ffffff;
+	box-shadow: inset 0 1px 0 #ffffff;
+	*zoom: 1;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-button + .ui-button
+{
+	margin-left: 5px;
+	margin-bottom: 0;
+}
+
+.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .ui-dialog-titlebar { cursor: move; }

@@ -1,0 +1,77 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ *
+ * MoonCake v1.1 - Spinner Stylesheet
+ *
+ * This file is part of MoonCake, an Admin template build for sale at ThemeForest.
+ * For questions, suggestions or support request, please mail me at maimairel@yahoo.com
+ *
+ * Development Started:
+ * July 28, 2012
+ * Last Update:
+ * October 10, 2012
+ *
+ */
+
+.spinner-container
+{
+    position: relative;
+    display: inline-block;
+}
+
+.spinner-container[class*="span"]
+{
+    float: none;
+    margin-left: 0;
+    min-height: 0;
+}
+
+.spinner-container .spinner-input
+{
+    padding-right: 22px;
+}
+
+.spinner-container .spinner-btn-group
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.spinner-container .spinner-btn-group .btn
+{
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    padding: 1px 2px;
+    font-size: 11px;
+    width: 16px;
+    height: 14px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.spinner-container .spinner-btn-group .btn > span
+{
+    line-height: 1;
+    vertical-align: top;
+    display: inline-block;
+    font-size: 11px;
+}
+
+.spinner-container .spinner-btn-group .btn-spinner-up
+{
+    padding-bottom: 0;
+    -webkit-border-top-left-radius: 0 !important;
+    -moz-border-radius-topleft: 0 !important;
+    border-top-left-radius: 0 !important;
+}
+
+.spinner-container .spinner-btn-group .btn-spinner-down
+{
+    border-top: 0;
+    -webkit-border-bottom-left-radius: 0 !important;
+    -moz-border-radius-bottomleft-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}

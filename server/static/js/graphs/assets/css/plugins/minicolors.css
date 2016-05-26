@@ -1,0 +1,28 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ *
+ * MoonCake v1.1 - miniColors Stylesheet
+ *
+ * This file is part of MoonCake, an Admin template build for sale at ThemeForest.
+ * For questions, suggestions or support request, please mail me at maimairel@yahoo.com
+ *
+ * Development Started:
+ * July 28, 2012
+ * Last Update:
+ * October 10, 2012
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ */
+ 
+.input-append input.miniColors
+{
+    margin-right: 0;
+}
+
+.input-append .miniColors-triggerWrap.add-on
+{
+    height: 22px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-position: 2px 2px;
+}

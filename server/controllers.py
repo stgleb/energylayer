@@ -22,15 +22,32 @@ def index():
     """
     return render_template('_index.html')
 
+# Old version of Dashboard
+# @app.route('/dashboard', methods=['GET'])
+# @login_required
+# def dashboard():
+#     """
+#     Dashboard page
+#     :return:
+#     """
+#     return render_template('dashboard_pages/dashboard.html')]
+
 
 @app.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard():
     """
-    Home page
+    Dashboard page
     :return:
     """
-    return render_template('dashboard_pages/dashboard.html')
+    # Get list of user devices
+    devices = [device.id for device in current_user.devices.all()]
+    # Add fake device
+    devices.append("abcde")
+    devices.append("efgh")
+
+    return render_template('chart.html', devices=devices,
+                           devices_count=len(devices))
 
 
 @app.route('/home', methods=['GET'])

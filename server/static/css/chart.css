@@ -1,0 +1,37 @@
+  a:focus { outline: none;}  /*switch off focus*/
+
+  .active {font-weight:bold;} /*bold text of active tab*/
+
+ .analytics-tab {
+    //border: 1px solid #ccc;
+    background-color: #fff;
+    margin-bottom: 40px;
+	padding: 0 40px;
+}
+
+.nav-tabs{
+ margin:10px;
+ margin-left:-20px;
+ }
+
+.nav-tabs > li > a { color:  #333;}
+.nav-tabs > li.active > a {color: #060 !important;}
+
+#dashboard-demo{
+ margin:30px;
+ //margin-left: 286px;
+ //width: 900px;
+}
+
+#navs{
+  margin-left:140px;
+}
+
+#live{
+  margin-left:0px;
+}
+
+.nav-pills > li > a { color:  #333;}
+.nav-pills > li.active > a{ background-color: #093 !important;}
+
+

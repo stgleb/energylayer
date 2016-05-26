@@ -1,0 +1,118 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ *
+ * MoonCake v1.1 - Documentation Stylesheet
+ *
+ * This file is part of MoonCake, an Admin template build for sale at ThemeForest.
+ * For questions, suggestions or support request, please mail me at maimairel@yahoo.com
+ *
+ * Development Started:
+ * July 28, 2012
+ * Last Update:
+ * October 10, 2012
+ *
+ */
+
+#docs-nav.affix
+{
+    top: 0;
+}
+
+#docs-content
+{
+    font-size: 14px;
+    line-height: 21px;
+}
+
+#docs-content .widget-docs
+{
+    font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 0;
+}
+
+#docs-nav-wrap
+{
+    margin-bottom: 10px;
+}
+
+#docs-nav
+{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin: 0;
+    display: inline-block;
+}
+
+#docs-nav.affix
+{
+    top: 20px;
+}
+
+#docs-content .code-container
+{
+    overflow-x: auto;
+}
+
+ul li
+{
+    line-height: 1.8;
+}
+
+#docs-content h1, 
+#docs-content h2, 
+#docs-content h3, 
+#docs-content h4, 
+#docs-content h5, 
+#docs-content h6
+{
+    line-height: 2.2em;
+}
+
+#key-features li
+{
+    display: inline-block;
+    min-height: 235px;
+}
+
+#key-features li .img-caption
+{
+    display: block;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#key-features li .thumbnail
+{
+    display: inline-block;
+}
+
+#file-folder .thumbnail
+{
+    width: 139px;
+    float: left;
+}
+
+#file-folder .description
+{
+    margin-left: 149px;
+    padding: 0 15px;
+}
+
+.prettyprint
+{
+    background-color: #fff;
+}
+
+@media (min-width: 1200px)
+{
+
+    #feature-overview
+    {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
