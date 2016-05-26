@@ -22,15 +22,16 @@ def index():
     """
     return render_template('_index.html')
 
+
 # Old version of Dashboard
-# @app.route('/dashboard', methods=['GET'])
-# @login_required
-# def dashboard():
-#     """
-#     Dashboard page
-#     :return:
-#     """
-#     return render_template('dashboard_pages/dashboard.html')]
+@app.route('/dashboard/old', methods=['GET'])
+@login_required
+def dashboard_old():
+    """
+    Dashboard page
+    :return:
+    """
+    return render_template('dashboard_pages/dashboard.html')
 
 
 @app.route('/dashboard', methods=['GET'])
