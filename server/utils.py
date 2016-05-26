@@ -111,14 +111,14 @@ def get_measurements_from_device(device_id, since=0):
 
 
 def get_devices_per_user(user_id):
-    user = User.query.filter_by(id=id).first()
+    user = User.query.filter_by(id=user_id).first()
 
     if user is None:
         return Exception('User not found')
 
     def device_to_dto(device):
         return {
-            "device_id": device.id,
+            "uuid": device.id,
             "ip_addr": device.ip_addr
         }
 

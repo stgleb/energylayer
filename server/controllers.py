@@ -11,6 +11,8 @@ from flask import redirect
 from server import app
 from server.forms import EditForm
 from server.utils import update_user_profile
+from server.utils import get_devices_per_user
+from server.utils import attach_device_to_user
 
 
 @app.route('/', methods=['GET'])
@@ -68,6 +70,17 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route('/user/devices')
+@login_required
+def user_devices():
+    devices = get_devices_per_user(current_user.id)
+    devices.extend([{"uuid": "abcd", "ip_addr": "127.0.0.1"},
+               {"uuid": "efgh", "ip_addr": "192.168.0.1"}
+               ])
+
+    return render_template('devices.html', devices=devices)
+
+
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user():
@@ -83,6 +96,30 @@ def edit_user():
             return render_template('edit.html', form=form)
     else:
         return render_template('edit.html', form=form)
+
+
+@login_required
+@app.route('/api/user', methods=['POST'])
+def attach_device():
+    """
+    Attach device to particular user, has user:device has
+    1:many relation. Params in form.
+
+    :param device_uuid:
+    :return:
+    """
+    user_id = current_user.id
+    devices = get_devices_per_user(user_id=user_id)
+    print(request.form)
+    device_uuid = request.form['device_uuid']
+
+    try:
+        attach_device_to_user(user_id=user_id, device_id=device_uuid)
+    except Exception as e:
+        return render_template('devices.html', devices=devices,
+                               error="Device is already used")
+
+    return redirect(url_for('user_devices'))
 
 
 @app.route('/avatar', methods=['GET'])

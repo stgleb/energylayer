@@ -21,13 +21,14 @@
 								<!-- Collect the nav links, forms, and other content for toggling -->
 								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 								  <ul class="nav navbar-nav navbar-right">
-									<li class="menu-item active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+									<li class="menu-item active"><a href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a></li>
 									<!--<li class="menu-item"><a href="#">Features</a></li>-->
-									<li class="menu-item"><a href="{{ url_for('dashboard') }}">Charts</a></li>
+									<li class="menu-item"><a href="{{ url_for('user_devices') }}">Devices</a></li>
+                                    <li class="menu-item"><a href="{{ url_for('dashboard') }}">Charts</a></li>
 {#									<li class="menu-item"><a href="#">Devices</a></li>#}
-                                    {% if current_user.has_role('admin') %}
-                                        <li class="menu-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>
-                                    {% endif %}
+{#                                    {% if current_user.has_role('admin') %}#}
+{#                                        <li class="menu-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>#}
+{#                                    {% endif %}#}
                                       {% if current_user.is_authenticated %}
                                       <!--<li class="menu-item"><a href="#">-->
                                           <!--Hello, {{ current_user.first_name }}</a>-->

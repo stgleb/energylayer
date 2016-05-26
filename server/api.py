@@ -1,8 +1,8 @@
 import json
 
-from flask import request, Response
+from flask import Response
+from flask import request
 
-from server import attach_device_to_user as attach_device
 from server import app
 from server import get_or_create_device
 from server import get_measurements_from_device
@@ -121,22 +121,3 @@ def get_user_details(user_id):
     return Response(response=json.dumps(user),
                     status=200,
                     mimetype='application/json')
-
-
-@app.route('/api/user/<user_id>/<device_uuid>', methods=['PATCH'])
-def attach_device_to_user(user_id, device_uuid):
-    """
-    Attach device to particular user, has user:device has
-    1:many relation.
-
-    :param user_id: 
-    :param device_uuid:
-    :return:
-    """
-    try:
-        attach_device(user_id=user_id, device_id=device_uuid)
-    except Exception as e:
-        # TODO: add handling exception for device already in use.
-        return "Device already used", 409
-
-    return 'Device added', 200
