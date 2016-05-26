@@ -46,6 +46,7 @@ def dashboard():
     # Add fake device
     devices.append("abcde")
     devices.append("efgh")
+    devices.append("efgafa")
 
     return render_template('chart.html', devices=devices,
                            devices_count=len(devices))
