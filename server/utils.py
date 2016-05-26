@@ -144,6 +144,9 @@ def get_user_list():
 
 def attach_device_to_user(user_id, device_id):
     device = get_or_create_device(device_id=device_id)
+    if device.user_id is not None:
+        raise Exception("Device is already in use")
+
     user = User.query.filter_by(id=user_id).first()
 
     try:

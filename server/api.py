@@ -125,6 +125,10 @@ def get_user_details(user_id):
 
 @app.route('/api/user/<user_id>/<device_uuid>', methods=['PATCH'])
 def attach_device_to_user(user_id, device_uuid):
-    attach_device(user_id=user_id, device_id=device_uuid)
+    try:
+        attach_device(user_id=user_id, device_id=device_uuid)
+    except Exception as e:
+        # TODO: add handling exception for device already in use.
+        return "Device already used", 409
 
     return 'Device added', 200
