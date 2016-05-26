@@ -125,6 +125,14 @@ def get_user_details(user_id):
 
 @app.route('/api/user/<user_id>/<device_uuid>', methods=['PATCH'])
 def attach_device_to_user(user_id, device_uuid):
+    """
+    Attach device to particular user, has user:device has
+    1:many relation.
+
+    :param user_id: 
+    :param device_uuid:
+    :return:
+    """
     try:
         attach_device(user_id=user_id, device_id=device_uuid)
     except Exception as e:
