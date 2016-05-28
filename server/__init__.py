@@ -12,6 +12,7 @@ from flask_admin import helpers
 login_manager = LoginManager(app=app)
 
 from server.controllers import *
+from server.api import *
 from server.oauth.controllers import *
 from server.admin import *
 from server.utils import *
