@@ -4,12 +4,12 @@ from flask import Response
 from flask import request
 
 from server import app
-from server import get_or_create_device
-from server import get_measurements_from_device
-from server import get_devices_per_user
-from server import get_user_list
-from server import get_user
-from server import save_measurement
+from server.utils import get_or_create_device
+from server.utils import get_measurements_from_device
+from server.utils import get_devices_per_user
+from server.utils import get_user_list
+from server.utils import get_user
+from server.utils import save_measurement
 
 
 @app.route('/rs/data/post/<device_id>/<data_string>')
