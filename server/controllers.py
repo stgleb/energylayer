@@ -37,7 +37,7 @@ def dashboard_old():
 
 
 @app.route('/dashboard', methods=['GET'])
-@login_required
+# @login_required
 def dashboard():
     """
     Dashboard page
@@ -45,10 +45,10 @@ def dashboard():
     """
     # Get list of user devices
     devices = [device.id for device in current_user.devices.all()]
-    # Add fake device
+    Add fake device
     devices.append("abcde")
-    devices.append("efgh")
-    devices.append("efgafa")
+    # devices.append("efgh")
+    # devices.append("efgafa")
 
     return render_template('chart.html', devices=devices,
                            devices_count=len(devices))
