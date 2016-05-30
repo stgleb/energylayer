@@ -43,15 +43,16 @@ def dashboard():
     Dashboard page
     :return:
     """
+    devices = []
+
     # Get list of user devices
     if current_user.is_authenticated:
         devices = [device.id for device in current_user.devices.all()]
         # Add fake device
         devices.append("abcde")
         devices.append("efgh")
-        # devices.append("efgafa")
     else:
-        devices = []
+        devices.append("Your future device data")
 
     return render_template('chart.html', devices=devices,
                            devices_count=len(devices))
