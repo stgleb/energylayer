@@ -16,7 +16,7 @@ from server.utils import attach_device_to_user
 
 
 @app.route('/', methods=['GET'])
-@login_required
+# @login_required
 def index():
     """
     Home page
@@ -45,9 +45,9 @@ def dashboard():
     """
     # Get list of user devices
     devices = [device.id for device in current_user.devices.all()]
-    Add fake device
+    # Add fake device
     devices.append("abcde")
-    # devices.append("efgh")
+    devices.append("efgh")
     # devices.append("efgafa")
 
     return render_template('chart.html', devices=devices,
@@ -71,18 +71,21 @@ def logout():
 
 
 @app.route('/user/devices')
-@login_required
+# @login_required
 def user_devices():
-    devices = get_devices_per_user(current_user.id)
-    devices.extend([{"uuid": "abcd", "ip_addr": "127.0.0.1"},
-               {"uuid": "efgh", "ip_addr": "192.168.0.1"}
-               ])
+    if current_user.is_authenticated:
+        devices = get_devices_per_user(current_user.id)
+        devices.extend([{"uuid": "abcd", "ip_addr": "127.0.0.1"},
+                   {"uuid": "efgh", "ip_addr": "192.168.0.1"}
+                   ])
+    else:
+        devices = []
 
     return render_template('devices.html', devices=devices)
 
 
 @app.route('/edit', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def edit_user():
     form = EditForm()
 
