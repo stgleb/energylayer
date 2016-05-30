@@ -67,6 +67,7 @@
 
     {% for device in devices %}
         devices.push("{{ device }}");
+        data.push([])
     {% endfor %}
 
     var mode = 'Live Stats';
@@ -83,6 +84,11 @@
 
 
     function GetData(input) {
+
+        if(!input){
+            return;
+        }
+
         input.shift();
         temperature.shift();
 
@@ -202,7 +208,6 @@
         dataset = []
 
         for (var i = 0; i < devices.length; i++) {
-            data.push([])
             GetData(data[i]);
 
             dataset.push([
@@ -262,6 +267,15 @@
             now = new Date().getTime();
 
             for (var i = 0; i < devices.length; i++) {
+                if(!data[i]) {
+                    data.push([])
+                    dataset[i] = [
+                        //{ label: "CPU", data: data, color: "#00FF00" }
+                        {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                        //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
+                    ]
+                }
+
                 GetData(data[i]);
                 {#  Fix me!!!!!Problem is here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1  #}
                 $.plot($("#flot-placeholder" + devices[i]), dataset[0], options);
@@ -307,6 +321,15 @@
             initOptions();
 
             for (var i = 0; i < devices.length; i++) {
+                if(!data[i]) {
+                    data.push([])
+                    dataset[i] = [
+                        //{ label: "CPU", data: data, color: "#00FF00" }
+                        {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                        //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
+                    ]
+                }
+
                 GetData(data[i]);
                 $.plot($("#flot-placeholder" + devices[i]), dataset[i], options);
             }
