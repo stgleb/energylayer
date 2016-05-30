@@ -67,6 +67,10 @@ def get_or_create_device(device_id, device_ip=None):
     device = Device.query.filter_by(uuid=device_id).first()
 
     if device:
+        if not device.ip_addr or device.ip_addr != device_ip:
+            device.ip_addr = device_ip
+            db.session.commit()
+
         return device
 
     try:

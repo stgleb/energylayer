@@ -65,8 +65,7 @@
     {% endfor %}
     </tbody>
 </table>
-
-<form class="form-inline" action="{{ url_for('attach_device') }}" method="post">
+<form class="form-inline" action="{{ url_for('attach_device') }}?arg=1" method="post">
     <div class="form-group">
         <label class="sr-only">Add device</label>
         <p class="form-control-static">Device UUID</p>
@@ -78,7 +77,8 @@
         </div>
     {% endif %}
     <div class="form-group">
-        <input type="text" class="form-control" id="device_uuid" placeholder="abcdefgh">
+        <input type="text" name="device_uuid"><br>
+{#        <input type="text" class="form-control" id="device_uuid" placeholder="abcdefgh">#}
     </div>
     <button type="submit" class="btn btn-primary">Add</button>
 </form>

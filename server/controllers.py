@@ -116,7 +116,6 @@ def attach_device():
     """
     user_id = current_user.id
     devices = get_devices_per_user(user_id=user_id)
-    print(request.form)
     device_uuid = request.form['device_uuid']
 
     try:
