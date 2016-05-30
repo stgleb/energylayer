@@ -122,7 +122,7 @@ def get_devices_per_user(user_id):
 
     def device_to_dto(device):
         return {
-            "uuid": device.id,
+            "uuid": device.uuid,
             "ip_addr": device.ip_addr
         }
 
