@@ -52,7 +52,7 @@ def dashboard():
         devices.append("abcde")
         devices.append("efgh")
     else:
-        devices.append("Your future device data")
+        devices.append("Your_future_device")
 
     return render_template('chart.html', devices=devices,
                            devices_count=len(devices))
@@ -80,7 +80,7 @@ def user_devices():
     if current_user.is_authenticated:
         devices = get_devices_per_user(current_user.id)
         devices.extend([{"uuid": "abcd", "ip_addr": "127.0.0.1"},
-                   {"uuid": "efgh", "ip_addr": "192.168.0.1"}
+                        {"uuid": "efgh", "ip_addr": "192.168.0.1"}
                    ])
     else:
         devices = []
@@ -112,7 +112,6 @@ def attach_device():
     Attach device to particular user, has user:device has
     1:many relation. Params in form.
 
-    :param device_uuid:
     :return:
     """
     user_id = current_user.id
