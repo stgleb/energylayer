@@ -36,9 +36,10 @@ def dashboard_old():
     return render_template('dashboard_pages/dashboard.html')
 
 
+@app.route('/dashboard/<device_id>', methods=['GET'])
 @app.route('/dashboard', methods=['GET'])
 # @login_required
-def dashboard():
+def dashboard(device_id=None):
     """
     Dashboard page
     :return:
@@ -47,10 +48,10 @@ def dashboard():
 
     # Get list of user devices
     if current_user.is_authenticated:
-        devices = [device.id for device in current_user.devices.all()]
-        # Add fake device
-        devices.append("abcde")
-        devices.append("efgh")
+        devices = [device.uuid for device in current_user.devices.all()]
+
+        if device_id:
+            devices = [device for device in devices if device == device_id]
     else:
         devices.append("Your_future_device")
 
@@ -76,12 +77,12 @@ def logout():
 
 @app.route('/user/devices')
 # @login_required
-def user_devices():
+def user_devices(device_id=None):
+    devices = []
+
     if current_user.is_authenticated:
         devices = get_devices_per_user(current_user.id)
-        devices.extend([{"uuid": "abcd", "ip_addr": "127.0.0.1"},
-                        {"uuid": "efgh", "ip_addr": "192.168.0.1"}
-                   ])
+
     else:
         devices = []
 

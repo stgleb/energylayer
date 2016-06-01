@@ -56,7 +56,7 @@
         <tr>
             <td scope="row">{{ loop.index }}</td>
             <td>
-                {{ device.uuid }}
+                <a href="{{ url_for('dashboard') }}/{{ device.uuid }}">{{ device.uuid }}</a>
             </td>
             <td>
                 {{ device.ip_addr }}
