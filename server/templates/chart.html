@@ -302,53 +302,48 @@
         'October', 'November', 'December'];
     var temperature = [];
     var totalPoints = 180; //The total memory is 180 sec (3 min)
-    //var totalPoints = 10800; //The total memory is 60 min
     var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
-    //var updateInterval = 20000; //(30 min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
 
+    function GetData(input, device_id) {
+        var from = Math.floor(Date.now() / 1000) - totalPoints * 10;
 
-    function GetData(input) {
+        $.ajax({
+            url: "/api/measurement/" + device_id + "/" + from,
+            dataType: "json",
+            success: function (values, textStatus) {
+                console.log(values)
 
-        if(!input){
-            return;
-        }
-
-        input.shift();
-        temperature.shift();
-
-        // do a random walk
-        // for power chart
-        while (input.length < totalPoints) {
-            var tempDelta;
-            var prev = input.length > 0 ? input[input.length - 1] : [now, 50];
-            //var prev = data.length > 0 ? data[0] : [now, 50];
-            //console.log("data[data.length - 1]: ", data[data.length - 1]);
-            var y = prev[1] + Math.random() * 10 - 5; // for 200 total points
-            //var y = prev[1] + Math.random() - 0.5; // for 10800 (3 hour) total points
-            //console.log("y: ", y);
-            if (y < 15)
-                y = 15;
-            if (y > 80)
-                y = 80;
-            //var temp = [now += updateInterval, y];
-            var temp = [now += updateInterval, y];
-            input.push(temp);
-
-            /*
-             //for temperature
-             var prev1 = temperature.length > 0 ? temperature[temperature.length - 1] : [now, 50];
-             var z = prev1[1] + Math.random() * 10 - 5;
-             if (z < 15)
-             z = 15;
-             if (z > 80)
-             z = 80;
-             var temp1 = [now += updateInterval, z];
-             temperature.push(temp1);
-             */
-        }
-        //now = new Date().getTime();
-        firstTime = 0;
+                for(var i = 0;i < values.length;i++){
+                    timestamp = values[i].timestamp;
+                    value = values[i].voltage;
+                    input.push([timestamp, value]);
+                }
+            },
+            error: function (value, textStatus) {
+                console.log("Error")
+            }
+        });
+{##}
+{#        if(!input){#}
+{#            return;#}
+{#        }#}
+{##}
+{#        input.shift();#}
+{#        temperature.shift();#}
+{##}
+{#        while (input.length < totalPoints) {#}
+{#            var tempDelta;#}
+{#            var prev = input.length > 0 ? input[input.length - 1] : [now, 50];#}
+{#            var y = prev[1] + Math.random() * 10 - 5; // for 200 total points#}
+{#            if (y < 15)#}
+{#                y = 15;#}
+{#            if (y > 80)#}
+{#                y = 80;#}
+{#            var temp = [now += updateInterval, y];#}
+{#            input.push(temp);#}
+{#        }#}
+{#        firstTime = 0;#}
     }
 
     var options;
@@ -433,7 +428,7 @@
         dataset = []
 
         for (var i = 0; i < devices.length; i++) {
-            GetData(data[i]);
+            GetData(data[i], devices[i]);
 
             dataset.push([
                 //{ label: "CPU", data: data, color: "#00FF00" }
@@ -501,7 +496,7 @@
                     ]
                 }
 
-                GetData(data[i]);
+                GetData(data[i], devices[i]);
                 {#  Fix me!!!!!Problem is here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1  #}
                 $.plot($("#flot-placeholder" + devices[i]), dataset[0], options);
             }
@@ -555,7 +550,7 @@
                     ]
                 }
 
-                GetData(data[i]);
+                GetData(data[i], devices[i]);
                 $.plot($("#flot-placeholder" + devices[i]), dataset[i], options);
             }
 

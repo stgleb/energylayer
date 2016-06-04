@@ -12,7 +12,13 @@ from server.utils import get_user
 from server.utils import save_measurement
 
 
-@app.route('/rs/data/post/<device_id>/<data_string>')
+@app.route("/aaa/bbb")
+def stub():
+    print("1")
+    print("2")
+
+
+@app.route('/rs/data/post/<device_id>/<data_string>', methods=['GET'])
 def handle_data_from_device(device_id, data_string):
     """
     Receive and decode data from device

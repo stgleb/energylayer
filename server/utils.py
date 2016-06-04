@@ -100,7 +100,8 @@ def save_measurement(device, gpio, voltage, power, temperature):
 
 def get_measurements_from_device(device_id, since=0):
     device = Device.query.filter_by(uuid=device_id).first()
-    measurements = [m for m in device.measurements if m.timestamp > since]
+    measurements = Measurement.query.filter_by(device_id=device.id).all()
+    measurements = [m for m in measurements if m.timestamp > int(since)]
 
     def measurement_to_dto(m):
         return {
