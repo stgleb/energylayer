@@ -5,7 +5,8 @@ from flask import request
 
 from server import app
 from server.utils import get_or_create_device
-from server.utils import get_measurements_from_device
+from server.utils import get_measurements_by_timestamp
+from server.utils import get_measurements_by_count
 from server.utils import get_devices_per_user
 from server.utils import get_user_list
 from server.utils import get_user
@@ -52,7 +53,7 @@ def handle_data_from_device(device_id, data_string):
 
 @app.route('/api/measurement/<device_uuid>/', methods=['GET'])
 @app.route('/api/measurement/<device_uuid>/<timestamp>', methods=['GET'])
-def get_measurements(device_uuid, timestamp=0):
+def get_measurements_timestamp(device_uuid, timestamp=0):
     """
     Get device measurements from given timestamp
     :param device_uuid
@@ -68,9 +69,36 @@ def get_measurements(device_uuid, timestamp=0):
         }
     ]:
     """
-    measurements = get_measurements_from_device(device_id=device_uuid,
-                                                since=timestamp)
+    measurements = get_measurements_by_timestamp(device_id=device_uuid,
+                                                 since=timestamp)
 
+    response = Response(response=json.dumps(measurements),
+                        status=200,
+                        mimetype="application/json")
+
+    return response
+
+
+@app.route('/api/measurement/<device_uuid>/count/<count>', methods=['GET'])
+def get_measurements_count(device_uuid, count=100):
+    """
+    Get specified quantity of measurements from device,
+    :param device_uuid
+    :param count of measurements
+    should be given.
+    :return json list [
+        {
+            "voltage": 220,
+            "power": 20,
+            "temperature": 22,
+            "gpio", 10,
+            "timestamp": 1234567
+        }
+    ]:
+    """
+    count = int(count)
+    measurements = get_measurements_by_count(device_id=device_uuid,
+                                             count=count)
     response = Response(response=json.dumps(measurements),
                         status=200,
                         mimetype="application/json")

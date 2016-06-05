@@ -98,11 +98,7 @@ def save_measurement(device, gpio, voltage, power, temperature):
         db.session.rollback()
 
 
-def get_measurements_from_device(device_id, since=0):
-    device = Device.query.filter_by(uuid=device_id).first()
-    measurements = Measurement.query.filter_by(device_id=device.id).all()
-    measurements = [m for m in measurements if m.timestamp > int(since)]
-
+def measurements_to_dto(measurements):
     def measurement_to_dto(m):
         return {
             "voltage": m.voltage,
@@ -113,6 +109,22 @@ def get_measurements_from_device(device_id, since=0):
         }
 
     return [measurement_to_dto(m) for m in measurements]
+
+
+def get_measurements_by_timestamp(device_id, since=0):
+    device = Device.query.filter_by(uuid=device_id).first()
+    measurements = Measurement.query.filter_by(device_id=device.id).all()
+    measurements = [m for m in measurements if m.timestamp > int(since)]
+
+    return measurements_to_dto(measurements)
+
+
+def get_measurements_by_count(device_id, count):
+    device = Device.query.filter_by(uuid=device_id).first()
+    measurements = Measurement.query.filter_by(device_id=device.id).all()
+    measurements = measurements[-count:]
+
+    return measurements_to_dto(measurements)
 
 
 def get_devices_per_user(user_id):

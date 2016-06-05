@@ -301,23 +301,30 @@
         'July', 'August', 'September',
         'October', 'November', 'December'];
     var temperature = [];
-    var totalPoints = 180; //The total memory is 180 sec (3 min)
+    var totalPoints = 20; //The total memory is 180 sec (3 min)
     var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
 
     function GetData(input, device_id) {
-        var from = Math.floor(Date.now() / 1000) - totalPoints * 10;
-
         $.ajax({
-            url: "/api/measurement/" + device_id + "/" + from,
+            url: "/api/measurement/" + device_id + "/count/" + totalPoints,
             dataType: "json",
             success: function (values, textStatus) {
-                console.log(values)
+                console.log(values);
 
                 for(var i = 0;i < values.length;i++){
-                    timestamp = values[i].timestamp;
+                    {#
+                    NOTE: All totalCount of data is reloaded,
+                        that seems to be quite unoptimal.
+                    #}
+
                     value = values[i].voltage;
-                    input.push([timestamp, value]);
+                    now += updateInterval;
+                    input.push([now, value]);
+
+                    if(input.length > totalPoints){
+                        input.shift();
+                    }
                 }
             },
             error: function (value, textStatus) {
