@@ -331,87 +331,104 @@
                 console.log("Error")
             }
         });
+{##}
+{#        if(!input){#}
+{#            return;#}
+{#        }#}
+{##}
+{#        input.shift();#}
+{#        temperature.shift();#}
+{##}
+{#        while (input.length < totalPoints) {#}
+{#            var tempDelta;#}
+{#            var prev = input.length > 0 ? input[input.length - 1] : [now, 50];#}
+{#            var y = prev[1] + Math.random() * 10 - 5; // for 200 total points#}
+{#            if (y < 15)#}
+{#                y = 15;#}
+{#            if (y > 80)#}
+{#                y = 80;#}
+{#            var temp = [now += updateInterval, y];#}
+{#            input.push(temp);#}
+{#        }#}
+{#        firstTime = 0;#}
     }
 
-    var options = [];
+    var options;
     function initOptions() {
         var tick;
         //tick = [0.03 * updateInterval, "second"];
         //if (mode == 'Week')
         tick: [2, "day"];
+        options = {
+            series: {
+                lines: {
+                    show: true,
+                    lineWidth: 2,
+                    fill: true,
+                    fillColor: {colors: [{opacity: 0.4}, {opacity: 0}]},
+                }
+            },
+            xaxis: {
+                mode: "time",
+                //tickSize: [30, "second"],
+                //tickSize: [totalPoints/10, "second"],
+                //tickSize: [0.03 * updateInterval, "second"],
+                tickSize: tick,
 
-        for(var i = 0;i < devices.length;i++) {
-            options[i] = {
-                series: {
-                    lines: {
-                        show: true,
-                        lineWidth: 2,
-                        fill: true,
-                        fillColor: {colors: [{opacity: 0.4}, {opacity: 0}]},
+                tickFormatter: function (v, axis) {
+                    var date = new Date(v);
+                    //if (date.getSeconds() % 60 == 0) {
+                    //if (date.getSeconds() % totalPoints/10 == 0) {
+                    if (date.getSeconds() % 0.06 * updateInterval == 0) {
+                        var month = months[date.getUTCMonth() + 1]; //months from 1-12
+                        var day = date.getUTCDate();
+                        var newdate = month + "/" + day;
+
+                        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                        if (mode == 'Week')
+                            return newdate + ", " + hours + ":" + minutes;
+                        return hours + ":" + minutes + ":" + seconds;
+                    }
+                    else {
+                        return "";
                     }
                 },
-                xaxis: {
-                    mode: "time",
-                    //tickSize: [30, "second"],
-                    //tickSize: [totalPoints/10, "second"],
-                    //tickSize: [0.03 * updateInterval, "second"],
-                    tickSize: tick,
-
-                    tickFormatter: function (v, axis) {
-                        var date = new Date(v);
-                        //if (date.getSeconds() % 60 == 0) {
-                        //if (date.getSeconds() % totalPoints/10 == 0) {
-                        if (date.getSeconds() % 0.06 * updateInterval == 0) {
-                            var month = months[date.getUTCMonth() + 1]; //months from 1-12
-                            var day = date.getUTCDate();
-                            var newdate = month + "/" + day;
-
-                            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-                            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-                            var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-                            if (mode == 'Week')
-                                return newdate + ", " + hours + ":" + minutes;
-                            return hours + ":" + minutes + ":" + seconds;
-                        }
-                        else {
-                            return "";
-                        }
-                    },
-                    axisLabel: "Time",
-                    axisLabelUseCanvas: true,
-                    axisLabelFontSizePixels: 12,
-                    axisLabelFontFamily: 'Verdana, Arial',
-                    axisLabelPadding: 10
+                axisLabel: "Time",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 10
+            },
+            yaxis: {
+                min: 0,
+                max: 100,
+                tickSize: 20,
+                tickFormatter: function (v, axis) {
+                    if (v % 10 == 0) {
+                        return v + " watt";
+                    } else {
+                        return "";
+                    }
                 },
-                yaxis: {
-                    min: 0,
-                    max: 100,
-                    tickSize: 20,
-                    tickFormatter: function (v, axis) {
-                        if (v % 10 == 0) {
-                            return v + " watt";
-                        } else {
-                            return "";
-                        }
-                    },
-                    axisLabel: "Energy generated",
-                    axisLabelUseCanvas: true,
-                    axisLabelFontSizePixels: 12,
-                    axisLabelFontFamily: 'Verdana, Arial',
-                    axisLabelPadding: 6
-                },
-                legend: {
-                    labelBoxBorderColor: "#fff"
-                },
-                grid: {
-                    //backgroundColor: "#000000",
-                    backgroundColor: "#fff",
-                    //tickColor: "#008040"
-                    borderWidth: 1,
-                    hoverable: true, clickable: true, autoHighlight: true
-                }
-            };
-        }
+                axisLabel: "Energy generated",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 6
+            },
+            legend: {
+                labelBoxBorderColor: "#fff"
+            },
+            grid: {
+                //backgroundColor: "#000000",
+                backgroundColor: "#fff",
+                //tickColor: "#008040"
+                borderWidth: 1,
+                hoverable: true, clickable: true, autoHighlight: true
+            }
+        };
     }
 
     $(document).ready(function () {
@@ -429,7 +446,7 @@
         initOptions();
 
         for (var i = 0; i < devices.length; i++) {
-            $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
+            $.plot($("#flot-placeholder" + devices[i]), dataset[i], options);
         }
         console.log('totalPoints * updateInterval: ', totalPoints * updateInterval);
 
@@ -488,7 +505,7 @@
 
                 GetData(data[i], devices[i]);
                 {#  Fix me!!!!!Problem is here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1  #}
-                $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
+                $.plot($("#flot-placeholder" + devices[i]), dataset[0], options);
             }
             timerId = setTimeout(update, updateInterval);
         }
@@ -508,17 +525,17 @@
             /* Change update interval */
             switch (mode) {
                 case 'Live Stats':
-                    updateInterval = 1000;             //1 sec  / 3 minutes
-                    break;
+                    updateInterval = 1000             //1 sec  / 3 minutes
+                    break
                 case 'Hour':
-                    updateInterval = 20 * 1000;       //20 sec  / 1 hour
-                    break;
+                    updateInterval = 20 * 1000        //20 sec  / 1 hour
+                    break
                 case 'Day':
-                    updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
-                    break;
+                    updateInterval = 24 * 20 * 1000    //8 min   / 24 hours
+                    break
                 case 'Week':
-                    updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
-                    break;
+                    updateInterval = 7 * 24 * 20 * 1000 //56 min / 7 days
+                    break
                 default:
                     alert('Я таких значений не знаю')
             }
@@ -541,7 +558,7 @@
                 }
 
                 GetData(data[i], devices[i]);
-                $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
+                $.plot($("#flot-placeholder" + devices[i]), dataset[i], options);
             }
 
             console.log('totalPoints * updateInterval: ', totalPoints * updateInterval)
