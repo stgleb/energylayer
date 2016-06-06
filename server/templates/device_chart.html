@@ -357,6 +357,16 @@
         tick: [2, "day"];
 
         for(var i = 0;i < metrics.length;i++) {
+            const metric = metrics[i];
+
+            var tickFunction = function (v, axis) {
+                if (v % 10 == 0) {
+                    return v + " " + metric;
+                } else {
+                    return "";
+                }
+            };
+
             options[i] = {
                 series: {
                     lines: {
@@ -403,13 +413,7 @@
                     min: 0,
                     max: 100,
                     tickSize: 20,
-                    tickFormatter: function (v, axis) {
-                        if (v % 10 == 0) {
-                            return v + " watt";
-                        } else {
-                            return "";
-                        }
-                    },
+                    tickFormatter: tickFunction,
                     axisLabel: "Energy generated",
                     axisLabelUseCanvas: true,
                     axisLabelFontSizePixels: 12,
