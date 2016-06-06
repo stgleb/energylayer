@@ -10,9 +10,10 @@ from flask import redirect
 
 from server import app
 from server.forms import EditForm
-from server.utils import update_user_profile
-from server.utils import get_devices_per_user
 from server.utils import attach_device_to_user
+from server.utils import get_devices_per_user
+from server.utils import get_all_devices
+from server.utils import update_user_profile
 
 
 @app.route('/', methods=['GET'])
@@ -36,10 +37,27 @@ def dashboard_old():
     return render_template('dashboard_pages/dashboard.html')
 
 
-@app.route('/dashboard/<device_id>', methods=['GET'])
 @app.route('/dashboard', methods=['GET'])
 # @login_required
 def dashboard(device_id=None):
+    """
+    Dashboard page
+    :return:
+    """
+    devices = []
+
+    # Get list of user devices
+    if current_user.is_authenticated:
+        devices = [device.uuid for device in current_user.devices.all()]
+    else:
+        devices.append("Your_future_device")
+
+    return render_template('chart.html', devices=devices,
+                           devices_count=len(devices))
+
+
+@app.route('/dashboard/<device_id>', methods=['GET'])
+def device_chart(device_id=None):
     """
     Dashboard page
     :return:
@@ -53,9 +71,11 @@ def dashboard(device_id=None):
         if device_id:
             devices = [device for device in devices if device == device_id]
     else:
-        devices.append("Your_future_device")
+        devices = get_all_devices()[:1]
 
-    return render_template('chart.html', devices=devices,
+    return render_template('device_chart.html',
+                           metrics=["voltage", "power", "temperature"],
+                           devices=devices,
                            devices_count=len(devices))
 
 

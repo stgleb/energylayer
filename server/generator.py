@@ -16,9 +16,14 @@ def main():
         for device in devices:
             gpio = "0000"
             voltage = "00" + hex(base_Value +
-                                 random.randint(0, deviation) - deviation/ 2)[2:]
-            power = "AAAA"
-            temperature = "BBBB"
+                                 random.randint(0, deviation) -
+                                 deviation / 2)[2:]
+            power = "00" + hex(base_Value +
+                               random.randint(0, deviation) -
+                               deviation / 2)[2:]
+            temperature = "00" + hex(base_Value +
+                                     random.randint(0, deviation) -
+                                     deviation / 2)[2:]
             data = gpio + voltage + power + temperature + "0000" * 4
 
             url = BASE_URL + URL.format(device, data)

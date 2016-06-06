@@ -144,6 +144,20 @@ def get_devices_per_user(user_id):
     return devices
 
 
+def get_all_devices():
+    devices = Device.query.all()
+
+    def device_to_dto(device):
+        return {
+            "uuid": device.uuid,
+            "ip_addr": device.ip_addr
+        }
+
+    devices = [device_to_dto(d) for d in devices]
+
+    return devices
+
+
 def get_user_list():
     users = User.query.all()
 

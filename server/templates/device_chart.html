@@ -228,11 +228,11 @@
             <!-- page content -->
             <div class="right_col" role="main">
                 <table align="center">
-                    {% for device in devices %}
+                    {% for metric in metrics %}
                         <tr>
-                            <span align="center"><h2>Device id: {{ device }}</h2></span>
                             <div id="dashboard-demo" class="tabbable analytics-tab paper-stack">
                                 <div class="row">
+                                    <span align="center"><h2>Metric: {{ metric }}</h2></span>
                                     <div class="col-md-3"></div>
                                     <div class="col-md-9 offset2">
                                         <ul id="navs" class="nav nav-pills">
@@ -255,7 +255,7 @@
                                                 <div class="col-md-2"></div>
                                                 <div class="col-md-9 offset2">
                                                     <!--div id="demo-chart-00" style="height: 265px;"></div -->
-                                                    <div id="flot-placeholder{{ device }}"
+                                                    <div id="flot-placeholder{{ metric }}"
                                                          style="width:691px;height:265px;margin:30"></div>
                                                 </div>
                                             </div>
@@ -289,10 +289,16 @@
     {% endif %}
     var data = [];
     var devices = [];
+    var options = [];
+    var metrics = [];
+
+    {% for metric in metrics %}
+        metrics.push("{{ metric }}");
+        data.push([]);
+    {% endfor %}
 
     {% for device in devices %}
         devices.push("{{ device }}");
-        data.push([])
     {% endfor %}
 
     var mode = 'Live Stats';
@@ -305,7 +311,18 @@
     var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
 
-    function GetData(input, device_id) {
+    function getMetric(measurement, key){
+        switch (key){
+            case "voltage":
+                return measurement.voltage;
+            case "power":
+                return measurement.power;
+            case "temperature":
+                return measurement.temperature;
+        }
+    }
+
+    function GetData(input, device_id, metric) {
         $.ajax({
             url: "/api/measurement/" + device_id + "/count/" + totalPoints,
             dataType: "json",
@@ -318,7 +335,7 @@
                         that seems to be quite unoptimal.
                     #}
 
-                    value = values[i].voltage;
+                    value = getMetric(values[i], metric);
                     now += updateInterval;
                     input.push([now, value]);
 
@@ -331,111 +348,93 @@
                 console.log("Error")
             }
         });
-{##}
-{#        if(!input){#}
-{#            return;#}
-{#        }#}
-{##}
-{#        input.shift();#}
-{#        temperature.shift();#}
-{##}
-{#        while (input.length < totalPoints) {#}
-{#            var tempDelta;#}
-{#            var prev = input.length > 0 ? input[input.length - 1] : [now, 50];#}
-{#            var y = prev[1] + Math.random() * 10 - 5; // for 200 total points#}
-{#            if (y < 15)#}
-{#                y = 15;#}
-{#            if (y > 80)#}
-{#                y = 80;#}
-{#            var temp = [now += updateInterval, y];#}
-{#            input.push(temp);#}
-{#        }#}
-{#        firstTime = 0;#}
     }
 
-    var options;
     function initOptions() {
         var tick;
         //tick = [0.03 * updateInterval, "second"];
         //if (mode == 'Week')
         tick: [2, "day"];
-        options = {
-            series: {
-                lines: {
-                    show: true,
-                    lineWidth: 2,
-                    fill: true,
-                    fillColor: {colors: [{opacity: 0.4}, {opacity: 0}]},
+
+        for(var i = 0;i < metrics.length;i++) {
+            options[i] = {
+                series: {
+                    lines: {
+                        show: true,
+                        lineWidth: 2,
+                        fill: true,
+                        fillColor: {colors: [{opacity: 0.4}, {opacity: 0}]},
+                    }
+                },
+                xaxis: {
+                    mode: "time",
+                    //tickSize: [30, "second"],
+                    //tickSize: [totalPoints/10, "second"],
+                    //tickSize: [0.03 * updateInterval, "second"],
+                    tickSize: tick,
+
+                    tickFormatter: function (v, axis) {
+                        var date = new Date(v);
+                        //if (date.getSeconds() % 60 == 0) {
+                        //if (date.getSeconds() % totalPoints/10 == 0) {
+                        if (date.getSeconds() % 0.06 * updateInterval == 0) {
+                            var month = months[date.getUTCMonth() + 1]; //months from 1-12
+                            var day = date.getUTCDate();
+                            var newdate = month + "/" + day;
+
+                            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                            var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                            if (mode == 'Week')
+                                return newdate + ", " + hours + ":" + minutes;
+                            return hours + ":" + minutes + ":" + seconds;
+                        }
+                        else {
+                            return "";
+                        }
+                    },
+                    axisLabel: "Time",
+                    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelFontFamily: 'Verdana, Arial',
+                    axisLabelPadding: 10
+                },
+                yaxis: {
+                    min: 0,
+                    max: 100,
+                    tickSize: 20,
+                    tickFormatter: function (v, axis) {
+                        if (v % 10 == 0) {
+                            return v + " watt";
+                        } else {
+                            return "";
+                        }
+                    },
+                    axisLabel: "Energy generated",
+                    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelFontFamily: 'Verdana, Arial',
+                    axisLabelPadding: 6
+                },
+                legend: {
+                    labelBoxBorderColor: "#fff"
+                },
+                grid: {
+                    //backgroundColor: "#000000",
+                    backgroundColor: "#fff",
+                    //tickColor: "#008040"
+                    borderWidth: 1,
+                    hoverable: true, clickable: true, autoHighlight: true
                 }
-            },
-            xaxis: {
-                mode: "time",
-                //tickSize: [30, "second"],
-                //tickSize: [totalPoints/10, "second"],
-                //tickSize: [0.03 * updateInterval, "second"],
-                tickSize: tick,
-
-                tickFormatter: function (v, axis) {
-                    var date = new Date(v);
-                    //if (date.getSeconds() % 60 == 0) {
-                    //if (date.getSeconds() % totalPoints/10 == 0) {
-                    if (date.getSeconds() % 0.06 * updateInterval == 0) {
-                        var month = months[date.getUTCMonth() + 1]; //months from 1-12
-                        var day = date.getUTCDate();
-                        var newdate = month + "/" + day;
-
-                        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-                        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-                        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-                        if (mode == 'Week')
-                            return newdate + ", " + hours + ":" + minutes;
-                        return hours + ":" + minutes + ":" + seconds;
-                    }
-                    else {
-                        return "";
-                    }
-                },
-                axisLabel: "Time",
-                axisLabelUseCanvas: true,
-                axisLabelFontSizePixels: 12,
-                axisLabelFontFamily: 'Verdana, Arial',
-                axisLabelPadding: 10
-            },
-            yaxis: {
-                min: 0,
-                max: 100,
-                tickSize: 20,
-                tickFormatter: function (v, axis) {
-                    if (v % 10 == 0) {
-                        return v + " watt";
-                    } else {
-                        return "";
-                    }
-                },
-                axisLabel: "Energy generated",
-                axisLabelUseCanvas: true,
-                axisLabelFontSizePixels: 12,
-                axisLabelFontFamily: 'Verdana, Arial',
-                axisLabelPadding: 6
-            },
-            legend: {
-                labelBoxBorderColor: "#fff"
-            },
-            grid: {
-                //backgroundColor: "#000000",
-                backgroundColor: "#fff",
-                //tickColor: "#008040"
-                borderWidth: 1,
-                hoverable: true, clickable: true, autoHighlight: true
-            }
-        };
+            };
+        }
     }
 
     $(document).ready(function () {
-        dataset = []
+        dataset = [];
 
-        for (var i = 0; i < devices.length; i++) {
-            GetData(data[i], devices[i]);
+        for (var i = 0; i < metrics.length; i++) {
+            GetData(data[i], devices[0], metrics[i]);
 
             dataset.push([
                 //{ label: "CPU", data: data, color: "#00FF00" }
@@ -445,13 +444,13 @@
         }
         initOptions();
 
-        for (var i = 0; i < devices.length; i++) {
-            $.plot($("#flot-placeholder" + devices[i]), dataset[i], options);
+        for (var i = 0; i < metrics.length; i++) {
+            $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
         }
         console.log('totalPoints * updateInterval: ', totalPoints * updateInterval);
 
-        for (var i = 0; i < devices.length; i++) {
-            $("#flot-placeholder" + devices[i]).bind("plothover", function (event, pos, item) {
+        for (var i = 0; i < metrics.length; i++) {
+            $("#flot-placeholder" + metrics[i]).bind("plothover", function (event, pos, item) {
 
                 /*  Tooltips  */
 
@@ -493,7 +492,7 @@
             console.log("update! ")
             now = new Date().getTime();
 
-            for (var i = 0; i < devices.length; i++) {
+            for (var i = 0; i < metrics.length; i++) {
                 if(!data[i]) {
                     data.push([])
                     dataset[i] = [
@@ -503,9 +502,8 @@
                     ]
                 }
 
-                GetData(data[i], devices[i]);
-                {#  Fix me!!!!!Problem is here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1  #}
-                $.plot($("#flot-placeholder" + devices[i]), dataset[0], options);
+                GetData(data[i], devices[0], metrics[i]);
+                $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
             timerId = setTimeout(update, updateInterval);
         }
@@ -525,17 +523,17 @@
             /* Change update interval */
             switch (mode) {
                 case 'Live Stats':
-                    updateInterval = 1000             //1 sec  / 3 minutes
-                    break
+                    updateInterval = 1000;             //1 sec  / 3 minutes
+                    break;
                 case 'Hour':
-                    updateInterval = 20 * 1000        //20 sec  / 1 hour
-                    break
+                    updateInterval = 20 * 1000;       //20 sec  / 1 hour
+                    break;
                 case 'Day':
-                    updateInterval = 24 * 20 * 1000    //8 min   / 24 hours
-                    break
+                    updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
+                    break;
                 case 'Week':
-                    updateInterval = 7 * 24 * 20 * 1000 //56 min / 7 days
-                    break
+                    updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
+                    break;
                 default:
                     alert('Я таких значений не знаю')
             }
@@ -547,7 +545,7 @@
 
             initOptions();
 
-            for (var i = 0; i < devices.length; i++) {
+            for (var i = 0; i < metrics.length; i++) {
                 if(!data[i]) {
                     data.push([])
                     dataset[i] = [
@@ -557,8 +555,8 @@
                     ]
                 }
 
-                GetData(data[i], devices[i]);
-                $.plot($("#flot-placeholder" + devices[i]), dataset[i], options);
+                GetData(data[i], devices[0], metrics[i]);
+                $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
 
             console.log('totalPoints * updateInterval: ', totalPoints * updateInterval)
