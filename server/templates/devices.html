@@ -61,6 +61,9 @@
             <td>
                 {{ device.ip_addr }}
             </td>
+            <td>
+                <a href="{{ url_for('dettach_device', device_id=device.uuid) }}">Detach</a>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
@@ -68,7 +71,7 @@
 <form class="form-inline" action="{{ url_for('attach_device') }}?arg=1" method="post">
     <div class="form-group">
         <label class="sr-only">Add device</label>
-        <p class="form-control-static">Device UUID</p>
+        <p class="form-control-static">Attach Device UUID</p>
     </div>
     {% if error %}
         <div class="form-group">

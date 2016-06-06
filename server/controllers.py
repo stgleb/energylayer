@@ -11,6 +11,7 @@ from flask import redirect
 from server import app
 from server.forms import EditForm
 from server.utils import attach_device_to_user
+from server.utils import dettach_device_from_user
 from server.utils import get_devices_per_user
 from server.utils import get_all_devices
 from server.utils import update_user_profile
@@ -144,6 +145,27 @@ def attach_device():
     except Exception as e:
         return render_template('devices.html', devices=devices,
                                error="Device is already used")
+
+    return redirect(url_for('user_devices'))
+
+
+@login_required
+@app.route('/api/user/device/<device_id>/detach', methods=['GET'])
+def dettach_device(device_id=None):
+    """
+    Dettach device to particular user, has user:device has
+    1:many relation. Params in form.
+
+    :return:
+    """
+    user_id = current_user.id
+    devices = get_devices_per_user(user_id=user_id)
+
+    try:
+        dettach_device_from_user(user_id=user_id, device_id=device_id)
+    except Exception as e:
+        return render_template('devices.html', devices=devices,
+                               error=str(e))
 
     return redirect(url_for('user_devices'))
 

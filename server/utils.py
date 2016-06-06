@@ -187,6 +187,22 @@ def attach_device_to_user(user_id, device_id):
         db.session.rollback()
 
 
+def dettach_device_from_user(user_id, device_id):
+    device = get_or_create_device(device_id=device_id)
+
+    if device.user_id is None \
+            or device.user_id != user_id:
+        raise Exception("Device doesnt belong to user")
+
+    user = User.query.filter_by(id=user_id).first()
+
+    try:
+        user.devices.remove(device)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+
+
 def get_user(user_id):
     user = User.query.filter_by(id=user_id).first()
 
