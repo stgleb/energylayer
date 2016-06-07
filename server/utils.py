@@ -1,4 +1,5 @@
 import hashlib
+from flask import request, url_for
 from server.persistence.models import db, User, Device, Measurement
 
 
@@ -98,7 +99,7 @@ def save_measurement(device, gpio, voltage, power, temperature):
         db.session.rollback()
 
 
-def measurements_to_dto(measurements):
+def measurements_to_dto(measurements, count=20, offset=1):
     def measurement_to_dto(m):
         return {
             "voltage": m.voltage,
@@ -108,7 +109,13 @@ def measurements_to_dto(measurements):
             "timestamp": m.timestamp
         }
 
-    return [measurement_to_dto(m) for m in measurements]
+    measurements_dto = []
+
+    for i in range(len(measurements)):
+        measurements_dto.append(measurement_to_dto(measurements[i]))
+        measurements_dto[i]['position'] = (offset - 1) * count + i + 1
+
+    return measurements_dto
 
 
 def get_measurements_by_timestamp(device_id, since=0):
@@ -119,12 +126,34 @@ def get_measurements_by_timestamp(device_id, since=0):
     return measurements_to_dto(measurements)
 
 
-def get_measurements_by_count(device_id, count):
+def get_measurements_by_count(device_id, count, offset=0):
+    """
+    Get specific count of measurements
+
+    :param device_id: uuid of device
+    :param count: count of measurements
+    :param offset: offset in page.
+    :return: list of measurements dto
+    """
     device = Device.query.filter_by(uuid=device_id).first()
+
     measurements = Measurement.query.filter_by(device_id=device.id).all()
     measurements = measurements[-count:]
 
-    return measurements_to_dto(measurements)
+    return measurements_to_dto(measurements, count=count, offset=offset)
+
+
+def get_all_measurements_count(device_id):
+    """
+    Get specific count of measurements
+
+    :param device_id: uuid of device
+    :return: count of measurements
+    """
+    device = Device.query.filter_by(uuid=device_id).first()
+
+    return Measurement.query.filter_by(device_id=device.id).count()
+
 
 
 def get_devices_per_user(user_id):
@@ -214,3 +243,10 @@ def get_user(user_id):
     user_dto['devices'] = get_devices_per_user(user_id=user_id)
 
     return user_dto
+
+
+def url_for_other_page(page):
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+

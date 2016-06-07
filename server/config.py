@@ -44,3 +44,7 @@ MAIL_USE_SSL = False
 
 # Oauth 2.0 settings
 OAUTHLIB_INSECURE_TRANSPORT = "1"
+
+
+# Pagination
+PER_PAGE = 20

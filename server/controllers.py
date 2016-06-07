@@ -9,8 +9,12 @@ from flask import url_for
 from flask import redirect
 
 from server import app
+from server.config import PER_PAGE
 from server.forms import EditForm
+from server.pagination import Pagination
 from server.utils import attach_device_to_user
+from server.utils import get_measurements_by_count
+from server.utils import get_all_measurements_count
 from server.utils import dettach_device_from_user
 from server.utils import get_devices_per_user
 from server.utils import get_all_devices
@@ -168,6 +172,24 @@ def dettach_device(device_id=None):
                                error=str(e))
 
     return redirect(url_for('user_devices'))
+
+
+@app.route("/device/<device_id>/table/<int:page>")
+def get_table_for_device(device_id, page=1):
+    count = get_all_measurements_count(device_id=device_id)
+
+    measurements = get_measurements_by_count(device_id=device_id,
+                                             count=PER_PAGE,
+                                             offset=page)
+
+    pagination = Pagination(page, PER_PAGE, count)
+
+    return render_template('table.html',
+                           pagination=pagination,
+                           measurements=measurements,
+                           page=page,
+                           PER_PAGE=PER_PAGE
+                           )
 
 
 @app.route('/avatar', methods=['GET'])

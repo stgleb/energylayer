@@ -32,5 +32,6 @@ def security_context_processor():
     )
 
 app.secret_key = os.urandom(24)
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
 
