@@ -527,16 +527,20 @@
             /* Change update interval */
             switch (mode) {
                 case 'Live Stats':
-                    updateInterval = 1000;             //1 sec  / 3 minutes
+                    updateInterval = 1000;      //1 sec  / 3 minutes
+                    totalPoints = 20;
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour
+                    totalPoints = 400;
                     break;
                 case 'Day':
                     updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
+                    totalPoints = 8400;
                     break;
                 case 'Week':
                     updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
+                    totalPoints = 60000;
                     break;
                 default:
                     alert('Я таких значений не знаю')
@@ -544,7 +548,7 @@
             console.log("updateInterval: ", updateInterval);
 
             /* drop the data[] and run update */
-            data = []
+            data = [];
             now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
 
             initOptions();
