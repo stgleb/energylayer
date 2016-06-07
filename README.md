@@ -1,3 +1,3 @@
 # energylayer
 
-## New generation of energy managing platforms.
+### New generation of energy managing platforms.
