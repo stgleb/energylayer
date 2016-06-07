@@ -174,6 +174,7 @@ def dettach_device(device_id=None):
     return redirect(url_for('user_devices'))
 
 
+@app.route("/device/<device_id>/table")
 @app.route("/device/<device_id>/table/<int:page>")
 def get_table_for_device(device_id, page=1):
     count = get_all_measurements_count(device_id=device_id)
