@@ -13,12 +13,6 @@ from server.utils import get_user
 from server.utils import save_measurement
 
 
-@app.route("/aaa/bbb")
-def stub():
-    print("1")
-    print("2")
-
-
 @app.route('/rs/data/post/<device_id>/<data_string>', methods=['GET'])
 def handle_data_from_device(device_id, data_string):
     """
@@ -33,7 +27,7 @@ def handle_data_from_device(device_id, data_string):
     A - Power
     T - Temperature
     """
-    ip_addr = request.remote_addr
+    ip_addr = request.headers.get('X-Real-IP')
     device = get_or_create_device(device_id=device_id,
                                   device_ip=ip_addr)
 
