@@ -9,7 +9,7 @@ from flask import url_for
 from flask import redirect
 
 from server import app
-from server.config import PER_PAGE
+from server.config import PER_PAGE, METRICS, UNITS
 from server.forms import EditForm
 from server.pagination import Pagination
 from server.utils import attach_device_to_user
@@ -48,7 +48,7 @@ def dashboard_old():
 def dashboard(metric="voltage"):
     """
     Controller for dashboard page.
-    
+
     :param metric: metric type 'voltage', 'power' 'temperature'
     :return:
     """
@@ -60,8 +60,12 @@ def dashboard(metric="voltage"):
     else:
         devices.extend([device['uuid'] for device in get_all_devices()])
 
-    return render_template('chart.html', devices=devices,
-                           devices_count=len(devices))
+    return render_template('chart.html',
+                           devices=devices,
+                           devices_count=len(devices),
+                           metric_to_display=metric,
+                           metrics=METRICS,
+                           unit=UNITS[metric])
 
 
 @app.route('/dashboard/<device_id>', methods=['GET'])

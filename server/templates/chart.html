@@ -71,6 +71,14 @@
                                         </li>
                                     </ul>
                                 </li>
+                                {% for metric in metrics %}
+                                    <li>
+                                        <a href="{{ url_for('dashboard') }}/{{ metric }}">
+                                            <i class="fa fa-home"></i> {{ metric }} <span
+                                                class="fa fa-chevron-down"></span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
                                 {% if current_user.is_authenticated %}
                                 <li><a href="{{ url_for('edit_user') }}"><i class="fa fa-table"></i> Profile <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
@@ -305,6 +313,17 @@
     var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
 
+    function getValue(value){
+        switch ('{{ metric_to_display }}'){
+            case "voltage":
+                return value.voltage;
+            case "power":
+                return value.power;
+            case "temperature":
+                return value.temperature;
+        }
+    }
+
     function GetData(input, device_id) {
         $.ajax({
             url: "/api/measurement/" + device_id + "/count/" + totalPoints,
@@ -313,12 +332,7 @@
                 console.log(values);
 
                 for(var i = 0;i < values.length;i++){
-                    {#
-                    NOTE: All totalCount of data is reloaded,
-                        that seems to be quite unoptimal.
-                    #}
-
-                    value = values[i].voltage;
+                    var value = getValue(values[i])
                     now += updateInterval;
                     input.push([now, value]);
 
@@ -389,12 +403,12 @@
                     tickSize: 20,
                     tickFormatter: function (v, axis) {
                         if (v % 10 == 0) {
-                            return v + " watt";
+                            return v + " {{ unit }}";
                         } else {
                             return "";
                         }
                     },
-                    axisLabel: "Energy generated",
+                    axisLabel: "{{ metric_to_display }}",
                     axisLabelUseCanvas: true,
                     axisLabelFontSizePixels: 12,
                     axisLabelFontFamily: 'Verdana, Arial',
@@ -422,7 +436,7 @@
 
             dataset.push([
                 //{ label: "CPU", data: data, color: "#00FF00" }
-                {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                {data: data[i], label: '{{ metric_to_display }}', color: 'green', points: {show: false}},
                 //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
             ])
         }
@@ -481,7 +495,7 @@
                     data.push([])
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
-                        {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                        {data: data[i], label: '{{ metric_to_display }}', color: 'green', points: {show: false}},
                         //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
                     ]
                 }
@@ -535,7 +549,7 @@
                     data.push([])
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
-                        {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                        {data: data[i], label: '{{ metric_to_display }}', color: 'green', points: {show: false}},
                         //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
                     ]
                 }

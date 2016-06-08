@@ -48,3 +48,14 @@ OAUTHLIB_INSECURE_TRANSPORT = "1"
 
 # Pagination
 PER_PAGE = 20
+
+# Constants
+VOLTAGE = "voltage"
+POWER = "power"
+TEMPERATURE = "temperature"
+METRICS = (VOLTAGE, POWER, TEMPERATURE)
+UNITS = {
+    VOLTAGE: "volt",
+    POWER: "watt",
+    TEMPERATURE: "t"
+}
