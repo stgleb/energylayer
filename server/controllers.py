@@ -68,7 +68,7 @@ def dashboard(metric="voltage"):
                            unit=UNITS[metric])
 
 
-@app.route('/dashboard/<device_id>', methods=['GET'])
+@app.route('/dashboard/device/<device_id>', methods=['GET'])
 def device_chart(device_id=None):
     """
     Dashboard page
