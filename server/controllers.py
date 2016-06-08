@@ -55,7 +55,7 @@ def dashboard(device_id=None):
     if current_user.is_authenticated:
         devices = [device.uuid for device in current_user.devices.all()]
     else:
-        devices.append("Your_future_device")
+        devices.extend([device['uuid'] for device in get_all_devices()])
 
     return render_template('chart.html', devices=devices,
                            devices_count=len(devices))
@@ -76,7 +76,7 @@ def device_chart(device_id=None):
         if device_id:
             devices = [device for device in devices if device == device_id]
     else:
-        devices = get_all_devices()[:1]
+        devices = [get_all_devices()[0]['uuid']]
 
     return render_template('device_chart.html',
                            metrics=["voltage", "power", "temperature"],
@@ -107,9 +107,8 @@ def user_devices(device_id=None):
 
     if current_user.is_authenticated:
         devices = get_devices_per_user(current_user.id)
-
     else:
-        devices = []
+        devices = get_all_devices()
 
     return render_template('devices.html', devices=devices)
 
