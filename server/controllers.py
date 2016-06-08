@@ -42,11 +42,14 @@ def dashboard_old():
     return render_template('dashboard_pages/dashboard.html')
 
 
+@app.route('/dashboard/<metric>', methods=['GET'])
 @app.route('/dashboard', methods=['GET'])
 # @login_required
-def dashboard(device_id=None):
+def dashboard(metric="voltage"):
     """
-    Dashboard page
+    Controller for dashboard page.
+    
+    :param metric: metric type 'voltage', 'power' 'temperature'
     :return:
     """
     devices = []
