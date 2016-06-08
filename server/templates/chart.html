@@ -312,6 +312,7 @@
     var totalPoints = 20; //The total memory is 180 sec (3 min)
     var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
+    var counter = 0;
 
     function getValue(value){
         switch ('{{ metric_to_display }}'){
@@ -324,21 +325,47 @@
         }
     }
 
+    function GenerateFakeData(input) {
+        input.shift();
+        var sum = 0;
+        var timestamp = input[input.length - 1][0] + updateInterval;
+
+        for(var i = 0;i < input.length; i++) {
+            sum += input[i][1];
+        }
+
+        var deviation = (Math.random() - 0.5) * 10;
+        var avg = sum / input.length + deviation;
+
+        input.push([timestamp, avg]);
+        now += updateInterval;
+    }
+
     function GetData(input, device_id) {
         $.ajax({
             url: "/api/measurement/" + device_id + "/count/" + totalPoints,
             dataType: "json",
+            async: false,
             success: function (values, textStatus) {
                 console.log(values);
+                var value;
 
-                for(var i = 0;i < values.length;i++){
-                    var value = getValue(values[i])
-                    now += updateInterval;
-                    input.push([now, value]);
+                if(input.length < totalPoints) {
+                    for (var i = 0; i < values.length; i++) {
+                        value = getValue(values[i]);
+                        now += updateInterval;
+                        input.push([now, value]);
 
-                    if(input.length > totalPoints){
-                        input.shift();
+                        if (input.length > totalPoints) {
+                            input.shift();
+                        }
                     }
+                } else {
+                    var last = input[input.length - 1];
+                    value = getValue(values[values.length - 1]);
+                    input.shift();
+                    var newValue = [last[0] + updateInterval, value];
+                    input.push(newValue);
                 }
             },
             error: function (value, textStatus) {
@@ -500,11 +527,19 @@
                     ]
                 }
 
-                GetData(data[i], devices[i]);
-                {#  Fix me!!!!!Problem is here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1  #}
+                if(counter == 0) {
+                    GetData(data[i], devices[i]);
+                } else {
+                    GenerateFakeData(data[i]);
+                }
+            }
+
+            for(i = 0;i < devices.length;i++){
                 $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
             }
+
             timerId = setTimeout(update, updateInterval);
+            counter = (counter + 1) % 10;
         }
 
         update();

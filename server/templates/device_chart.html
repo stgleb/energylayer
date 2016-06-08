@@ -361,10 +361,11 @@
             async: false,
             success: function (values, textStatus) {
                 console.log(values);
+                var value;
 
                 if(input.length < totalPoints) {
                     for (var i = 0; i < values.length; i++) {
-                        var value = getMetric(values[i], metric);
+                        value = getMetric(values[i], metric);
                         now += updateInterval;
                         input.push([now, value]);
 
@@ -374,7 +375,7 @@
                     }
                 } else {
                     var last = input[input.length - 1];
-                    var value = getMetric(values[values.length - 1], metric);
+                    value = getMetric(values[values.length - 1], metric);
                     input.shift();
                     var newValue = [last[0] + updateInterval, value];
                     input.push(newValue);
@@ -547,7 +548,9 @@
                 } else {
                     GenerateFakeData(data[i]);
                 }
+            }
 
+            for(i = 0;i < metrics.length;i++){
                 $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
 
