@@ -87,7 +87,8 @@ def device_chart(device_id=None):
     else:
         devices_all = [device['uuid'] for device in get_all_devices()]
         other_devices = [device for device in devices_all]
-        devices = devices_all[:1]
+        devices = [device for device in devices_all
+                   if device == device_id]
 
     return render_template('device_chart.html',
                            metrics=["voltage", "power", "temperature"],
