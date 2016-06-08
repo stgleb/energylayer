@@ -65,23 +65,28 @@ def dashboard(device_id=None):
 def device_chart(device_id=None):
     """
     Dashboard page
-    :return:
+    :return: template page
     """
     devices = []
 
     # Get list of user devices
     if current_user.is_authenticated:
-        devices = [device.uuid for device in current_user.devices.all()]
+        devices_all = current_user.devices.all()
+        devices = [device.uuid for device in devices_all]
+        other_devices = [device.uuid for device in devices_all]
 
         if device_id:
             devices = [device for device in devices if device == device_id]
     else:
-        devices = [get_all_devices()[0]['uuid']]
+        devices_all = [device['uuid'] for device in get_all_devices()]
+        other_devices = [device for device in devices_all]
+        devices = devices_all[:1]
 
     return render_template('device_chart.html',
                            metrics=["voltage", "power", "temperature"],
                            devices=devices,
-                           devices_count=len(devices))
+                           devices_count=len(devices),
+                           other_devices=other_devices)
 
 
 @app.route('/home', methods=['GET'])

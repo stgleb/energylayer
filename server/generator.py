@@ -5,7 +5,7 @@ import time
 
 BASE_URL = "http://0.0.0.0:9000"
 URL = "/rs/data/post/{0}/{1}"
-devices = ["abcd", "sdzgf", "ssdgv"]
+devices = ["abcd", "efgh", "ijkl"]
 
 
 def main():

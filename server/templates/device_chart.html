@@ -71,6 +71,13 @@
                                         </li>
                                     </ul>
                                 </li>
+                                {% for d in other_devices %}
+                                    <li>
+                                    <a href="{{ url_for('device_chart', device_id=d) }}">
+                                        <i class="fa fa-home"></i> Device {{ d }} <span class="fa fa-chevron-down"></span>
+                                    </a>
+                                    </li>
+                                {% endfor %}
                                 {% if current_user.is_authenticated %}
                                 <li><a href="{{ url_for('edit_user') }}"><i class="fa fa-table"></i> Profile <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">

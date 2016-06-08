@@ -155,7 +155,6 @@ def get_all_measurements_count(device_id):
     return Measurement.query.filter_by(device_id=device.id).count()
 
 
-
 def get_devices_per_user(user_id):
     user = User.query.filter_by(id=user_id).first()
 
@@ -168,9 +167,7 @@ def get_devices_per_user(user_id):
             "ip_addr": device.ip_addr
         }
 
-    devices = [device_to_dto(d) for d in user.devices]
-
-    return devices
+    return [device_to_dto(d) for d in user.devices]
 
 
 def get_all_devices():
