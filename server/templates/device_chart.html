@@ -587,15 +587,15 @@
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour
-                    totalPoints = 3600;
+                    totalPoints = 3600 / updateInterval * 1000;
                     break;
                 case 'Day':
                     updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
-                    totalPoints = 84000;
+                    totalPoints = 84000 / updateInterval * 1000;
                     break;
                 case 'Week':
                     updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
-                    totalPoints = 604800;
+                    totalPoints = 604800 / updateInterval * 1000;
                     break;
                 default:
                     alert('Я таких значений не знаю')
