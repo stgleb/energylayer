@@ -322,10 +322,19 @@
         'July', 'August', 'September',
         'October', 'November', 'December'];
     var temperature = [];
-    var totalPoints = 20; //The total memory is 180 sec (3 min)
+    var totalPoints = 180; //The total memory is 180 sec (3 min)
     var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
-    var counter = 0; // Counter to used to decide whether get data from server of generate.
+    var counter = 1; // Counter to used to decide whether get data from server of generate.
+
+    // Preload data from the server.
+    {% for m in measurements %}
+        data[0][ {{ loop.index }} ] = [now, {{ m['voltage'] }}];
+        data[1][ {{ loop.index }} ] = [now, {{ m['power'] }}];
+        data[2][ {{ loop.index }} ] = [now, {{ m['temperature'] }}];
+
+        now += updateInterval;
+    {% endfor %}
 
     function getMetric(measurement, key) {
         switch (key) {
@@ -347,7 +356,7 @@
             sum += input[i][1];
         }
 
-        var deviation = (Math.random() - 0.5) * 10;
+        var deviation = (Math.random() - 0.5) * 5;
         var avg = sum / input.length + deviation;
 
         input.push([timestamp, avg]);
@@ -555,7 +564,7 @@
             }
 
             timerId = setTimeout(update, updateInterval);
-            counter = (counter + 1) % 10;
+            counter = (counter + 1) % 100;
         }
 
         update();
@@ -574,19 +583,19 @@
             switch (mode) {
                 case 'Live Stats':
                     updateInterval = 1000;      //1 sec  / 3 minutes
-                    totalPoints = 20;
+                    totalPoints = 180;
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour
-                    totalPoints = 400;
+                    totalPoints = 3600;
                     break;
                 case 'Day':
                     updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
-                    totalPoints = 8400;
+                    totalPoints = 84000;
                     break;
                 case 'Week':
                     updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
-                    totalPoints = 60000;
+                    totalPoints = 604800;
                     break;
                 default:
                     alert('Я таких значений не знаю')

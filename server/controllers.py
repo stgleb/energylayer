@@ -75,6 +75,7 @@ def device_chart(device_id=None):
     :return: template page
     """
     devices = []
+    initial_measurements = get_measurements_by_count(device_id, 180, 1)
 
     # Get list of user devices
     if current_user.is_authenticated:
@@ -94,7 +95,8 @@ def device_chart(device_id=None):
                            metrics=["voltage", "power", "temperature"],
                            devices=devices,
                            devices_count=len(devices),
-                           other_devices=other_devices)
+                           other_devices=other_devices,
+                           measurements=initial_measurements)
 
 
 @app.route('/home', methods=['GET'])
