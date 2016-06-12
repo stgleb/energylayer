@@ -1,0 +1,523 @@
+/** Login Page **/
+.login-page {
+	text-align: center;
+	color: #636363;
+	background: #dde1e7;
+}
+.login-page ul.flashes {
+	width: 100%;
+	margin: 0 0 60px;
+	padding: 0;
+	list-style-type: none;
+	border-bottom: 1px solid #c1c1c1;
+	background: #fff;
+}
+.login-page .flashes li {
+	margin: 0;
+	padding: 20px 0;
+	display: block;
+	float: none;
+	text-align: center;
+	font-weight: bold;
+}
+.login-page h1 {
+	width: 400px;
+	margin: 0 auto;
+	padding: 14px 15px;
+	background: #5bc0de;
+	color: #fff;
+	font-size: 19px;
+	font-weight: bold;
+	text-align: left;
+}
+.login-page form {
+	width: 400px;
+	margin: 0 auto;
+	padding: 20px 15px 5px;
+	background: #fff;
+	font-size: 14px;
+	text-align: left;
+	font-weight: normal;
+}
+.login-page form label {
+	font-weight: normal;
+	width: 120px;
+}
+.login-page form input#email, .login-page form input#password {
+	width: 245px;
+	padding: 3px 5px;
+	color: #333;
+	border: 1px solid #e1e1e1;
+}
+.login-page form input#submit {
+	width: 150px;
+	margin: 0 110px;
+	padding: 8px 0;
+	color: #fff;
+	background: #5bc0de;
+	border-radius: 4px;
+	border: none;
+}
+.login-page form input#submit:hover {
+	background: #41b8dc;
+}
+.login-page h2 {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 10px;
+	background: #fff;
+	color: #000;
+	font-size: 14px;
+	font-weight: bold;
+}
+.login-page > ul {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 15px;
+	background: #fff;
+	font-size: 13px;
+	text-align: center;
+}
+.login-page > ul li {
+	display: inline;
+	margin: 0 10px;
+}
+.login-page > ul li br {
+	display: none;
+}
+.login-page > div {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 10px;
+	background: #fff;
+}
+.login-page > div > p > a > img {
+	width: auto !important;
+	height: 36px !important;
+	margin-left: 10px;
+}
+.login-page > div.variation > p > a > img {
+	height: auto !important;
+}
+.login-page > div > p > a, .login-page > div.variation > p > a {
+	display: block;
+	clear: both;
+	margin: 0 0 12px;
+} 
+.login-page > div > p > a span, .login-page > div.variation > p > a {
+	display: block;
+	width: 300px;
+	float: left;
+	padding: 8px 0;
+	color: #fff;
+	clear: both;
+	border-radius: 4px;
+	border: none;
+	background: #41b8dc;
+}
+.login-page > div.variation > p > a {
+	width: 100%;
+	float: none;
+}
+.login-page > div > p > a:hover {
+	text-decoration: none;
+}
+.login-page > div.variation > p > a.fb-button, .login-page > div > p > a.fb-button span {
+	background: #337ab7;
+}
+.login-page > div.variation > p > a.fb-button:hover, .login-page > div > p > a.fb-button span:hover {
+	background: #286ea9;
+}
+.login-page > div > p > a:hover {
+	text-decoration: none;
+}
+.login-page > div.variation > p > a.tw-button, .login-page > div > p > a.tw-button span {
+	background: #5bc0de;
+}
+.login-page > div.variation > p > a.tw-button:hover, .login-page > div > p > a.tw-button span:hover {
+	background: #41b8dc;
+}
+.login-page > div.variation > p > a.go-button, .login-page > div > p > a.go-button span {
+	background: #d94e37;
+}
+.login-page > div.variation > p > a.go-button:hover, .login-page > div > p > a.go-button span:hover {
+	background: #ce452e;
+}
+/** Login Page end **/
+/** Register Page end **/
+.register-page {
+	text-align: center;
+	color: #636363;
+	background: #dde1e7;
+}
+.register-page ul.flashes {
+	width: 100%;
+	margin: 0 0 60px;
+	padding: 0;
+	list-style-type: none;
+	border-bottom: 1px solid #c1c1c1;
+	background: #fff;
+}
+.register-page .flashes li {
+	margin: 0;
+	padding: 20px 0;
+	display: block;
+	float: none;
+	text-align: center;
+	font-weight: bold;
+}
+.register-page h1 {
+	width: 400px;
+	margin: 30px auto 0;
+	padding: 14px 15px;
+	background: #5bc0de;
+	color: #fff;
+	font-size: 19px;
+	font-weight: bold;
+	text-align: left;
+}
+.register-page form {
+	width: 400px;
+	margin: 0 auto;
+	padding: 20px 15px 5px;
+	background: #fff;
+	font-size: 14px;
+	text-align: left;
+	font-weight: normal;
+}
+.register-page form label {
+	font-weight: normal;
+	width: 120px;
+}
+.register-page form input#email, .register-page form input#username, .register-page form input#first_name, .register-page form input#last_name, .register-page form input#password, .register-page form input#password_confirm {
+	width: 245px;
+	padding: 3px 5px;
+	color: #333;
+	border: 1px solid #e1e1e1;
+}
+.register-page form input#submit {
+	width: 150px;
+	margin: 0 110px;
+	padding: 8px 0;
+	color: #fff;
+	background: #5bc0de;
+	border-radius: 4px;
+	border: none;
+}
+.register-page form input#submit:hover {
+	background: #41b8dc;
+}
+.register-page h2 {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 10px;
+	background: #fff;
+	color: #000;
+	font-size: 14px;
+	font-weight: bold;
+}
+.register-page > ul {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 15px;
+	background: #fff;
+	font-size: 13px;
+	text-align: center;
+}
+.register-page > ul li {
+	display: inline;
+	margin: 0 10px;
+}
+.register-page > ul li br {
+	display: none;
+}
+.register-page > div {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 10px;
+	background: #fff;
+}
+.register-page > div > p > a > img, .register-page > div.variation > p > a > img {
+	width: auto !important;
+	height: 36px !important;
+	margin-left: 10px;
+}
+.register-page > div.variation > p > a > img {
+	height: auto !important;
+}
+.register-page > div.variation > p > a, .register-page > div > p > a span {
+	display: block;
+	clear: both;
+	float: left;
+	width: 300px;
+	padding: 8px 0;
+	color: #fff;
+	background: #03b809;
+	border-radius: 4px;
+	border: none;
+}
+.register-page > div.variation > p > a {
+	width: 100%;
+	float: none;
+}
+.register-page > div > p > a:hover {
+	text-decoration: none;
+}
+.register-page > div.variation > p > a.fb-button, .register-page > div > p > a.fb-button span {
+	background: #337ab7;
+}
+.register-page > div.variation > p > a.fb-button:hover, .register-page > div > p > a.fb-button span:hover {
+	background: #286ea9;
+}
+.register-page > div > p > a:hover {
+	text-decoration: none;
+}
+.register-page > div.variation > p > a.tw-button, .register-page > div > p > a.tw-button span {
+	background: #5bc0de;
+}
+.register-page > div.variation > p > a.tw-button:hover, .register-page > div > p > a.tw-button span:hover {
+	background: #41b8dc;
+}
+.register-page > div.variation > p > a.go-button, .register-page > div > p > a.go-button span {
+	background: #d94e37;
+}
+.register-page > div.variation > p > a.go-button:hover, .register-page > div > p > a.go-button span:hover {
+	background: #ce452e;
+}
+/** Register Page end **/
+
+/** Profile Page end **/
+.prfile-page {
+	text-align: center;
+	color: #636363;
+	background: #dde1e7;
+}
+.prfile-page ul.flashes {
+	width: 100%;
+	margin: 0 0 60px;
+	padding: 0;
+	list-style-type: none;
+	border-bottom: 1px solid #c1c1c1;
+	background: #fff;
+}
+.prfile-page .flashes li {
+	margin: 0;
+	padding: 20px 0;
+	display: block;
+	float: none;
+	text-align: center;
+	font-weight: bold;
+}
+.prfile-page h1 {
+	width: 400px;
+	margin: 30px auto 0;
+	padding: 14px 15px;
+	background: #5bc0de;
+	color: #fff;
+	font-size: 19px;
+	font-weight: bold;
+	text-align: left;
+}
+.prfile-page .thumb{
+	width: 400px;
+	padding: 20px 0;
+	float: left;
+}
+.prfile-page .thumb img{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+}
+.prfile-page > .form {
+	width: 400px; 
+	margin: 0 auto;
+	padding: 0;
+	background: #fff;
+}
+.prfile-page form {
+	width: 400px; 
+	margin: 0;
+	padding: 20px 15px 5px;
+	font-size: 14px;
+	text-align: left;
+	font-weight: normal;
+}
+.prfile-page .nav-block{
+	width: 400px; 
+	margin: 0;
+	padding: 10px 15px 10px;
+}
+.prfile-page form label {
+	font-weight: normal;
+	width: 120px;
+}
+.prfile-page .field-wrap input {
+	width: 245px;
+	margin: 0 0 10px;
+	padding: 3px 5px;
+	color: #333;
+	border: 1px solid #e1e1e1;
+}
+
+.prfile-page h2 {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 10px;
+	background: #fff;
+	color: #000;
+	font-size: 14px;
+	font-weight: bold;
+}
+.prfile-page > ul {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 15px;
+	background: #fff;
+	font-size: 13px;
+	text-align: center;
+}
+.prfile-page > ul li {
+	display: inline;
+	margin: 0 10px;
+}
+.prfile-page .nav-block br {
+	display: none;
+}
+.prfile-page > div {
+	width: 400px;
+	margin: 0 auto;
+	padding: 0 15px 10px;
+	background: #fff;
+}
+.prfile-page .nav-block a img {
+	margin-left: 10px;
+	height: 36px !important;
+	width: auto !important;
+}
+.prfile-page .nav-block.variation a img {
+	height: auto !important;
+	width: auto !important;
+}
+.prfile-page .nav-block a {
+	display: block;
+	clear: both;
+}
+.prfile-page .nav-block a span, .prfile-page .nav-block.variation a {
+	display: block;
+	clear: both;
+	float: left;
+	width: 300px;
+	margin: 0 0 12px;
+	padding: 8px 0;
+	color: #fff;
+	border-radius: 4px;
+	border: none;
+	background: #41b8dc;
+}
+.prfile-page .nav-block.variation a {
+	float: none;
+	width: 100%;
+}
+.prfile-page .nav-block a.submit {
+	width: 150px;
+	margin: 0 80px;
+	padding: 8px 0;
+	color: #fff;
+	background: #41b8dc;
+	border-radius: 4px;
+	border: none;
+}
+.prfile-page .nav-block.variation a.submit {
+	margin: 0 auto;
+}
+.prfile-page .nav-block a.submit:hover {
+	background: #41b8dc;
+}
+.prfile-page .nav-block a:hover {
+	text-decoration: none;
+}
+.prfile-page a.fb-button span, .prfile-page .variation a.fb-button {
+	background: #337ab7;
+}
+.prfile-page a.fb-button span:hover, .prfile-page .variation a.fb-button:hover {
+	background: #286ea9;
+}
+.prfile-page > div > p > a:hover {
+	text-decoration: none;
+}
+.prfile-page a.tw-button span, .prfile-page .variation a.tw-button {
+	background: #5bc0de;
+}
+.prfile-page a.tw-button span:hover, .prfile-page .variation a.tw-button:hover  {
+	background: #41b8dc;
+}
+.prfile-page a.go-button span, .prfile-page .variation a.go-button {
+	background: #d94e37;
+}
+.prfile-page a.go-button span:hover, .prfile-page .variation a.go-button:hover {
+	background: #ce452e;
+}
+.prfile-page a.cansel-button span, .prfile-page .variation a.cansel-button {
+	background: #cccccc;
+}
+.prfile-page a.cansel-button span:hover, .prfile-page .variation a.cansel-button:hover {
+	background: #c3c3c3;
+}
+
+input#avatar{
+	border: 1px solid #e1e1e1;
+	width: 100%;
+	margin: 0 0 10px;
+}
+.prfile-page p.forgot{
+	display: inline-block;
+	margin: 10px 0 0 80px;
+}
+.prfile-page p.forgot a, .prfile-page button.button-block{
+	display: inline-block;
+	margin: 0 0 12px;
+	padding: 8px 20px;
+	color: #fff;
+	background: #5bc0de;
+	border-radius: 4px;
+	border: none;
+}
+.prfile-page p.forgot a{
+	background: #ce452e;
+}
+.prfile-page p.forgot a:hover{
+	background: #ce452e;
+}
+.prfile-page button.button-block:hover{
+	background: #41b8dc;
+}
+
+/** Profile Page end **/
+
+@media screen and (max-device-width : 480px) {
+	.login-page h1, .login-page form, .login-page h2, .login-page > ul, .login-page > div{width: 300px;}
+	.login-page form input#email, .login-page form input#username, .login-page form input#first_name, .login-page form input#last_name, .login-page form input#password, .login-page form input#password_confirm{
+		width: 100%;
+	}
+	.login-page form input#submit{margin: 0 60px;}
+	.login-page > ul{padding: 0 0 5px;}
+	.login-page > ul li{padding: 0 0 10px;display: inline-block;}
+	.login-page > div.variation > p > a, .login-page > div > p > a span{width: 200px;}
+	
+	.register-page h1, .register-page form, .register-page h2, .register-page > ul, .register-page > div{width: 300px;}
+	.register-page form input#email, .register-page form input#username, .register-page form input#first_name, .register-page form input#last_name, .register-page form input#password, .register-page form input#password_confirm{
+		width: 100%;
+	}
+	.register-page form input#submit{margin: 0 60px;}
+	.register-page > ul{padding: 0 0 5px;}
+	.register-page > ul li{padding: 0 0 10px;display: inline-block;}
+	.register-page > div.variation > p > a, .register-page > div > p > a span{width: 200px;}
+	
+	.prfile-page > .form, .prfile-page h1, .prfile-page .thumb, .prfile-page form, .prfile-page .nav-block{width: 300px;}
+	.prfile-page .field-wrap input{width: 100%;}
+	.prfile-page p.forgot, .prfile-page .nav-block a.submit{margin: 0;}
+	.prfile-page .nav-block a span, .prfile-page .nav-block.variation a{width: 200px;}
+}
+
+/* Index Page */
+#header .container{width: auto;}

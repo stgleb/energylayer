@@ -1,7 +1,7 @@
 <section id="header">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-12">
                         <div class="block-left">
 							<nav class="navbar navbar-default" role="navigation">
 							  <div class="container-fluid">
@@ -25,10 +25,10 @@
 									<!--<li class="menu-item"><a href="#">Features</a></li>-->
 									<li class="menu-item"><a href="{{ url_for('user_devices') }}">Devices</a></li>
                                     <li class="menu-item"><a href="{{ url_for('dashboard') }}">Charts</a></li>
-{#									<li class="menu-item"><a href="#">Admin</a></li>#}
-{#                                    {% if current_user.has_role('admin') %}#}
-{#                                        <li class="menu-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>#}
-{#                                    {% endif %}#}
+  								<li class="menu-item"><a href="#">Admin</a></li>
+                                    {% if current_user.has_role('admin') %}
+                                        <li class="menu-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>
+                                    {% endif %}
                                       {% if current_user.is_authenticated %}
                                       <!--<li class="menu-item"><a href="#">-->
                                           <!--Hello, {{ current_user.first_name }}</a>-->
