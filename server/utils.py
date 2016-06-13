@@ -80,6 +80,7 @@ def get_or_create_device(device_id, device_ip=None):
     try:
         device = Device(uuid=device_id, ip_addr=device_ip)
         db.session.add(device)
+        # TODO: full fill Measurement table with 180 measurements of device.
         db.session.commit()
     except Exception as e:
         db.session.rollback()
