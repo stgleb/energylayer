@@ -1,4 +1,6 @@
 import hashlib
+
+from datetime import datetime
 from flask import request, url_for
 from server.persistence.models import db, User, Device, Measurement
 
@@ -101,12 +103,15 @@ def save_measurement(device, gpio, voltage, power, temperature):
 
 def measurements_to_dto(measurements, count=20, offset=1):
     def measurement_to_dto(m):
+        date = str(datetime.fromtimestamp(m.timestamp))
+
         return {
             "voltage": m.voltage,
             "power": m.power,
             "temperature": m.temperature,
             "gpio": m.gpio,
-            "timestamp": m.timestamp
+            "timestamp": m.timestamp,
+            "date": date
         }
 
     measurements_dto = []

@@ -47,6 +47,7 @@
     <thead class="thead-inverse">
     <tr>
         <th>#</th>
+        <th>date</th>
         <th>timestamp</th>
         <th>Voltage</th>
         <th>Power</th>
@@ -57,6 +58,9 @@
     {% for measurement in measurements %}
         <tr>
             <td scope="row">{{ measurement['position'] }}</td>
+            <td>
+                {{ measurement['date'] }}
+            </td>
             <td>
                 {{ measurement['timestamp'] }}
             </td>

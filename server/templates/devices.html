@@ -49,6 +49,10 @@
         <th>#</th>
         <th>UUID</th>
         <th>IP address</th>
+        <th>Spreadsheet</th>
+        {% if current_user.is_authenticated %}
+            <th>Detach link</th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -61,8 +65,11 @@
             <td>
                 {{ device.ip_addr }}
             </td>
+            <td><a href="{{ url_for('get_table_for_device', device_id=device.uuid) }}">Spreadsheet link</a></td>
             <td>
-                <a href="{{ url_for('dettach_device', device_id=device.uuid) }}">Detach</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dettach_device', device_id=device.uuid) }}">Detach</a>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}
