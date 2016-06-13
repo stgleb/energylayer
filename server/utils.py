@@ -3,6 +3,7 @@ import hashlib
 from datetime import datetime
 from flask import request, url_for
 from server.persistence.models import db, User, Device, Measurement
+from sqlalchemy import desc
 
 
 def hash_password(password):
@@ -102,6 +103,8 @@ def save_measurement(device, gpio, voltage, power, temperature):
 
 
 def measurements_to_dto(measurements, count=20, offset=1):
+    measurements = measurements[::-1]
+
     def measurement_to_dto(m):
         date = str(datetime.fromtimestamp(m.timestamp))
 
@@ -147,7 +150,13 @@ def get_measurements_by_count(device_id, count, offset=0):
     device = Device.query.filter_by(uuid=device_id).first()
 
     measurements = Measurement.query.filter_by(device_id=device.id).all()
-    measurements = measurements[-count:]
+
+    if offset > 1:
+        a = count * offset
+        b = count * (offset - 1)
+        measurements = measurements[-a:-b]
+    else:
+        measurements = measurements[-count:]
 
     return measurements_to_dto(measurements, count=count, offset=offset)
 
