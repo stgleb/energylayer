@@ -123,6 +123,10 @@ def measurements_to_dto(measurements, count=20, offset=1):
     return measurements_dto
 
 
+def get_measurement_value(m, metric):
+    return m[metric]
+
+
 def get_measurements_by_timestamp(device_id, since=0):
     device = Device.query.filter_by(uuid=device_id).first()
     measurements = Measurement.query.filter_by(device_id=device.id).all()

@@ -367,7 +367,6 @@
         $.ajax({
             url: "/api/measurement/" + device_id + "/count/" + totalPoints,
             dataType: "json",
-            async: false,
             success: function (values, textStatus) {
                 console.log(values);
                 var value;

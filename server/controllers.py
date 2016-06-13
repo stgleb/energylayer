@@ -12,7 +12,7 @@ from server import app
 from server.config import PER_PAGE, METRICS, UNITS
 from server.forms import EditForm
 from server.pagination import Pagination
-from server.utils import attach_device_to_user
+from server.utils import attach_device_to_user, get_measurement_value
 from server.utils import get_measurements_by_count
 from server.utils import get_all_measurements_count
 from server.utils import dettach_device_from_user
@@ -60,12 +60,21 @@ def dashboard(metric="voltage"):
     else:
         devices.extend([device['uuid'] for device in get_all_devices()])
 
+    initial_measurements = {}
+
+    for device_id in devices:
+        tmp = [[0, get_measurement_value(m, metric=metric)] for m in
+               get_measurements_by_count(device_id, 180, 1)]
+
+        initial_measurements[device_id] = tmp
+
     return render_template('chart.html',
                            devices=devices,
                            devices_count=len(devices),
                            metric_to_display=metric,
                            metrics=METRICS,
-                           unit=UNITS[metric])
+                           unit=UNITS[metric],
+                           measurements=initial_measurements)
 
 
 @app.route('/dashboard/device/<device_id>', methods=['GET'])
