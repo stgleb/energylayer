@@ -335,7 +335,9 @@
 
     for (var j = 0; j < totalPoints; j++) {
         for (i = 0; i < data.length; i++) {
-            data[i][j][0] = now;
+            if(data[i].length > j) {
+                data[i][j][0] = now;
+            }
         }
         now += updateInterval;
     }
