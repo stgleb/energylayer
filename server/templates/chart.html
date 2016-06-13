@@ -329,11 +329,11 @@
 
     {% for device in devices %}
         {% if measurements[device]|length > 1 %}
-            data[{{ loop.index }}] = {{ measurements[device] }};
+            data[{{ loop.index }} - 1] = {{ measurements[device] }};
         {% endif %}
     {% endfor %}
 
-    for (var j = 0; j < data[0].length; j++) {
+    for (var j = 0; j < totalPoints; j++) {
         for (i = 0; i < data.length; i++) {
             data[i][j][0] = now;
         }
