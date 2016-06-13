@@ -55,7 +55,7 @@ POWER = "power"
 TEMPERATURE = "temperature"
 METRICS = (VOLTAGE, POWER, TEMPERATURE)
 UNITS = {
-    VOLTAGE: "volt",
-    POWER: "watt",
+    VOLTAGE: "v",
+    POWER: "w",
     TEMPERATURE: "t"
 }

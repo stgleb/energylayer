@@ -326,7 +326,6 @@
     var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
     var counter = 1; // Counter to used to decide whether get data from server of generate.
-
     // Preload data from the server.
     {% for m in measurements %}
         data[0][ {{ loop.index }} ] = [now, {{ m['voltage'] }}];
@@ -344,6 +343,17 @@
                 return measurement.power;
             case "temperature":
                 return measurement.temperature;
+        }
+    }
+
+    function getUnit(metric) {
+        switch (metric) {
+            case "voltage":
+                return "v";
+            case "power":
+                return "w";
+            case "temperature":
+                return "t";
         }
     }
 
@@ -406,7 +416,7 @@
 
             var tickFunction = function (v, axis) {
                 if (v % 10 == 0) {
-                    return v + " " + metric;
+                    return v + " " + getUnit(metric);
                 } else {
                     return "";
                 }
@@ -487,7 +497,7 @@
 
             dataset.push([
                 //{ label: "CPU", data: data, color: "#00FF00" }
-                {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                {data: data[i], label: metrics[i], color: 'green', points: {show: false}},
                 //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
             ])
         }
@@ -546,7 +556,7 @@
                     data.push([]);
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
-                        {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                        {data: data[i], label: metrics[i], color: 'green', points: {show: false}},
                         //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
                     ]
                 }
@@ -612,7 +622,7 @@
                     data.push([])
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
-                        {data: data[i], label: 'Energy generated', color: 'green', points: {show: false}},
+                        {data: data[i], label: metrics[i], color: 'green', points: {show: false}},
                         //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
                     ]
                 }
