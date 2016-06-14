@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple markers</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var center = {lat: {{ center[0] }}, lng: {{ center[1] }} };
+        {#   Center of the map     #}
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: center
+        });
+
+          {% for coordinate in coordinates %}
+              var pos = {lat: {{ coordinate[0] }}, lng: {{ coordinate[1]}} };
+
+              var marker = new google.maps.Marker({
+                  position: pos,
+                  map: map,
+                  title: '{{ coordinate[2] }}'
+              });
+          {% endfor %}
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs5LpKSYgsSY3mj85fQsaz-x7WaqomYy8&callback=initMap">
+    </script>
+  </body>
+</html>

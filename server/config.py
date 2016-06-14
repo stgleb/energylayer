@@ -59,3 +59,5 @@ UNITS = {
     POWER: "w",
     TEMPERATURE: "t"
 }
+
+GEO_IP_FILE = "GeoLite2-City.mmdb"

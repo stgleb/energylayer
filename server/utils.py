@@ -1,9 +1,15 @@
+import geocoder
 import hashlib
 
 from datetime import datetime
-from flask import request, url_for
-from server.persistence.models import db, User, Device, Measurement
-from sqlalchemy import desc
+
+from flask import request
+from flask import url_for
+
+from server.persistence.models import db
+from server.persistence.models import User
+from server.persistence.models import Device
+from server.persistence.models import Measurement
 
 
 def hash_password(password):
@@ -266,3 +272,11 @@ def url_for_other_page(page):
     args['page'] = page
     return url_for(request.endpoint, **args)
 
+
+def get_ip_coordinates(ip):
+    g = geocoder.ip(ip)
+
+    return g.lat, g.lng
+
+if __name__ == '__main__':
+    print(get_ip_coordinates("178.165.120.18"))

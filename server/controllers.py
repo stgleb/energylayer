@@ -12,7 +12,7 @@ from server import app
 from server.config import PER_PAGE, METRICS, UNITS
 from server.forms import EditForm
 from server.pagination import Pagination
-from server.utils import attach_device_to_user, get_measurement_value
+from server.utils import attach_device_to_user, get_measurement_value, get_ip_coordinates
 from server.utils import get_measurements_by_count
 from server.utils import get_all_measurements_count
 from server.utils import dettach_device_from_user
@@ -214,6 +214,24 @@ def get_table_for_device(device_id, page=1):
                            page=page,
                            PER_PAGE=PER_PAGE
                            )
+
+
+@app.route("/user/maps")
+def user_maps():
+    if current_user.is_authenticated:
+        devices = get_devices_per_user(current_user.id)
+    else:
+        devices = get_all_devices()
+
+    coordinates = [(get_ip_coordinates(device['ip_addr'])[0],
+                   get_ip_coordinates(device['ip_addr'])[1],
+                   device['uuid']) for device in devices if device['ip_addr']]
+
+    center = (50.0, 35.0)
+
+    return render_template("maps.html",
+                           coordinates=coordinates,
+                           center=center)
 
 
 @app.route('/avatar', methods=['GET'])
