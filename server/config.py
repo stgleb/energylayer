@@ -48,6 +48,7 @@ OAUTHLIB_INSECURE_TRANSPORT = "1"
 
 # Pagination
 PER_PAGE = 20
+TOTAL_COUNT = 180
 
 # Constants
 VOLTAGE = "voltage"

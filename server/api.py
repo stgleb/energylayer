@@ -2,9 +2,13 @@ import json
 
 from flask import Response
 from flask import request
+from flask.ext.login import current_user
 
 from server import app
+from server.config import TOTAL_COUNT
 from server.utils import get_or_create_device
+from server.utils import get_measurements_by_count_for_devices
+from server.utils import get_all_devices
 from server.utils import get_measurements_by_timestamp
 from server.utils import get_measurements_by_count
 from server.utils import get_devices_per_user
@@ -45,6 +49,26 @@ def handle_data_from_device(device_id, data_string):
     return 'Created', 201
 
 
+@app.route('/api/user/measurement', methods=['GET'])
+def get_measurements_from_user_devices():
+    """
+    Gives dict of measurements for all user devices.
+    :return:
+    """
+    if current_user.is_authenticated:
+        devices = [device['uuid'] for device in get_devices_per_user(current_user.id)]
+    else:
+        devices = [device['uuid'] for device in get_all_devices()]
+
+    response_data = get_measurements_by_count_for_devices(devices, TOTAL_COUNT)
+
+    response = Response(response=json.dumps(response_data),
+                        status=200,
+                        mimetype="application/json")
+
+    return response
+
+
 @app.route('/api/measurement/<device_uuid>/', methods=['GET'])
 @app.route('/api/measurement/<device_uuid>/<timestamp>', methods=['GET'])
 def get_measurements_timestamp(device_uuid, timestamp=0):
@@ -74,7 +98,7 @@ def get_measurements_timestamp(device_uuid, timestamp=0):
 
 
 @app.route('/api/measurement/<device_uuid>/count/<count>', methods=['GET'])
-def get_measurements_count(device_uuid, count=100):
+def get_measurements_count(device_uuid, count=TOTAL_COUNT):
     """
     Get specified quantity of measurements from device,
     :param device_uuid
