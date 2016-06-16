@@ -111,8 +111,6 @@ def save_measurement(device, gpio, voltage, power, temperature):
 
 
 def measurements_to_dto(measurements, count=20, offset=1):
-    measurements = measurements[::-1]
-
     def measurement_to_dto(m):
         date = str(datetime.fromtimestamp(m.timestamp))
 
@@ -159,13 +157,6 @@ def get_measurements_by_count(device_id, count, offset=0):
 
     measurements = device.measurements.order_by(desc(Measurement.timestamp)).\
         limit(count).offset(count * (offset - 1)).all()
-
-    if offset > 1:
-        a = count * offset
-        b = count * (offset - 1)
-        measurements = measurements[-a:-b]
-    else:
-        measurements = measurements[-count:]
 
     return measurements_to_dto(measurements, count=count, offset=offset)
 
