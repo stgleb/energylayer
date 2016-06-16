@@ -421,10 +421,6 @@
         for (var i = 0; i < metrics.length; i++) {
             const metric = metrics[i];
 
-            var tickFunction = function (v, axis) {
-                return v + " " + getUnit(metric);
-            };
-
             options[i] = {
                 series: {
                     lines: {
@@ -469,9 +465,11 @@
                 },
                 yaxis: {
                     min: 0,
-                    max: 100,
+                    max: maxValues[i],
                     tickSize: steps[i],
-                    tickFormatter: tickFunction,
+                    tickFormatter: function (v, axis) {
+                        return v + " " + getUnit(metric);
+                    },
                     axisLabel: "Energy generated",
                     axisLabelUseCanvas: true,
                     axisLabelFontSizePixels: 12,
