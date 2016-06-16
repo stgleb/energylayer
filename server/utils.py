@@ -289,5 +289,15 @@ def get_ip_coordinates(ip):
 
     return g.lat, g.lng
 
+
+def ceil_power(number, e):
+    tmp = e
+
+    while e < number:
+        e *= tmp
+
+    return e
+
+
 if __name__ == '__main__':
     print(get_ip_coordinates("178.165.120.18"))
