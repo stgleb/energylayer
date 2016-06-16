@@ -128,6 +128,8 @@ def get_measurements_count(device_uuid, count=TOTAL_COUNT):
     count = int(count)
     measurements = get_measurements_by_count(device_id=device_uuid,
                                              count=count)
+    measurements = measurements[::-1]
+
     response = Response(response=json.dumps(measurements),
                         status=200,
                         mimetype="application/json")

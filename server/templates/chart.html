@@ -352,13 +352,14 @@
         input.shift();
         var sum = 0;
         var timestamp = input[input.length - 1][0] + updateInterval;
+        var l = 3;
 
-        for(var i = 0;i < input.length; i++) {
+        for(var i = input.length - 1;i > input.length - l; i--) {
             sum += input[i][1];
         }
 
         var deviation = (Math.random() - 0.5) * 10;
-        var avg = sum / input.length + deviation;
+        var avg = sum / l + deviation;
 
         input.push([timestamp, avg]);
     };
@@ -377,14 +378,12 @@
                     var device_id = devices[j];
 
                     if (data[j].length < totalPoints) {
+                        data[j] = [];
+
                         for (var i = 0; i < values[device_id].length; i++) {
                             value = getValue(values[device_id][i]);
                             nowTmp += updateInterval;
                             data[j].push([nowTmp, value]);
-
-                            if (data[j].length > totalPoints) {
-                                data[j].shift();
-                            }
                         }
                     } else {
                         var prev = data[j][data[j].length - 1][0];
@@ -525,7 +524,7 @@
                     dateTip = pad(dateTip.getHours()) + ":" + pad(dateTip.getMinutes()) + ":" + pad(dateTip.getSeconds());
                     if (mode == 'Week')
                         dateTip = pad(dateTip.getHours()) + ":" + pad(dateTip.getMinutes()) + ":" + pad(dateTip.getSeconds());
-                    $("#tooltip").html("<b>" + Math.floor(item.datapoint[1]) + " Watt </b> <br>" + " <small>" + dateTip + " </small>")
+                    $("#tooltip").html("<b>" + Math.floor(item.datapoint[1]) + " {{ unit }} </b> <br>" + " <small>" + dateTip + " </small>")
                             .css({top: item.pageY - 65, left: item.pageX - 10})
                             .fadeIn(200);
                 }

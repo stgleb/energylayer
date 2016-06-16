@@ -169,7 +169,8 @@ def get_measurements_by_count_for_devices(devices_uuids, count):
     for device in devices:
         measurements = device.measurements.\
             order_by(desc(Measurement.timestamp)).limit(count).all()
-        measurements = measurements[-count:]
+        measurements = measurements[::-1]
+
         devices_data[device.uuid] = measurements_to_dto(measurements, count)
 
     return devices_data
