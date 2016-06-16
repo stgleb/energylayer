@@ -297,6 +297,7 @@
     {% endif %}
     var data = [];
     var devices = [];
+    var yMaxs = {{ maximums }};
 
     {% for device in devices %}
         devices.push("{{ device }}");
@@ -449,7 +450,7 @@
                 },
                 yaxis: {
                     min: 0,
-                    max: 100,
+                    max: yMaxs[i],
                     tickSize: 20,
                     tickFormatter: function (v, axis) {
                         if (v % 10 == 0) {

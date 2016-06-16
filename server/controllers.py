@@ -61,10 +61,13 @@ def dashboard(metric="voltage"):
         devices.extend([device['uuid'] for device in get_all_devices()])
 
     initial_measurements = {}
+    y_maximums = []
 
     for device_id in devices:
         tmp = [[0, get_measurement_value(m, metric=metric)] for m in
                get_measurements_by_count(device_id, TOTAL_COUNT, 1)]
+        y_max = max([t[1] for t in tmp])
+        y_maximums.append(y_max * 1.3)
 
         initial_measurements[device_id] = tmp
 
@@ -74,7 +77,8 @@ def dashboard(metric="voltage"):
                            metric_to_display=metric,
                            metrics=METRICS,
                            unit=UNITS[metric],
-                           measurements=initial_measurements)
+                           measurements=initial_measurements,
+                           maximums=y_maximums)
 
 
 @app.route('/dashboard/device/<device_id>', methods=['GET'])
