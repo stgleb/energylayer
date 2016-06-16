@@ -67,7 +67,7 @@ def dashboard(metric="voltage"):
         tmp = [[0, get_measurement_value(m, metric=metric)] for m in
                get_measurements_by_count(device_id, TOTAL_COUNT, 1)]
         y_max = max([t[1] for t in tmp])
-        y_maximums.append(y_max * 1.3)
+        y_maximums.append(max(y_max * 2, 100))
 
         initial_measurements[device_id] = tmp
 
