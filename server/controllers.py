@@ -91,7 +91,14 @@ def device_chart(device_id=None):
     :return:
     """
     devices = []
+    metrics = ["voltage", "power", "temperature"]
+    max_values = []
     initial_measurements = get_measurements_by_count(device_id, 180, 1)
+
+    for metric in metrics:
+        max_value = max([m[metric] for m in initial_measurements])
+        max_value = ceil_power(max_value, 10)
+        max_values.append(max_value)
 
     # Get list of user devices
     if current_user.is_authenticated:
@@ -108,11 +115,12 @@ def device_chart(device_id=None):
                    if device == device_id]
 
     return render_template('device_chart.html',
-                           metrics=["voltage", "power", "temperature"],
+                           metrics=metrics,
                            devices=devices,
                            devices_count=len(devices),
                            other_devices=other_devices,
-                           measurements=initial_measurements)
+                           measurements=initial_measurements,
+                           max_values=max_values)
 
 
 @app.route('/home', methods=['GET'])

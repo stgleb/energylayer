@@ -306,6 +306,12 @@
     var devices = [];
     var options = [];
     var metrics = [];
+    var maxValues = {{ max_values }};
+    var steps = [];
+
+    for(var i = 0;i < maxValues.length;i++) {
+        steps[i] = Math.ceil(maxValues[i] / 10);
+    }
 
     {% for metric in metrics %}
         metrics.push("{{ metric }}");
@@ -416,11 +422,7 @@
             const metric = metrics[i];
 
             var tickFunction = function (v, axis) {
-                if (v % 10 == 0) {
-                    return v + " " + getUnit(metric);
-                } else {
-                    return "";
-                }
+                return v + " " + getUnit(metric);
             };
 
             options[i] = {
@@ -468,7 +470,7 @@
                 yaxis: {
                     min: 0,
                     max: 100,
-                    tickSize: 20,
+                    tickSize: steps[i],
                     tickFormatter: tickFunction,
                     axisLabel: "Energy generated",
                     axisLabelUseCanvas: true,
