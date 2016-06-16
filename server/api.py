@@ -49,7 +49,7 @@ def handle_data_from_device(device_id, data_string):
     return 'Created', 201
 
 
-@app.route('/api/user/measurement/<count>', methods=['GET'])
+@app.route('/api/data/user/measurement/<count>', methods=['GET'])
 def get_measurements_from_user_devices(count=TOTAL_COUNT):
     """
     Gives dict of measurements for all user devices.

@@ -360,7 +360,7 @@
 
     function GetData() {
         $.ajax({
-            url: "/api/user/measurement/" + totalPoints,
+            url: "/api/data/user/measurement/" + totalPoints,
             dataType: "json",
             async: false,
             success: function (values, textStatus) {
