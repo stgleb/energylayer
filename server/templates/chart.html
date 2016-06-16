@@ -355,7 +355,6 @@
         var avg = sum / input.length + deviation;
 
         input.push([timestamp, avg]);
-        now += updateInterval;
     };
 
     function GetData() {
@@ -366,9 +365,9 @@
             success: function (values, textStatus) {
                 console.log(values);
                 var value;
-                var nowTmp = now;
 
                 for(var j =0;j < devices.length;j++) {
+                    var nowTmp = now;
                     var device_id = devices[j];
 
                     if (data[j].length < totalPoints) {
@@ -382,12 +381,12 @@
                             }
                         }
                     } else {
-                        var prev = data[j][data[j].length - 1];
+                        var prev = data[j][data[j].length - 1][0];
                         var lastIndex = values[device_id].length - 1;
 
                         value = getValue(values[device_id][lastIndex]);
                         data[j].shift();
-                        var newValue = [prev[0] + updateInterval, value];
+                        var newValue = [prev + updateInterval, value];
                         data[j].push(newValue);
                     }
                 }
@@ -480,11 +479,10 @@
     }
 
     $(document).ready(function () {
-        dataset = []
+        dataset = [];
+        GetData();
 
-        for (var i = 0; i < devices.length; i++) {
-            GetData();
-
+        for (i = 0; i < devices.length; i++) {
             dataset.push([
                 //{ label: "CPU", data: data, color: "#00FF00" }
                 {data: data[i], label: '{{ metric_to_display }}', color: 'green', points: {show: false}},
@@ -493,12 +491,12 @@
         }
         initOptions();
 
-        for (var i = 0; i < devices.length; i++) {
+        for (i = 0; i < devices.length; i++) {
             $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
         }
         console.log('totalPoints * updateInterval: ', totalPoints * updateInterval);
 
-        for (var i = 0; i < devices.length; i++) {
+        for (i = 0; i < devices.length; i++) {
             $("#flot-placeholder" + devices[i]).bind("plothover", function (event, pos, item) {
 
                 /*  Tooltips  */
@@ -600,14 +598,14 @@
             console.log("updateInterval: ", updateInterval);
 
             /* drop the data[] and run update */
-            data = []
+            data = [];
             now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
 
             initOptions();
 
             for (var i = 0; i < devices.length; i++) {
                 if(!data[i]) {
-                    data.push([])
+                    data.push([]);
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
                         {data: data[i], label: '{{ metric_to_display }}', color: 'green', points: {show: false}},
@@ -623,7 +621,6 @@
             console.log('totalPoints * updateInterval: ', totalPoints * updateInterval)
             clearTimeout(timerId);
             update();
-
         });
 
     });
