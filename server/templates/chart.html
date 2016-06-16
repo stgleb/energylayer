@@ -301,7 +301,7 @@
     var steps = [];
 
     for(i = 0;i < yMaxs.length;i++) {
-        steps[i] = yMaxs[i] / 10;
+        steps[i] = Math.ceil(yMaxs[i] / 10);
     }
 
     {% for device in devices %}
