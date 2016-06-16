@@ -298,6 +298,11 @@
     var data = [];
     var devices = [];
     var yMaxs = {{ maximums }};
+    var steps = [];
+
+    for(var i = 0;i < yMaxs.length;i++) {
+        steps[i] = yMaxs[i] / 10;
+    }
 
     {% for device in devices %}
         devices.push("{{ device }}");
@@ -451,13 +456,9 @@
                 yaxis: {
                     min: 0,
                     max: yMaxs[i],
-                    tickSize: 20,
+                    tickSize: steps[i],
                     tickFormatter: function (v, axis) {
-                        if (v % (yMaxs[i] / 10) == 0) {
-                            return v + " {{ unit }}";
-                        } else {
-                            return "";
-                        }
+                        return v + " {{ unit }}";
                     },
                     axisLabel: "{{ metric_to_display }}",
                     axisLabelUseCanvas: true,
