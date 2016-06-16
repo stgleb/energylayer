@@ -300,8 +300,28 @@
     var yMaxs = {{ maximums }};
     var steps = [];
 
-    for(var i = 0;i < yMaxs.length;i++) {
+    for(i = 0;i < yMaxs.length;i++) {
         steps[i] = yMaxs[i] / 10;
+
+        if (steps[i] < 10) {
+            steps[i] = 0.5;
+        }
+
+        if (steps[i] < 100) {
+            steps[i] = 5;
+        }
+
+        if (steps[i] < 1000) {
+            steps[i] = 50;
+        }
+
+        if (steps[i] < 10000) {
+            steps[i] = 500;
+        }
+
+        if (steps[i] < 100000) {
+            steps[i] = 5000;
+        }
     }
 
     {% for device in devices %}
