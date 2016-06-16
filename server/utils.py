@@ -144,7 +144,7 @@ def get_measurements_by_timestamp(device_id, since=0):
     return measurements_to_dto(measurements)
 
 
-def get_measurements_by_count(device_id, count, offset=0):
+def get_measurements_by_count(device_id, count, offset=1):
     """
     Get specific count of measurements
 
