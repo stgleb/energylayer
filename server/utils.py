@@ -10,6 +10,7 @@ from server.persistence.models import db
 from server.persistence.models import User
 from server.persistence.models import Device
 from server.persistence.models import Measurement
+from sqlalchemy import desc
 
 
 def hash_password(password):
@@ -174,7 +175,8 @@ def get_measurements_by_count_for_devices(devices_uuids, count):
     count = int(count)
 
     for device in devices:
-        measurements = device.measurements.all()
+        measurements = device.measurements.\
+            order_by(desc(Measurement.timestamp)).limit(count).all()
         measurements = measurements[-count:]
         devices_data[device.uuid] = measurements_to_dto(measurements, count)
 
