@@ -129,7 +129,7 @@ class Measurement(db.Model):
     voltage = db.Column(db.Integer)
     power = db.Column(db.Integer)
     temperature = db.Column(db.Integer)
-    timestamp = db.Column(db.Integer)
+    timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
 
     def __init__(self, device_id, gpio, voltage, power, temperature):
