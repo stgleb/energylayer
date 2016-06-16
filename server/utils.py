@@ -157,7 +157,8 @@ def get_measurements_by_count(device_id, count, offset=0):
     """
     device = Device.query.filter_by(uuid=device_id).first()
 
-    measurements = Measurement.query.filter_by(device_id=device.id).all()
+    measurements = device.measurements.order_by(desc(Measurement.timestamp)).\
+        limit(count).offset(count * (offset - 1)).all()
 
     if offset > 1:
         a = count * offset

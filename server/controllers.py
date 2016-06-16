@@ -9,7 +9,7 @@ from flask import url_for
 from flask import redirect
 
 from server import app
-from server.config import PER_PAGE, METRICS, UNITS
+from server.config import PER_PAGE, METRICS, UNITS, TOTAL_COUNT
 from server.forms import EditForm
 from server.pagination import Pagination
 from server.utils import attach_device_to_user, get_measurement_value, get_ip_coordinates
@@ -64,7 +64,7 @@ def dashboard(metric="voltage"):
 
     for device_id in devices:
         tmp = [[0, get_measurement_value(m, metric=metric)] for m in
-               get_measurements_by_count(device_id, 180, 1)]
+               get_measurements_by_count(device_id, TOTAL_COUNT, 1)]
 
         initial_measurements[device_id] = tmp
 
@@ -81,7 +81,9 @@ def dashboard(metric="voltage"):
 def device_chart(device_id=None):
     """
     Dashboard page
-    :return: template page
+
+    :param device_id: Device UUID
+    :return:
     """
     devices = []
     initial_measurements = get_measurements_by_count(device_id, 180, 1)
