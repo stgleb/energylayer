@@ -370,7 +370,6 @@
         var avg = sum / input.length + deviation;
 
         input.push([timestamp, avg]);
-        now += updateInterval;
     }
 
     function GetData(input, device_id, metric) {
@@ -381,12 +380,13 @@
             success: function (values, textStatus) {
                 console.log(values);
                 var value;
+                var nowTmp = now;
 
                 if(input.length < totalPoints) {
                     for (var i = 0; i < values.length; i++) {
                         value = getMetric(values[i], metric);
-                        now += updateInterval;
-                        input.push([now, value]);
+                        nowTmp += updateInterval;
+                        input.push([nowTmp, value]);
 
                         if (input.length > totalPoints) {
                             input.shift();
