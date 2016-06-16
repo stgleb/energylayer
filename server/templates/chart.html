@@ -453,7 +453,7 @@
                     max: yMaxs[i],
                     tickSize: 20,
                     tickFormatter: function (v, axis) {
-                        if (v % 10 == 0) {
+                        if (v % (yMaxs[i] / 10) == 0) {
                             return v + " {{ unit }}";
                         } else {
                             return "";
