@@ -350,18 +350,13 @@
 
     function GenerateFakeData(input) {
         input.shift();
-        var sum = 0;
         var timestamp = input[input.length - 1][0] + updateInterval;
-        var l = 3;
+        var prev = input[input.length - 1][1];
 
-        for(var i = input.length - 1;i > input.length - l; i--) {
-            sum += input[i][1];
-        }
+        var deviation = (Math.random() - 0.5) * 5;
+        var val = prev + deviation;
 
-        var deviation = (Math.random() - 0.5) * 10;
-        var avg = sum / l + deviation;
-
-        input.push([timestamp, avg]);
+        input.push([timestamp, val]);
     };
 
     function GetData() {
