@@ -171,9 +171,11 @@ def get_measurements_by_count(device_id, count, offset=0):
 def get_measurements_by_count_for_devices(devices_uuids, count):
     devices = Device.query.filter(Device.uuid.in_(devices_uuids)).all()
     devices_data = {}
+    count = int(count)
 
     for device in devices:
-        measurements = device.measurements[-count:]
+        measurements = device.measurements.all()
+        measurements = measurements[-count:]
         devices_data[device.uuid] = measurements_to_dto(measurements, count)
 
     return devices_data

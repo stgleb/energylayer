@@ -49,18 +49,29 @@ def handle_data_from_device(device_id, data_string):
     return 'Created', 201
 
 
-@app.route('/api/user/measurement', methods=['GET'])
-def get_measurements_from_user_devices():
+@app.route('/api/user/measurement/<count>', methods=['GET'])
+def get_measurements_from_user_devices(count=TOTAL_COUNT):
     """
     Gives dict of measurements for all user devices.
-    :return:
+    :param count: count of measurements to return
+    :return: json object {
+        "abcd": [
+            {
+                "voltage": 220,
+                "power": 20,
+                "temperature": 22,
+                "gpio", 10,
+                "timestamp": 1234567
+            }
+        ]
+    }
     """
     if current_user.is_authenticated:
         devices = [device['uuid'] for device in get_devices_per_user(current_user.id)]
     else:
         devices = [device['uuid'] for device in get_all_devices()]
 
-    response_data = get_measurements_by_count_for_devices(devices, TOTAL_COUNT)
+    response_data = get_measurements_by_count_for_devices(devices, count)
 
     response = Response(response=json.dumps(response_data),
                         status=200,
