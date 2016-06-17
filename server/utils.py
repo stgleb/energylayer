@@ -3,6 +3,7 @@ import hashlib
 
 from datetime import datetime
 
+import random
 from flask import request
 from flask import url_for
 
@@ -169,6 +170,16 @@ def fill_with_random(measrements):
         tmp.append(d)
 
         for i in range(9):
+            r = random.randint(0, 5)
+            d = {
+                "voltage": m['voltage'] + r,
+                "power": m['power'] + r,
+                "temperature": m['temperature'] + r,
+                "gpio": m['gpio'],
+                "timestamp": m['timestamp'],
+                "date": m['date']
+            }
+
             tmp.append(d)
 
     return tmp
