@@ -374,8 +374,9 @@
 
                     if (data[j].length < totalPoints) {
                         data[j] = [];
+                        var delta = totalPoints - data[j].length;
 
-                        for (var i = 0; i < values[device_id].length; i++) {
+                        for (var i = values[device_id].length - delta; i < values[device_id].length; i++) {
                             value = getValue(values[device_id][i]);
                             nowTmp += updateInterval;
                             data[j].push([nowTmp, value]);
