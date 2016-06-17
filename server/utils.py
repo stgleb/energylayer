@@ -170,12 +170,10 @@ def fill_with_random(measrements):
         tmp.append(d)
 
         for i in range(9):
-            r = m['voltage'] / 10 * random.random()
-
             d = {
-                "voltage": m['voltage'] + r,
-                "power": m['power'] + r,
-                "temperature": m['temperature'] + r,
+                "voltage": m['voltage'],
+                "power": m['power'],
+                "temperature": m['temperature'],
                 "gpio": m['gpio'],
                 "timestamp": m['timestamp'],
                 "date": m['date']
