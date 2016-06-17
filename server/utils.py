@@ -161,6 +161,19 @@ def get_measurements_by_count(device_id, count, offset=1):
     return measurements_to_dto(measurements, count=count, offset=offset)
 
 
+def fill_with_random(measrements):
+    tmp = []
+
+    for m in measrements:
+        d = m.copy()
+        tmp.append(d)
+
+        for i in range(9):
+            tmp.append(d)
+
+    return tmp
+
+
 def get_measurements_by_count_for_devices(devices_uuids, count):
     devices = Device.query.filter(Device.uuid.in_(devices_uuids)).all()
     devices_data = {}

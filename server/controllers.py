@@ -12,7 +12,7 @@ from server import app
 from server.config import PER_PAGE, METRICS, UNITS, TOTAL_COUNT
 from server.forms import EditForm
 from server.pagination import Pagination
-from server.utils import attach_device_to_user, get_measurement_value, get_ip_coordinates, ceil_power
+from server.utils import attach_device_to_user, get_measurement_value, get_ip_coordinates, ceil_power, fill_with_random
 from server.utils import get_measurements_by_count
 from server.utils import get_all_measurements_count
 from server.utils import dettach_device_from_user
@@ -65,6 +65,7 @@ def dashboard(metric="voltage"):
 
     for device_id in devices:
         measurements = get_measurements_by_count(device_id, TOTAL_COUNT, 1)[::-1]
+        measurements = fill_with_random(measurements)
         tmp = [[0, get_measurement_value(m, metric=metric)] for m in measurements]
         y_max = max([t[1] for t in tmp])
         y_max = ceil_power(y_max, 10)
