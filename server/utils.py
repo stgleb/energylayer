@@ -3,10 +3,8 @@ import hashlib
 
 from datetime import datetime
 
-import random
 from flask import request
 from flask import url_for
-from server.config import DEVICE_TIME_INTERVAL
 
 from server.persistence.models import db
 from server.persistence.models import User
@@ -172,36 +170,10 @@ def get_measurements_by_count_for_devices(devices_uuids, count):
         measurements = device.measurements.\
             order_by(desc(Measurement.timestamp)).limit(count).all()
         measurements = measurements[::-1]
-        measurements = measurements_to_dto(measurements, count)
-        measurements = fill_with_random_data(measurements)
 
         devices_data[device.uuid] = measurements_to_dto(measurements, count)
 
     return devices_data
-
-
-def fill_with_random_data(measurements):
-    tmp = []
-
-    for i in range(len(measurements)):
-        m = measurements[i]
-        tmp.append(m)
-
-        for i in range(DEVICE_TIME_INTERVAL - 1):
-            r = random.randint(0, 5)
-
-            d = {
-                "voltage": m['voltage'] + r,
-                "power": m['power'] + r,
-                "temperature": m['temperature'] + r,
-                "gpio": m['gpio'],
-                "timestamp": m['timestamp'],
-                "date": m['date']
-            }
-
-            tmp.append(d)
-
-    return tmp
 
 
 def get_grouped_data(time_interval):
