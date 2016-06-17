@@ -352,9 +352,7 @@
         input.shift();
         var timestamp = input[input.length - 1][0] + updateInterval;
         var prev = input[input.length - 1][1];
-
-        var deviation = (Math.random() - 0.5) * 5;
-        var val = prev + deviation;
+        var val = prev;
 
         input.push([timestamp, val]);
     };
