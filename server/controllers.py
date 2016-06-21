@@ -94,6 +94,7 @@ def device_chart(device_id=None):
     metrics = ["voltage", "power", "temperature"]
     max_values = []
     initial_measurements = get_measurements_by_count(device_id, 180, 1)
+    initial_measurements = initial_measurements[::-1]
 
     for metric in metrics:
         max_value = max([m[metric] for m in initial_measurements])
