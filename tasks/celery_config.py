@@ -1,7 +1,5 @@
 from datetime import timedelta
 
-from celery.schedules import crontab
-
 BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
@@ -14,18 +12,18 @@ CELERY_ENABLE_UTC = True
 
 CELERYBEAT_SCHEDULE = {
     'hourly': {
-        'task': 'aggregate.first_task',
-        'schedule': timedelta(hours=1),
+        'task': 'aggregate.hourly',
+        'schedule': timedelta(seconds=20),
         'options': {'queue': 'hour'}
     },
     'daily': {
-        'task': 'aggregate.second_task',
-        'schedule': timedelta(days=1),
+        'task': 'aggregate.daily',
+        'schedule': timedelta(seconds=480),
         'options': {'queue': 'day'}
     },
     'weekly': {
-        'task': 'aggregate.third_task',
-        'schedule': crontab(day_of_week=1),
+        'task': 'aggregate.weekly',
+        'schedule': timedelta(seconds=3360),
         'options': {'queue': 'week'}
     },
 }
