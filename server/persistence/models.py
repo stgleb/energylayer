@@ -141,6 +141,42 @@ class Measurement(db.Model):
         self.timestamp = int(time.time())
 
 
+class Hour(db.Model):
+    __tablename__ = 'hour'
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(64))
+    gpio = db.Column(db.Integer)
+    voltage = db.Column(db.Integer)
+    power = db.Column(db.Integer)
+    temperature = db.Column(db.Integer)
+    timestamp = db.Column(db.Integer, index=True)
+    device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
+
+
+class Day(db.Model):
+    __tablename__ = 'day'
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(64))
+    gpio = db.Column(db.Integer)
+    voltage = db.Column(db.Integer)
+    power = db.Column(db.Integer)
+    temperature = db.Column(db.Integer)
+    timestamp = db.Column(db.Integer, index=True)
+    device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
+
+
+class Week(db.Model):
+    __tablename__ = 'week'
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(64))
+    gpio = db.Column(db.Integer)
+    voltage = db.Column(db.Integer)
+    power = db.Column(db.Integer)
+    temperature = db.Column(db.Integer)
+    timestamp = db.Column(db.Integer, index=True)
+    device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Command line arguments.')
     parser.add_argument("-c", type=str, dest="cmd",
