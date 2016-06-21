@@ -316,7 +316,7 @@
         'October', 'November', 'December'];
     var temperature = [];
     var totalPoints = 180; //The total memory is 180 sec (3 min)
-    var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
+    var updateInterval = 10000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
     var counter = 1;
 
@@ -348,14 +348,14 @@
         now += updateInterval;
     }
 
-    function GenerateFakeData(input) {
-        input.shift();
-        var timestamp = input[input.length - 1][0] + updateInterval;
-        var prev = input[input.length - 1][1];
-        var val = prev + (prev / 10) * Math.random();
-
-        input.push([timestamp, val]);
-    };
+{#    function GenerateFakeData(input) {#}
+{#        input.shift();#}
+{#        var timestamp = input[input.length - 1][0] + updateInterval;#}
+{#        var prev = input[input.length - 1][1];#}
+{#        var val = prev + (prev / 10) * Math.random();#}
+{##}
+{#        input.push([timestamp, val]);#}
+{#    };#}
 
     function GetData() {
         $.ajax({
@@ -371,7 +371,6 @@
                     var device_id = devices[j];
 
                     if (data[j].length < totalPoints) {
-                        data[j] = [];
                         var delta = totalPoints - data[j].length;
 
                         for (var i = values[device_id].length - delta; i < values[device_id].length; i++) {
@@ -543,22 +542,19 @@
                         //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
                     ]
                 }
-
-                if(counter != 0) {
-                    GenerateFakeData(data[i]);
-                }
             }
 
-            if(counter == 0) {
+            if (counter == 0) {
                 GetData();
             }
+
 
             for(i = 0;i < devices.length;i++){
                 $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
             }
 
             timerId = setTimeout(update, updateInterval);
-            counter = (counter + 1) % 10;
+            counter = 0;
         }
 
         update();
