@@ -316,6 +316,7 @@
         'October', 'November', 'December'];
     var temperature = [];
     var totalPoints = 180; //The total memory is 180 sec (3 min)
+    var timePeriod = 'live';
     var updateInterval = 10000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
     var counter = 1;
@@ -359,7 +360,7 @@
 
     function GetData() {
         $.ajax({
-            url: "/api/data/user/measurement/" + totalPoints,
+            url: "/api/data/user/measurement/" + totalPoints + "/" + timePeriod,
             dataType: "json",
             async: false,
             success: function (values, textStatus) {
@@ -573,15 +574,19 @@
             switch (mode) {
                 case 'Live Stats':
                     updateInterval = 10000;             //1 sec  / 3 minutes
+                    timePeriod = 'live';
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour
+                    timePeriod = 'hour';
                     break;
                 case 'Day':
                     updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
+                    timePeriod = 'day';
                     break;
                 case 'Week':
                     updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
+                    timePeriod = 'week';
                     break;
                 default:
                     alert('Я таких значений не знаю')

@@ -3,9 +3,10 @@ import hashlib
 
 from datetime import datetime
 
-import random
 from flask import request
 from flask import url_for
+from server.config import TOTAL_COUNT
+from server.config import VOLTAGE, POWER, TEMPERATURE
 
 from server.persistence.models import db
 from server.persistence.models import User
@@ -321,6 +322,39 @@ def ceil_power(number, e):
         e *= tmp
 
     return e
+
+
+def dto_avg(dtos):
+    dto = {
+        "voltage": 0,
+        "power": 0,
+        "temperature": 0,
+        "gpio": 0,
+        "timestamp": 0
+    }
+
+    for d in dtos:
+        dto[VOLTAGE] += d[VOLTAGE]
+        dto[POWER] += d[POWER]
+        dto[TEMPERATURE] += d[TEMPERATURE]
+
+    dto[VOLTAGE] /= len(dtos)
+    dto[POWER] /= len(dtos)
+    dto[TEMPERATURE] /= len(dtos)
+
+    return dto
+
+
+def group_data_by_period(data):
+    result = []
+    channel_len = int(len(data) / TOTAL_COUNT)
+    channel_count = int(len(data) / channel_len)
+
+    for i in range(channel_count):
+        tmp = data[i * channel_len:(i + 1) * channel_len]
+        result.append(dto_avg(tmp))
+
+    return result
 
 
 if __name__ == '__main__':

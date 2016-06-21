@@ -62,3 +62,16 @@ UNITS = {
 }
 
 GEO_IP_FILE = "GeoLite2-City.mmdb"
+
+# Time periods
+LIVE = 'live'
+HOUR = 'hour'
+DAY = 'day'
+WEEK = 'week'
+
+# Counts
+counts = dict()
+counts[LIVE] = 180
+counts[HOUR] = 360
+counts[DAY] = 360 * 24
+counts[WEEK] = 360 * 24 * 7

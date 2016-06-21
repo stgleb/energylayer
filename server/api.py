@@ -5,8 +5,8 @@ from flask import request
 from flask.ext.login import current_user
 
 from server import app
-from server.config import TOTAL_COUNT
-from server.utils import get_or_create_device
+from server.config import TOTAL_COUNT, LIVE, counts
+from server.utils import get_or_create_device, group_data_by_period
 from server.utils import get_measurements_by_count_for_devices
 from server.utils import get_all_devices
 from server.utils import get_measurements_by_timestamp
@@ -49,11 +49,13 @@ def handle_data_from_device(device_id, data_string):
     return 'Created', 201
 
 
+@app.route('/api/data/user/measurement/<count>/<period>', methods=['GET'])
 @app.route('/api/data/user/measurement/<count>', methods=['GET'])
-def get_measurements_from_user_devices(count=TOTAL_COUNT):
+def get_measurements_from_user_devices(count=TOTAL_COUNT, period=LIVE):
     """
     Gives dict of measurements for all user devices.
     :param count: count of measurements to return
+    :param period: period of data to return
     :return: json object {
         "abcd": [
             {
@@ -67,11 +69,18 @@ def get_measurements_from_user_devices(count=TOTAL_COUNT):
     }
     """
     if current_user.is_authenticated:
-        devices = [device['uuid'] for device in get_devices_per_user(current_user.id)]
+        devices = [device['uuid'] for device in
+                   get_devices_per_user(current_user.id)]
     else:
         devices = [device['uuid'] for device in get_all_devices()]
 
+    # Get count for period.
+    count = counts[period]
     response_data = get_measurements_by_count_for_devices(devices, count)
+
+    if period != LIVE:
+        for device in devices:
+            response_data[device] = group_data_by_period(response_data[device])
 
     response = Response(response=json.dumps(response_data),
                         status=200,
