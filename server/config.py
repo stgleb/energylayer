@@ -34,12 +34,11 @@ SECURITY_RECOVERABLE = True
 SECURITY_CHANGEABLE = True
 
 # EMAIL SETTINGS
-MAIL_SERVER = 'mailtrap.io'
+MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 465
-MAIL_USERNAME = '1e106f2fe5e1c4'
-MAIL_PASSWORD = '8b9deb9c1d7980'
-MAIL_USE_TLS = True
-MAIL_USE_SSL = False
+MAIL_USERNAME = 'energylayer.dev@gmail.com'
+MAIL_PASSWORD = 'P@$$word123'
+MAIL_USE_SSL = True
 
 
 # Oauth 2.0 settings
