@@ -566,13 +566,13 @@
             // Read the a text of the anchor that was clicked
             mode = $(e.target).context.innerText;
 
-            console.log("text: ", mode)
+            console.log("text: ", mode);
             console.log("old updateInterval: ", updateInterval)
 
             /* Change update interval */
             switch (mode) {
                 case 'Live Stats':
-                    updateInterval = 1000;             //1 sec  / 3 minutes
+                    updateInterval = 10000;             //1 sec  / 3 minutes
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour

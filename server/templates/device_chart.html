@@ -328,8 +328,8 @@
         'July', 'August', 'September',
         'October', 'November', 'December'];
     var temperature = [];
-    var totalPoints = 180; //The total memory is 180 sec (3 min)
-    var updateInterval = 10000; // 200 x 1000 = 200sec (3min)
+    var totalPoints = 180; //The total memory is 180 sec (30 min)
+    var updateInterval = 10000; // 200 x 1000 = 200sec (30min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
     var flag = 1; // Counter to used to decide whether get data from server of generate.
     // Preload data from the server.
@@ -590,20 +590,20 @@
             /* Change update interval */
             switch (mode) {
                 case 'Live Stats':
-                    updateInterval = 1000;      //1 sec  / 3 minutes
+                    updateInterval = 10000;      //1 sec  / 3 minutes
                     totalPoints = 180;
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour
-                    totalPoints = 3600 / updateInterval * 1000;
+                    totalPoints = 3600 / (updateInterval / 1000);
                     break;
                 case 'Day':
                     updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
-                    totalPoints = 84000 / updateInterval * 1000;
+                    totalPoints = 84000 / (updateInterval / 1000);
                     break;
                 case 'Week':
                     updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
-                    totalPoints = 604800 / updateInterval * 1000;
+                    totalPoints = 604800 / (updateInterval / 1000);
                     break;
                 default:
                     alert('Я таких значений не знаю')
