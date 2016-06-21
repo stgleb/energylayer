@@ -329,9 +329,9 @@
         'October', 'November', 'December'];
     var temperature = [];
     var totalPoints = 180; //The total memory is 180 sec (3 min)
-    var updateInterval = 1000; // 200 x 1000 = 200sec (3min)
+    var updateInterval = 10000; // 200 x 1000 = 200sec (3min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
-    var counter = 1; // Counter to used to decide whether get data from server of generate.
+    var flag = 1; // Counter to used to decide whether get data from server of generate.
     // Preload data from the server.
     {% for m in measurements %}
         data[0][ {{ loop.index }} ] = [now, {{ m['voltage'] }}];
@@ -363,20 +363,20 @@
         }
     }
 
-    function GenerateFakeData(input) {
-        input.shift();
-        var sum = 0;
-        var timestamp = input[input.length - 1][0] + updateInterval;
-
-        for(var i = 0;i < input.length; i++) {
-            sum += input[i][1];
-        }
-
-        var deviation = (Math.random() - 0.5) * 5;
-        var avg = sum / input.length + deviation;
-
-        input.push([timestamp, avg]);
-    }
+{#    function GenerateFakeData(input) {#}
+{#        input.shift();#}
+{#        var sum = 0;#}
+{#        var timestamp = input[input.length - 1][0] + updateInterval;#}
+{##}
+{#        for(var i = 0;i < input.length; i++) {#}
+{#            sum += input[i][1];#}
+{#        }#}
+{##}
+{#        var deviation = (Math.random() - 0.5) * 5;#}
+{#        var avg = sum / input.length + deviation;#}
+{##}
+{#        input.push([timestamp, avg]);#}
+{#    }#}
 
     function GetData(input, device_id, metric) {
         $.ajax({
@@ -562,10 +562,8 @@
                     ]
                 }
 
-                if(counter == 0) {
+                if(flag == 0) {
                     GetData(data[i], devices[0], metrics[i]);
-                } else {
-                    GenerateFakeData(data[i]);
                 }
             }
 
@@ -574,7 +572,7 @@
             }
 
             timerId = setTimeout(update, updateInterval);
-            counter = (counter + 1) % 100;
+            flag = 0;
         }
 
         update();
