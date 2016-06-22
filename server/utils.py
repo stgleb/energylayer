@@ -2,8 +2,6 @@ import geocoder
 import hashlib
 
 from datetime import datetime
-
-import random
 from flask import request
 from flask import url_for
 
