@@ -152,6 +152,14 @@ class Hour(db.Model):
     timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
 
+    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0):
+        self.device_id = device_id
+        self.gpio = gpio
+        self.voltage = voltage
+        self.power = power
+        self.temperature = temperature
+        self.timestamp = int(time.time())
+
 
 class Day(db.Model):
     __tablename__ = 'day'
@@ -164,6 +172,14 @@ class Day(db.Model):
     timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
 
+    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0):
+        self.device_id = device_id
+        self.gpio = gpio
+        self.voltage = voltage
+        self.power = power
+        self.temperature = temperature
+        self.timestamp = int(time.time())
+
 
 class Week(db.Model):
     __tablename__ = 'week'
@@ -175,6 +191,14 @@ class Week(db.Model):
     temperature = db.Column(db.Integer)
     timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
+
+    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0):
+        self.device_id = device_id
+        self.gpio = gpio
+        self.voltage = voltage
+        self.power = power
+        self.temperature = temperature
+        self.timestamp = int(time.time())
 
 
 def parse_args():
