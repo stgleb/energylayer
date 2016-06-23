@@ -5,7 +5,7 @@ from flask import request
 from flask.ext.login import current_user
 
 from server import app
-from server.config import TOTAL_COUNT
+from server.config import TOTAL_COUNT, LIVE
 from server.utils import get_or_create_device
 from server.utils import get_measurements_by_count_for_devices
 from server.utils import get_all_devices
@@ -49,11 +49,13 @@ def handle_data_from_device(device_id, data_string):
     return 'Created', 201
 
 
+@app.route('/api/data/user/measurement/<count>/<interval>', methods=['GET'])
 @app.route('/api/data/user/measurement/<count>', methods=['GET'])
-def get_measurements_from_user_devices(count=TOTAL_COUNT):
+def get_measurements_from_user_devices(count=TOTAL_COUNT, interval=LIVE):
     """
     Gives dict of measurements for all user devices.
     :param count: count of measurements to return
+    :param interval: interval of aggregation
     :return: json object {
         "abcd": [
             {
@@ -71,7 +73,7 @@ def get_measurements_from_user_devices(count=TOTAL_COUNT):
     else:
         devices = [device['uuid'] for device in get_all_devices()]
 
-    response_data = get_measurements_by_count_for_devices(devices, count)
+    response_data = get_measurements_by_count_for_devices(devices, count, interval=interval)
 
     response = Response(response=json.dumps(response_data),
                         status=200,
@@ -108,12 +110,15 @@ def get_measurements_timestamp(device_uuid, timestamp=0):
     return response
 
 
+@app.route('/api/measurement/<device_uuid>/count/<count>/<interval>', methods=['GET'])
 @app.route('/api/measurement/<device_uuid>/count/<count>', methods=['GET'])
-def get_measurements_count(device_uuid, count=TOTAL_COUNT):
+def get_measurements_count(device_uuid, count=TOTAL_COUNT, interval=LIVE):
     """
-    Get specified quantity of measurements from device,
+    Get specified quantity of measurements from device
+
     :param device_uuid
     :param count of measurements
+    :param interval of measurements to aggregate
     should be given.
     :return json list [
         {
@@ -127,7 +132,7 @@ def get_measurements_count(device_uuid, count=TOTAL_COUNT):
     """
     count = int(count)
     measurements = get_measurements_by_count(device_id=device_uuid,
-                                             count=count)
+                                             count=count, interval=interval)
     measurements = measurements[::-1]
 
     response = Response(response=json.dumps(measurements),

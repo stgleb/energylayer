@@ -299,6 +299,7 @@
     var devices = [];
     var yMaxs = {{ maximums }};
     var steps = [];
+    var timeInterval = "/live";
 
     for(i = 0;i < yMaxs.length;i++) {
         steps[i] = Math.ceil(yMaxs[i] / 10);
@@ -359,7 +360,7 @@
 
     function GetData() {
         $.ajax({
-            url: "/api/data/user/measurement/" + totalPoints,
+            url: "/api/data/user/measurement/" + totalPoints + timeInterval,
             dataType: "json",
             async: false,
             success: function (values, textStatus) {
@@ -572,16 +573,20 @@
             /* Change update interval */
             switch (mode) {
                 case 'Live Stats':
-                    updateInterval = 10000;             //1 sec  / 3 minutes
+                    updateInterval = 10000;             //10 sec  / 3 minutes
+                    timeInterval = "/live";
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour
+                    timeInterval = "/hour";
                     break;
                 case 'Day':
                     updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
+                    timeInterval = "/day";
                     break;
                 case 'Week':
                     updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
+                    timeInterval = "/week";
                     break;
                 default:
                     alert('Я таких значений не знаю')

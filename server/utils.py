@@ -4,8 +4,12 @@ import hashlib
 from datetime import datetime
 from flask import request
 from flask import url_for
+from server.config import LIVE
+from server.config import WEEK
+from server.config import DAY
+from server.config import HOUR
 
-from server.persistence.models import db
+from server.persistence.models import db, Hour, Day, Week
 from server.persistence.models import User
 from server.persistence.models import Device
 from server.persistence.models import Measurement
@@ -143,19 +147,34 @@ def get_measurements_by_timestamp(device_id, since=0):
     return measurements_to_dto(measurements)
 
 
-def get_measurements_by_count(device_id, count, offset=1):
+def get_measurements_by_count(device_id, count, offset=1, interval=LIVE):
     """
     Get specific count of measurements
 
     :param device_id: uuid of device
     :param count: count of measurements
-    :param offset: offset in page.
+    :param offset: offset in page
+    :param interval: interval of aggregation
     :return: list of measurements dto
     """
     device = Device.query.filter_by(uuid=device_id).first()
+    measurements = []
 
-    measurements = device.measurements.order_by(desc(Measurement.timestamp)).\
-        limit(count).offset(count * (offset - 1)).all()
+    # Extract specific count of measurements.
+    if interval == LIVE:
+        measurements = device.measurements.order_by(desc(Measurement.timestamp)).\
+            limit(count).offset(count * (offset - 1)).all()
+    elif interval == HOUR:
+        measurements = Hour.query.filter(Hour.device_id == device_id.id).\
+            order_by(desc(Hour.timestamp)).\
+            limit(count).offset(count * (offset - 1)).all()
+    elif interval == DAY:
+        measurements = Day.query.filter(Day.device_id == device.id).\
+            order_by(desc(Day.timestamp)).\
+            limit(count).offset(count * (offset - 1)).all()
+    elif interval == WEEK:
+        measurements = Week.query.filter(Week.device_id == device.id).order_by(desc(Week.timestamp)).\
+            limit(count).offset(count * (offset - 1)).all()
 
     return measurements_to_dto(measurements, count=count, offset=offset)
 
@@ -182,19 +201,43 @@ def fill_with_random(measrements):
     return tmp
 
 
-def get_measurements_by_count_for_devices(devices_uuids, count):
+def get_measurements_by_count_for_devices(devices_uuids, count,
+                                          interval=LIVE):
     devices = Device.query.filter(Device.uuid.in_(devices_uuids)).all()
     devices_data = {}
     count = int(count)
 
     for device in devices:
-        measurements = device.measurements.\
-            order_by(desc(Measurement.timestamp)).limit(count).all()
-        measurements = measurements[::-1]
+        measurements = get_measurement_for_device(count, device,
+                                                  interval=interval)
 
         devices_data[device.uuid] = measurements_to_dto(measurements, count)
 
     return devices_data
+
+
+def get_measurement_for_device(count, device, interval):
+    measurements = []
+
+    # Extract appropriate data for device.
+    if interval == LIVE:
+        measurements = device.measurements. \
+            order_by(desc(Measurement.timestamp)).limit(count).all()
+    elif interval == HOUR:
+        measurements = Hour.query.filter(Hour.device_id == device.id).\
+            order_by(desc(Hour.timestamp)).\
+            limit(count).all()
+    elif interval == DAY:
+        measurements = Day.query.filter(Day.device_id == device.id). \
+            order_by(desc(Day.timestamp)). \
+            limit(count).all()
+    elif interval == WEEK:
+        measurements = Week.query.filter(Week.device_id == device.id).\
+            order_by(desc(Week.timestamp)).\
+            limit(count).all()
+
+    measurements = measurements[::-1]
+    return measurements
 
 
 def get_grouped_data(time_interval):

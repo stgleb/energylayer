@@ -61,4 +61,10 @@ UNITS = {
     TEMPERATURE: "t"
 }
 
+# Time constants
+LIVE = "live"
+HOUR = "hour"
+DAY = "day"
+WEEK = "week"
+
 GEO_IP_FILE = "GeoLite2-City.mmdb"
