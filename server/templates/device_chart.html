@@ -332,6 +332,8 @@
     var updateInterval = 10000; // 200 x 1000 = 200sec (30min)
     var now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
     var flag = 1; // Counter to used to decide whether get data from server of generate.
+    var timeInterval = "/live";
+
     // Preload data from the server.
     {% for m in measurements %}
         data[0][ {{ loop.index }} ] = [now, {{ m['voltage'] }}];
@@ -380,7 +382,7 @@
 
     function GetData(input, device_id, metric) {
         $.ajax({
-            url: "/api/measurement/" + device_id + "/count/" + totalPoints,
+            url: "/api/measurement/" + device_id + "/count/" + totalPoints + timeInterval,
             dataType: "json",
             async: false,
             success: function (values, textStatus) {
@@ -584,26 +586,27 @@
             // Read the a text of the anchor that was clicked
             mode = $(e.target).context.innerText;
 
-            console.log("text: ", mode)
-            console.log("old updateInterval: ", updateInterval)
+            console.log("text: ", mode);
+            console.log("old updateInterval: ", updateInterval);
 
             /* Change update interval */
             switch (mode) {
                 case 'Live Stats':
                     updateInterval = 10000;      //1 sec  / 3 minutes
                     totalPoints = 180;
+                    timeInterval = "/live";
                     break;
                 case 'Hour':
                     updateInterval = 20 * 1000;       //20 sec  / 1 hour
-                    totalPoints = 1;
+                    timeInterval = "/hour";
                     break;
                 case 'Day':
                     updateInterval = 24 * 20 * 1000;   //8 min   / 24 hours
-                    totalPoints = 84000 / (updateInterval / 1000);
+                    timeInterval = "/day";
                     break;
                 case 'Week':
                     updateInterval = 7 * 24 * 20 * 1000; //56 min / 7 days
-                    totalPoints = 604800 / (updateInterval / 1000);
+                    timeInterval = "/week";
                     break;
                 default:
                     alert('Я таких значений не знаю')

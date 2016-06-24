@@ -165,15 +165,15 @@ def get_measurements_by_count(device_id, count, offset=1, interval=LIVE):
         measurements = device.measurements.order_by(desc(Measurement.timestamp)).\
             limit(count).offset(count * (offset - 1)).all()
     elif interval == HOUR:
-        measurements = Hour.query.filter(Hour.device_id == device_id.id).\
+        measurements = Hour.query.filter(Hour.device_id == device_id).\
             order_by(desc(Hour.timestamp)).\
             limit(count).offset(count * (offset - 1)).all()
     elif interval == DAY:
-        measurements = Day.query.filter(Day.device_id == device.id).\
+        measurements = Day.query.filter(Day.device_id == device_id).\
             order_by(desc(Day.timestamp)).\
             limit(count).offset(count * (offset - 1)).all()
     elif interval == WEEK:
-        measurements = Week.query.filter(Week.device_id == device.id).order_by(desc(Week.timestamp)).\
+        measurements = Week.query.filter(Week.device_id == device_id).order_by(desc(Week.timestamp)).\
             limit(count).offset(count * (offset - 1)).all()
 
     return measurements_to_dto(measurements, count=count, offset=offset)
