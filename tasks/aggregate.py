@@ -129,7 +129,7 @@ def daily():
 @app.task(queue="week")
 def weekly():
     """
-    Run command: celery -A tasks worker -B -l info -Q week -n worker2
+    Run command: celery -A tasks worker -B -l info -Q week -n worker3
     :return:
     """
     devices = Device.query.all()
