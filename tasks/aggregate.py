@@ -62,6 +62,7 @@ def hourly():
     Run command: celery -A tasks worker -B -l info -Q hour -n worker1
     :return:
     """
+    logger.info("Aggregate data hourly")
     devices = Device.query.all()
 
     for device in devices:
@@ -105,6 +106,7 @@ def daily():
     Run command: celery -A tasks worker -B -l info -Q day -n worker2
     :return:
     """
+    logger.info("Aggregate data daily")
     devices = Device.query.all()
 
     for device in devices:
@@ -148,6 +150,7 @@ def weekly():
     Run command: celery -A tasks worker -B -l info -Q week -n worker3
     :return:
     """
+    logger.info("Aggregate data week")
     devices = Device.query.all()
 
     for device in devices:
