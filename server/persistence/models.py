@@ -152,13 +152,14 @@ class Hour(db.Model):
     timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
 
-    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0):
+    def __init__(self, device_id, gpio=0, voltage=0, power=0,
+                 temperature=0, timestamp=0):
         self.device_id = device_id
         self.gpio = gpio
         self.voltage = voltage
         self.power = power
         self.temperature = temperature
-        self.timestamp = int(time.time())
+        self.timestamp = timestamp
 
 
 class Day(db.Model):
@@ -172,13 +173,13 @@ class Day(db.Model):
     timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
 
-    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0):
+    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0, timestamp=0):
         self.device_id = device_id
         self.gpio = gpio
         self.voltage = voltage
         self.power = power
         self.temperature = temperature
-        self.timestamp = int(time.time())
+        self.timestamp = timestamp
 
 
 class Week(db.Model):
@@ -192,13 +193,13 @@ class Week(db.Model):
     timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
 
-    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0):
+    def __init__(self, device_id, gpio=0, voltage=0, power=0, temperature=0, timestamp=0):
         self.device_id = device_id
         self.gpio = gpio
         self.voltage = voltage
         self.power = power
         self.temperature = temperature
-        self.timestamp = int(time.time())
+        self.timestamp = timestamp
 
 
 def parse_args():

@@ -68,10 +68,16 @@ def hourly():
         try:
             lastest_aggregate = Hour.query.filter(Hour.device_id == device.id). \
                 order_by(desc(Hour.timestamp)).first()
-            latest_timestamp = 0
 
             if lastest_aggregate:
                 latest_timestamp = lastest_aggregate.timestamp
+            else:
+                first_measurement = Measurement.query.filter(Measurement.device_id == device.id).\
+                    order_by(Measurement.timestamp).first()
+                try:
+                    latest_timestamp = first_measurement.timestampp
+                except Exception:
+                    latest_timestamp = 0
 
             measurements = Measurement.query. \
                 filter(and_(Measurement.timestamp > latest_timestamp,
@@ -83,7 +89,9 @@ def hourly():
                 h = Hour(device_id=device.id,
                          voltage=a["voltage"],
                          power=a["power"],
-                         temperature=a["temperature"])
+                         temperature=a["temperature"],
+                         timestamp=latest_timestamp)
+                latest_timestamp += HOUR_INTERVAL
                 db.session.add(h)
             # Save aggregated data for device
             db.session.commit()
@@ -103,10 +111,16 @@ def daily():
         try:
             lastest_aggregate = Day.query.filter(Day.device_id == device.id). \
                 order_by(desc(Day.timestamp)).first()
-            latest_timestamp = 0
 
             if lastest_aggregate:
                 latest_timestamp = lastest_aggregate.timestamp
+            else:
+                first_measurement = Measurement.query.filter(Measurement.device_id == device.id).\
+                    order_by(Measurement.timestamp).first()
+                try:
+                    latest_timestamp = first_measurement.timestampp
+                except Exception:
+                    latest_timestamp = 0
 
             measurements = Measurement.query. \
                 filter(and_(Measurement.timestamp > latest_timestamp,
@@ -118,7 +132,9 @@ def daily():
                 d = Day(device_id=device.id,
                         voltage=a["voltage"],
                         power=a["power"],
-                        temperature=a["temperature"])
+                        temperature=a["temperature"],
+                        timestamp=latest_timestamp)
+                latest_timestamp += DAYS_INTERVAL
                 db.session.add(d)
             # Save aggregated data for device
             db.session.commit()
@@ -138,10 +154,16 @@ def weekly():
         try:
             lastest_aggregate = Week.query.filter(Week.device_id == device.id). \
                 order_by(desc(Week.timestamp)).first()
-            latest_timestamp = 0
 
             if lastest_aggregate:
                 latest_timestamp = lastest_aggregate.timestamp
+            else:
+                first_measurement = Measurement.query.filter(Measurement.device_id == device.id).\
+                    order_by(Measurement.timestamp).first()
+                try:
+                    latest_timestamp = first_measurement.timestampp
+                except Exception:
+                    latest_timestamp = 0
 
             measurements = Measurement.query. \
                 filter(and_(Measurement.timestamp > latest_timestamp,
@@ -153,7 +175,9 @@ def weekly():
                 w = Week(device_id=device.id,
                          voltage=a["voltage"],
                          power=a["power"],
-                         temperature=a["temperature"])
+                         temperature=a["temperature"],
+                         timestamp=latest_timestamp)
+                latest_timestamp += WEEK_INTERVAL
                 db.session.add(w)
             # Save aggregated data for device
             db.session.commit()
