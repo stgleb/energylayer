@@ -343,77 +343,6 @@
         now += updateInterval;
     {% endfor %}
 
-    function getMetric(measurement, key) {
-        switch (key) {
-            case "voltage":
-                return measurement.voltage;
-            case "power":
-                return measurement.power;
-            case "temperature":
-                return measurement.temperature;
-        }
-    }
-
-    function getUnit(metric) {
-        switch (metric) {
-            case "voltage":
-                return "v";
-            case "power":
-                return "w";
-            case "temperature":
-                return "t";
-        }
-    }
-
-{#    function GenerateFakeData(input) {#}
-{#        input.shift();#}
-{#        var sum = 0;#}
-{#        var timestamp = input[input.length - 1][0] + updateInterval;#}
-{##}
-{#        for(var i = 0;i < input.length; i++) {#}
-{#            sum += input[i][1];#}
-{#        }#}
-{##}
-{#        var deviation = (Math.random() - 0.5) * 5;#}
-{#        var avg = sum / input.length + deviation;#}
-{##}
-{#        input.push([timestamp, avg]);#}
-{#    }#}
-
-    function GetData(input, device_id, metric) {
-        $.ajax({
-            url: "/api/measurement/" + device_id + "/count/" + totalPoints + timeInterval,
-            dataType: "json",
-            async: false,
-            success: function (values, textStatus) {
-                console.log(values);
-                var value;
-                var nowTmp = now;
-
-                if(input.length < totalPoints) {
-                    for (var i = 0; i < values.length; i++) {
-                        value = getMetric(values[i], metric);
-                        nowTmp += updateInterval;
-                        input.push([nowTmp, value]);
-
-                        if (input.length > totalPoints) {
-                            input.shift();
-                        }
-                    }
-                } else {
-                    var last = input[input.length - 1];
-                    value = getMetric(values[values.length - 1], metric);
-                    input.shift();
-                    var newValue = [last[0] + updateInterval, value];
-                    input.push(newValue);
-                }
-            },
-            error: function (value, textStatus) {
-                console.log("Error")
-            }
-        });
-    }
-
     function initOptions() {
         var tick;
         //tick = [0.03 * updateInterval, "second"];
@@ -492,19 +421,123 @@
         }
     }
 
+    function getMetric(measurement, key) {
+        switch (key) {
+            case "voltage":
+                return measurement.voltage;
+            case "power":
+                return measurement.power;
+            case "temperature":
+                return measurement.temperature;
+        }
+    }
+
+    function getUnit(metric) {
+        switch (metric) {
+            case "voltage":
+                return "v";
+            case "power":
+                return "w";
+            case "temperature":
+                return "t";
+        }
+    }
+
+{#    function GenerateFakeData(input) {#}
+{#        input.shift();#}
+{#        var sum = 0;#}
+{#        var timestamp = input[input.length - 1][0] + updateInterval;#}
+{##}
+{#        for(var i = 0;i < input.length; i++) {#}
+{#            sum += input[i][1];#}
+{#        }#}
+{##}
+{#        var deviation = (Math.random() - 0.5) * 5;#}
+{#        var avg = sum / input.length + deviation;#}
+{##}
+{#        input.push([timestamp, avg]);#}
+{#    }#}
+    function updateOptions(maxValue, index) {
+        options[index].yaxis.max = maxValue;
+        options[index].yaxis.tickSize = maxValue / 10;
+    }
+
+    function closestPowerOfTen(val) {
+        var tmp = 10;
+
+        while (tmp < val) {
+            tmp *= 10;
+        }
+
+        return tmp;
+    }
+
+    function hasMaximumChanged(values, index) {
+        maxValues[index] = 0;
+
+        for (var i = 0; i < values.length; i++) {
+            if (maxValues[index] < values[i][1]) {
+                maxValues[index] = values[i][1];
+            }
+        }
+
+        return maxValues[index];
+    }
+
+
+    function GetData(input, device_id, metric, index) {
+        $.ajax({
+            url: "/api/measurement/" + device_id + "/count/" + totalPoints + timeInterval,
+            dataType: "json",
+            async: false,
+            success: function (values, textStatus) {
+                console.log(values);
+                var value;
+                var nowTmp = now;
+
+                if(input.length < totalPoints) {
+                    for (var i = 0; i < values.length; i++) {
+                        value = getMetric(values[i], metric);
+                        nowTmp += updateInterval;
+                        input.push([nowTmp, value]);
+
+                        if (input.length > totalPoints) {
+                            input.shift();
+                        }
+                    }
+                } else {
+                    var last = input[input.length - 1];
+                    value = getMetric(values[values.length - 1], metric);
+                    input.shift();
+                    var newValue = [last[0] + updateInterval, value];
+                    input.push(newValue);
+                }
+
+                var newMax = hasMaximumChanged(input, index);
+                // Redraw chart if new Maximum has appeared.
+                if (newMax != -1) {
+                    newMax = closestPowerOfTen(newMax);
+                    updateOptions(newMax, index);
+                }
+            },
+            error: function (value, textStatus) {
+                console.log("Error")
+            }
+        });
+    }
+
     $(document).ready(function () {
         dataset = [];
+        initOptions();
 
         for (var i = 0; i < metrics.length; i++) {
-            GetData(data[i], devices[0], metrics[i]);
-
             dataset.push([
                 //{ label: "CPU", data: data, color: "#00FF00" }
                 {data: data[i], label: metrics[i], color: 'green', points: {show: false}},
                 //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
-            ])
+            ]);
+            GetData(data[i], devices[0], metrics[i], i);
         }
-        initOptions();
 
         for (var i = 0; i < metrics.length; i++) {
             $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
@@ -565,10 +598,11 @@
                 }
 
                 if(flag == 0) {
-                    GetData(data[i], devices[0], metrics[i]);
+                    GetData(data[i], devices[0], metrics[i], i);
                 }
             }
 
+            // Redraw charts
             for(i = 0;i < metrics.length;i++){
                 $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
@@ -629,7 +663,7 @@
                     ]
                 }
 
-                GetData(data[i], devices[0], metrics[i]);
+                GetData(data[i], devices[0], metrics[i], i);
                 $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
 
