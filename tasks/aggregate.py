@@ -128,7 +128,7 @@ def daily():
                 filter(and_(Measurement.timestamp > latest_timestamp,
                             Measurement.device_id == device.id)). \
                 order_by(desc(Measurement.timestamp)).all()
-            aggregated = aggregate(measurements, DAYS_INTERVAL)
+            aggregated = aggregate(measurements, DAYS_INTERVAL)[::-1]
 
             for a in aggregated:
                 d = Day(device_id=device.id,
@@ -171,7 +171,7 @@ def weekly():
                 filter(and_(Measurement.timestamp > latest_timestamp,
                             Measurement.device_id == device.id)). \
                 order_by(desc(Measurement.timestamp)).all()
-            aggregated = aggregate(measurements, WEEK_INTERVAL)
+            aggregated = aggregate(measurements, WEEK_INTERVAL)[::-1]
 
             for a in aggregated:
                 w = Week(device_id=device.id,
