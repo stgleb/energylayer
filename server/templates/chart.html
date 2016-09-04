@@ -250,15 +250,17 @@
                                 <div class="col-md-3"></div>
                                 <div class="col-md-9 offset2">
                                     <ul id="navs" class="nav nav-pills">
-                                        <li class="active"><a href="#" data-target="#live" data-toggle="tab"><i
+                                        <li class="active"><a href="#" data-target="#live" id="{{ device }}"
+                                                              data-toggle="tab"><i
                                                 class="icon-history"></i> Live Stats</a>
                                         </li>
-                                        <li><a href="#" data-target="#math" data-toggle="tab"><i class="icon-graph"></i>
+                                        <li><a href="#" data-target="#math" id="{{ device }}" data-toggle="tab"><i
+                                                class="icon-graph"></i>
                                             Hour</a>
                                         </li>
-                                        <li id='second'><a href="#" data-target="#fb" data-toggle="tab"><i
+                                        <li><a href="#" data-target="#fb" id="{{ device }}" data-toggle="tab"><i
                                                 class="icon-facebook"></i> Day</a></li>
-                                        <li><a href="#" data-target="#revenue" data-toggle="tab"><i
+                                        <li><a href="#" data-target="#revenue" id="{{ device }}" data-toggle="tab"><i
                                                 class="icon-bars"></i> Week</a>
                                         </li>
                                     </ul>
@@ -287,7 +289,6 @@
         <footer>
             <div class="">
                 <p class="pull-right">Energylayer 2016.
-
                 </p>
             </div>
             <div class="clearfix"></div>
@@ -601,14 +602,13 @@
         update();
 
         /* Manage tabs events*/
-        var anchor;
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
             // Read the a text of the anchor that was clicked
             mode = $(e.target).context.innerText;
-
+            id = e.target.id;
             console.log("text: ", mode);
-            console.log("old updateInterval: ", updateInterval)
+            console.log("old updateInterval: ", updateInterval);
 
             /* Change update interval */
             switch (mode) {
@@ -640,7 +640,7 @@
             initOptions();
 
             for (var i = 0; i < devices.length; i++) {
-                if (!data[i]) {
+                if (!data[i] && devices[i] == id) {
                     data.push([]);
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
@@ -649,12 +649,14 @@
                     ]
                 }
 
-                $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
+                if (devices[i] == id) {
+                    $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
+                }
             }
 
             GetData();
 
-            console.log('totalPoints * updateInterval: ', totalPoints * updateInterval)
+            console.log('totalPoints * updateInterval: ', totalPoints * updateInterval);
             clearTimeout(timerId);
             update();
         });

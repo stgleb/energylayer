@@ -242,28 +242,28 @@
         <!-- page content -->
         <div class="right_col" role="main">
             <table align="center">
+                <div class="row">
+                    <span align="center"><h2>Metric: {{ metric }}</h2></span>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9 offset2">
+                        <ul id="navs" class="nav nav-pills">
+                            <li class="active"><a href="#" data-target="#live" data-toggle="tab"><i
+                                    class="icon-history"></i> Live Stats</a>
+                            </li>
+                            <li><a href="#" data-target="#math" data-toggle="tab"><i class="icon-graph"></i>
+                                Hour</a>
+                            </li>
+                            <li id='second'><a href="#" data-target="#fb" data-toggle="tab"><i
+                                    class="icon-facebook"></i> Day</a></li>
+                            <li><a href="#" data-target="#revenue" data-toggle="tab"><i
+                                    class="icon-bars"></i> Week</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 {% for metric in metrics %}
                     <tr>
                         <div id="dashboard-demo" class="tabbable analytics-tab paper-stack">
-                            <div class="row">
-                                <span align="center"><h2>Metric: {{ metric }}</h2></span>
-                                <div class="col-md-3"></div>
-                                <div class="col-md-9 offset2">
-                                    <ul id="navs" class="nav nav-pills">
-                                        <li class="active"><a href="#" data-target="#live" data-toggle="tab"><i
-                                                class="icon-history"></i> Live Stats</a>
-                                        </li>
-                                        <li><a href="#" data-target="#math" data-toggle="tab"><i class="icon-graph"></i>
-                                            Hour</a>
-                                        </li>
-                                        <li id='second'><a href="#" data-target="#fb" data-toggle="tab"><i
-                                                class="icon-facebook"></i> Day</a></li>
-                                        <li><a href="#" data-target="#revenue" data-toggle="tab"><i
-                                                class="icon-bars"></i> Week</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                             <div class="tab-content">
                                 <div id="live" class="tab-pane active">
                                     <div class="analytics-tab-content">
@@ -309,7 +309,7 @@
     var maxValues = {{ max_values }};
     var steps = [];
 
-    for(var i = 0;i < maxValues.length;i++) {
+    for (var i = 0; i < maxValues.length; i++) {
         steps[i] = Math.ceil(maxValues[i] / 10);
     }
 
@@ -336,9 +336,9 @@
 
     // Preload data from the server.
     {% for m in measurements %}
-        data[0][ {{ loop.index }} ] = [now, {{ m['voltage'] }}];
-        data[1][ {{ loop.index }} ] = [now, {{ m['power'] }}];
-        data[2][ {{ loop.index }} ] = [now, {{ m['temperature'] }}];
+        data[0][{{ loop.index }}] = [now, {{ m['voltage'] }}];
+        data[1][{{ loop.index }}] = [now, {{ m['power'] }}];
+        data[2][{{ loop.index }}] = [now, {{ m['temperature'] }}];
 
         now += updateInterval;
     {% endfor %}
@@ -443,20 +443,20 @@
         }
     }
 
-{#    function GenerateFakeData(input) {#}
-{#        input.shift();#}
-{#        var sum = 0;#}
-{#        var timestamp = input[input.length - 1][0] + updateInterval;#}
-{##}
-{#        for(var i = 0;i < input.length; i++) {#}
-{#            sum += input[i][1];#}
-{#        }#}
-{##}
-{#        var deviation = (Math.random() - 0.5) * 5;#}
-{#        var avg = sum / input.length + deviation;#}
-{##}
-{#        input.push([timestamp, avg]);#}
-{#    }#}
+    {#    function GenerateFakeData(input) {#}
+    {#        input.shift();#}
+    {#        var sum = 0;#}
+    {#        var timestamp = input[input.length - 1][0] + updateInterval;#}
+    {##}
+    {#        for(var i = 0;i < input.length; i++) {#}
+    {#            sum += input[i][1];#}
+    {#        }#}
+    {##}
+    {#        var deviation = (Math.random() - 0.5) * 5;#}
+    {#        var avg = sum / input.length + deviation;#}
+    {##}
+    {#        input.push([timestamp, avg]);#}
+    {#    }#}
     function updateOptions(maxValue, index) {
         options[index].yaxis.max = maxValue;
         options[index].yaxis.tickSize = maxValue / 10;
@@ -495,7 +495,7 @@
                 var value;
                 var nowTmp = now;
 
-                if(input.length < totalPoints) {
+                if (input.length < totalPoints) {
                     for (var i = 0; i < values.length; i++) {
                         value = getMetric(values[i], metric);
                         nowTmp += updateInterval;
@@ -597,13 +597,13 @@
                     ]
                 }
 
-                if(flag == 0) {
+                if (flag == 0) {
                     GetData(data[i], devices[0], metrics[i], i);
                 }
             }
 
             // Redraw charts
-            for(i = 0;i < metrics.length;i++){
+            for (i = 0; i < metrics.length; i++) {
                 $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
 
