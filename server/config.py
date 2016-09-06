@@ -69,4 +69,9 @@ HOUR = "hour"
 DAY = "day"
 WEEK = "week"
 
+LIVE_INTERVAL = 10
+HOUR_INTERVAL = 20
+DAY_INTERVAL = 20 * 24
+WEEK_INTERVAL = 20 * 24 * 7
+
 GEO_IP_FILE = "GeoLite2-City.mmdb"

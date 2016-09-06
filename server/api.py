@@ -57,7 +57,8 @@ def handle_data_from_device(device_id, data_string):
 @app.route('/api/data/user/measurement/<count>', methods=['GET'])
 def get_measurements_from_user_devices(count=TOTAL_COUNT, interval=LIVE):
     """
-    Gives dict of measurements for all user devices.
+    Returns dict of measurements for all user devices.
+
     :param count: count of measurements to return
     :param interval: interval of aggregation
     :return: json object {
