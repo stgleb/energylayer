@@ -25,11 +25,12 @@ def handle_data_from_device(device_id, data_string):
     :param data_string HEX string with format
 
     0000 1111 2222 3333 4444 5555 6666 7777
-    GPIO  V    A    T  Reserved for another sensors
+    GPIO  V    A    T    W for another sensors
 
     V - Voltage
-    A - Power
+    A - Current
     T - Temperature
+    W - Power
     """
     ip_addr = request.headers.get('X-Real-IP')
     device = get_or_create_device(device_id=device_id,
@@ -37,12 +38,15 @@ def handle_data_from_device(device_id, data_string):
 
     gpio = int(data_string[:4], 16)
     voltage = int(data_string[4:8], 16)
-    power = int(data_string[8:12], 16)
+    current = int(data_string[8:12], 16)
     temperature = int(data_string[12:16], 16)
+    # Compute power from ampers times volts.
+    power = voltage * current
 
     save_measurement(device=device,
                      gpio=gpio,
                      voltage=voltage,
+                     current=current,
                      power=power,
                      temperature=temperature)
 

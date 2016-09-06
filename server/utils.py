@@ -98,10 +98,11 @@ def get_or_create_device(device_id, device_ip=None):
     return device
 
 
-def save_measurement(device, gpio, voltage, power, temperature):
+def save_measurement(device, gpio, voltage, current, temperature, power):
     measurement = Measurement(device_id=device.id,
                               gpio=gpio,
                               voltage=voltage,
+                              current=current,
                               power=power,
                               temperature=temperature)
 
@@ -119,6 +120,7 @@ def measurements_to_dto(measurements, count=20, offset=1):
 
         return {
             "voltage": m.voltage,
+            "current": m.current,
             "power": m.power,
             "temperature": m.temperature,
             "gpio": m.gpio,
@@ -189,6 +191,7 @@ def fill_with_random(measrements):
         for i in range(9):
             d = {
                 "voltage": m['voltage'],
+                "current": m['current'],
                 "power": m['power'],
                 "temperature": m['temperature'],
                 "gpio": m['gpio'],

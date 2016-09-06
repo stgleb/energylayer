@@ -66,7 +66,12 @@ def dashboard(metric="voltage"):
     for device_id in devices:
         measurements = get_measurements_by_count(device_id, TOTAL_COUNT, 1)[::-1]
         tmp = [[0, get_measurement_value(m, metric=metric)] for m in measurements]
-        y_max = max([t[1] for t in tmp])
+
+        if tmp:
+            y_max = max([t[1] for t in tmp])
+        else:
+            y_max = 0
+
         y_max = ceil_power(y_max, 10)
         y_maximums.append(y_max)
 

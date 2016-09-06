@@ -54,9 +54,11 @@ DEVICE_INTERVAL = 10
 VOLTAGE = "voltage"
 POWER = "power"
 TEMPERATURE = "temperature"
-METRICS = (VOLTAGE, POWER, TEMPERATURE)
+CURRENT = "current"
+METRICS = (VOLTAGE, CURRENT, POWER, TEMPERATURE)
 UNITS = {
     VOLTAGE: "v",
+    CURRENT: "a",
     POWER: "w",
     TEMPERATURE: "t"
 }
