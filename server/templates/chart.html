@@ -386,7 +386,7 @@
                     max: yMaxs[i],
                     tickSize: steps[i],
                     tickFormatter: function (v, axis) {
-                        return v + " {{ unit }}";
+                        return v + "";
                     },
                     axisLabel: "{{ metric_to_display }}",
                     axisLabelUseCanvas: true,
@@ -559,7 +559,7 @@
                     dateTip = pad(dateTip.getHours()) + ":" + pad(dateTip.getMinutes()) + ":" + pad(dateTip.getSeconds());
                     if (mode == 'Week')
                         dateTip = pad(dateTip.getHours()) + ":" + pad(dateTip.getMinutes()) + ":" + pad(dateTip.getSeconds());
-                    $("#tooltip").html("<b>" + Math.floor(item.datapoint[1]) + " {{ unit }} </b> <br>" + " <small>" + dateTip + " </small>")
+                    $("#tooltip").html("<b>" + Math.floor(item.datapoint[1]) + " </b> <br>" + " <small>" + dateTip + " </small>")
                             .css({top: item.pageY - 65, left: item.pageX - 10})
                             .fadeIn(200);
                 }
