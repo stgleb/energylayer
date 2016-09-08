@@ -470,8 +470,12 @@
             tmp *= 10;
         }
 
-        if (val < tmp >> 2) {
-            tmp = tmp >> 1;
+        if (val < tmp >> 3) {
+            tmp = tmp >> 2;
+        } else {
+            if (val < tmp >> 2) {
+                tmp = tmp >> 1;
+            }
         }
 
         return tmp;
