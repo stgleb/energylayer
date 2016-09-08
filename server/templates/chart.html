@@ -356,14 +356,14 @@
                     tickSize: tick,
 
                     tickFormatter: function (v, axis) {
-                        var date = new Date();
+                        var date = new Date(v);
                         //if (date.getSeconds() % 60 == 0) {
                         //if (date.getSeconds() % totalPoints/10 == 0) {
                         if (date.getSeconds() % 0.06 * updateInterval == 0) {
                             var month = months[date.getUTCMonth()]; //months from 1-12
                             var day = date.getUTCDate();
-                            if (mode == 'Week' && day == date.getUTCDate()) {
-                                day = day - 7
+                            if (mode == 'Week') {
+                                day = new Date().getDate() - 7;
                             }
                             var newdate = month + "/" + day;
 
