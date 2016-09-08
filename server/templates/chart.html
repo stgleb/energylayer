@@ -459,6 +459,10 @@
             tmp *= 10;
         }
 
+        if (val < tmp >> 2) {
+            tmp = tmp >> 1;
+        }
+
         return tmp;
     }
 
