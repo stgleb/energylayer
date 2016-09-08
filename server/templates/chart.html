@@ -362,7 +362,7 @@
                         if (date.getSeconds() % 0.06 * updateInterval == 0) {
                             var month = months[date.getUTCMonth()]; //months from 1-12
                             var day = date.getUTCDate();
-                            if (mode == 'Week') {
+                            if (mode == 'Week' && day == date.getUTCDate()) {
                                 day = day - 7
                             }
                             var newdate = month + "/" + day;
