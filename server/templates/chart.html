@@ -362,9 +362,6 @@
                         if (date.getSeconds() % 0.06 * updateInterval == 0) {
                             var month = months[date.getUTCMonth()]; //months from 1-12
                             var day = date.getUTCDate();
-                            if (mode == 'Week') {
-                                day = new Date().getDate() - 7;
-                            }
                             var newdate = month + "/" + day;
 
                             var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
