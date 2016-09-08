@@ -356,7 +356,7 @@
                     tickSize: tick,
 
                     tickFormatter: function (v, axis) {
-                        var date = new Date(v);
+                        var date = new Date();
                         //if (date.getSeconds() % 60 == 0) {
                         //if (date.getSeconds() % totalPoints/10 == 0) {
                         if (date.getSeconds() % 0.06 * updateInterval == 0) {
