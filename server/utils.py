@@ -365,7 +365,7 @@ def ceil_power(number, e):
         e *= tmp
 
     if number < e >> 2:
-        number >>= 1
+        e >>= 1
 
     return e
 
