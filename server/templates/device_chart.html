@@ -675,10 +675,9 @@
                 GetData(data[i], devices[0], metrics[i], i);
                 $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
-
+            update();
             console.log('totalPoints * updateInterval: ', totalPoints * updateInterval)
             clearTimeout(timerId);
-            update();
 
         });
 

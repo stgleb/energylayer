@@ -663,10 +663,9 @@
             }
 
             GetData();
-
+            update();
             console.log('totalPoints * updateInterval: ', totalPoints * updateInterval);
             clearTimeout(timerId);
-            update();
         });
 
     });
