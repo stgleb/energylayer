@@ -375,13 +375,17 @@
                         if (date.getSeconds() % 0.06 * updateInterval == 0) {
                             var month = months[date.getUTCMonth()]; //months from 1-12
                             var day = date.getUTCDate();
+                            if (mode == 'Week') {
+                                day = day - 7
+                            }
                             var newdate = month + "/" + day;
 
                             var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
                             var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
                             var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-                            if (mode == 'Week')
+                            if (mode == 'Week') {
                                 return newdate + ", " + hours + ":" + minutes;
+                            }
                             return hours + ":" + minutes + ":" + seconds;
                         }
                         else {
@@ -664,7 +668,7 @@
 
             for (var i = 0; i < metrics.length; i++) {
                 if (!data[i]) {
-                    data.push([])
+                    data.push([]);
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
                         {data: data[i], label: metrics[i], color: 'green', points: {show: false}},
@@ -676,7 +680,7 @@
                 $.plot($("#flot-placeholder" + metrics[i]), dataset[i], options[i]);
             }
             update();
-            console.log('totalPoints * updateInterval: ', totalPoints * updateInterval)
+            console.log('totalPoints * updateInterval: ', totalPoints * updateInterval);
             clearTimeout(timerId);
 
         });
