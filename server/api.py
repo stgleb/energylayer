@@ -25,7 +25,7 @@ def handle_data_from_device(device_id, data_string):
     :param data_string HEX string with format
 
     0000 1111 2222 3333 4444 5555 6666 7777
-    GPIO  V    A    T    W for another sensors
+    GPIO  V    A    T   for another sensors
 
     V - Voltage
     A - Current

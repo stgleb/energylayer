@@ -24,11 +24,11 @@ class MyTaskSet(TaskSet):
 
     def get_random_data(self):
         gpio = random.randint(0, 10)
-        power = random.randint(0, 10)
+        current = random.randint(0, 10)
         voltage = random.randint(0, 20)
         temparature = random.randint(-10, 30)
 
-        return self.two_byte_hex(gpio) + self.two_byte_hex(power) \
+        return self.two_byte_hex(gpio) + self.two_byte_hex(current) \
                                        + self.two_byte_hex(voltage) \
                                        + self.two_byte_hex(temparature)
 
