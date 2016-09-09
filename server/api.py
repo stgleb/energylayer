@@ -30,7 +30,6 @@ def handle_data_from_device(device_id, data_string):
     V - Voltage
     A - Current
     T - Temperature
-    W - Power
     """
     ip_addr = request.headers.get('X-Real-IP')
     device = get_or_create_device(device_id=device_id,
