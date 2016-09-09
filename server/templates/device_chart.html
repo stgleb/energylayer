@@ -400,7 +400,7 @@
                     max: maxValues[i],
                     tickSize: steps[i],
                     tickFormatter: function (v, axis) {
-                        return v + " " + getUnit(metric);
+                        return v + " "; // + getUnit(metric);
                     },
                     axisLabel: "Energy generated",
                     axisLabelUseCanvas: true,
@@ -434,14 +434,16 @@
     }
 
     function getUnit(metric) {
-{#        switch (metric) {#}
-{#            case "voltage":#}
-{#                return "v";#}
-{#            case "power":#}
-{#                return "w";#}
-{#            case "temperature":#}
-{#                return "t";#}
-{#        }#}
+        switch (metric) {
+            case "voltage":
+                return "v";
+            case "current":
+                return "a";
+            case "power":
+                return "w";
+            case "temperature":
+                return "c";
+        }
         return ""
     }
 
@@ -581,7 +583,7 @@
                     dateTip = pad(dateTip.getHours()) + ":" + pad(dateTip.getMinutes()) + ":" + pad(dateTip.getSeconds());
                     if (mode == 'Week')
                         dateTip = pad(dateTip.getHours()) + ":" + pad(dateTip.getMinutes()) + ":" + pad(dateTip.getSeconds());
-                    $("#tooltip").html("<b>" + Math.floor(item.datapoint[1]) + " Watt </b> <br>" + " <small>" + dateTip + " </small>")
+                    $("#tooltip").html("<b>" + Math.floor(item.datapoint[1]) + " </b> <br>" + " <small>" + dateTip + " </small>")
                             .css({top: item.pageY - 65, left: item.pageX - 10})
                             .fadeIn(200);
                 }
