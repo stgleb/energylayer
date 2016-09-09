@@ -95,13 +95,11 @@ def device_chart(device_id=None):
     :param device_id: Device UUID
     :return:
     """
-    devices = []
-    metrics = ["voltage", "power", "temperature"]
     max_values = []
     initial_measurements = get_measurements_by_count(device_id, 180, 1)
     initial_measurements = initial_measurements[::-1]
 
-    for metric in metrics:
+    for metric in METRICS:
         max_value = max([m[metric] for m in initial_measurements])
         max_value = ceil_power(max_value, 10)
         max_values.append(max_value)
@@ -121,7 +119,7 @@ def device_chart(device_id=None):
                    if device == device_id]
 
     return render_template('device_chart.html',
-                           metrics=metrics,
+                           metrics=METRICS,
                            devices=devices,
                            devices_count=len(devices),
                            other_devices=other_devices,
