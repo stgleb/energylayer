@@ -424,6 +424,8 @@
 
     function getMetric(measurement, key) {
         switch (key) {
+            case "current":
+                return measurement.current;
             case "voltage":
                 return measurement.voltage;
             case "power":
