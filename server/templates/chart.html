@@ -647,14 +647,13 @@
             console.log("updateInterval: ", updateInterval);
 
             /* drop the data[] and run update */
-            data = [];
             now = new Date().getTime() - totalPoints * updateInterval; //200 x 1000
 
             initOptions();
 
             for (var i = 0; i < devices.length; i++) {
                 if (!data[i] && devices[i] == id) {
-                    data.push([]);
+                    data[i] = [];
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
                         {data: data[i], label: '{{ metric_to_display }}', color: 'green', points: {show: false}},
