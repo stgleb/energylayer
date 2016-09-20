@@ -612,6 +612,29 @@
             counter = 0;
         }
 
+        // Call update function for specific device
+        function updateDevice(i) {
+            console.log("update! ");
+            now = new Date().getTime();
+
+            if (!data[i]) {
+                data.push([]);
+                dataset[i] = [
+                    //{ label: "CPU", data: data, color: "#00FF00" }
+                    {data: data[i], label: '{{ metric_to_display }}', color: 'green', points: {show: false}},
+                    //{ data: temperature, label: 'Temperature', color: '#ed7a53' , points: { show: false }}
+                ]
+            }
+
+            if (counter == 0) {
+                GetData();
+            }
+
+            // Redraw charts
+            $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
+            counter = 0;
+        }
+
         update();
 
         /* Manage tabs events*/
@@ -619,7 +642,7 @@
 
             // Read the a text of the anchor that was clicked
             mode = $(e.target).context.innerText;
-            id = e.target.id;
+            var deviceId = e.target.id;
             console.log("text: ", mode);
             console.log("old updateInterval: ", updateInterval);
 
@@ -652,7 +675,7 @@
             initOptions();
 
             for (var i = 0; i < devices.length; i++) {
-                if (!data[i] && devices[i] == id) {
+                if (devices[i] == deviceId) {
                     data[i] = [];
                     dataset[i] = [
                         //{ label: "CPU", data: data, color: "#00FF00" }
@@ -661,13 +684,13 @@
                     ]
                 }
 
-                if (devices[i] == id) {
+                if (devices[i] == deviceId) {
                     $.plot($("#flot-placeholder" + devices[i]), dataset[i], options[i]);
+                    GetData();
+                    updateDevice(i);
                 }
             }
 
-            GetData();
-            update();
             console.log('totalPoints * updateInterval: ', totalPoints * updateInterval);
             clearTimeout(timerId);
         });
