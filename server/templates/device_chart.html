@@ -3,7 +3,8 @@
             integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc="
             crossorigin="anonymous"></script>
     <title>Energylayer Dashboard </title>
-
+    
+    {# TODO: remove static content to Ngix or other webserver #}
     <script src="{{ url_for('static', filename='js/graphs/plugins/flot/jquery.flot.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/graphs/plugins/flot/jquery.flot.time.js') }}"></script>
     <script src="{{ url_for('static', filename='js/graphs/plugins/flot/jquery.flot.axislabels.js') }}"></script>
