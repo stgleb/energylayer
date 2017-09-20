@@ -52,6 +52,28 @@ def handle_data_from_device(device_id, data_string):
     return 'Created', 201
 
 
+@app.route('/rs/data/post/<device_id>', methods=['GET'])
+def api_v2(device_id):
+    gpio = request.args.get('gpio')
+    voltage = request.args.get('voltage')
+    current = request.args.get('current')
+    power = request.args.get('power')
+    temperature = request.args.get('temp')
+
+    ip_addr = request.headers.get('X-Real-IP')
+    device = get_or_create_device(device_id=device_id,
+                                  device_ip=ip_addr)
+
+    save_measurement(device=device,
+                     gpio=gpio,
+                     voltage=voltage,
+                     current=current,
+                     power=power,
+                     temperature=temperature)
+
+    return 'Created', 201
+
+
 @app.route('/api/data/user/measurement/<count>/<interval>', methods=['GET'])
 @app.route('/api/data/user/measurement/<count>', methods=['GET'])
 def get_measurements_from_user_devices(count=TOTAL_COUNT, interval=LIVE):
