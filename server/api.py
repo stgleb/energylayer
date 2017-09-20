@@ -54,11 +54,11 @@ def handle_data_from_device(device_id, data_string):
 
 @app.route('/rs/data/post/<device_id>', methods=['GET'])
 def api_v2(device_id):
-    gpio = request.args.get('gpio')
-    voltage = request.args.get('voltage')
-    current = request.args.get('current')
-    power = request.args.get('power')
-    temperature = request.args.get('temp')
+    gpio = float(request.args.get('gpio'))
+    voltage = float(request.args.get('voltage'))
+    current = float(request.args.get('current'))
+    power = float(request.args.get('power'))
+    temperature = float(request.args.get('temp'))
 
     ip_addr = request.headers.get('X-Real-IP')
     device = get_or_create_device(device_id=device_id,

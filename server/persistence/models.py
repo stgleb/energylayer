@@ -125,11 +125,11 @@ class Measurement(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(64))
-    gpio = db.Column(db.Integer)
-    voltage = db.Column(db.Integer)
-    current = db.Column(db.Integer)
-    power = db.Column(db.Integer)
-    temperature = db.Column(db.Integer)
+    gpio = db.Column(db.Float)
+    voltage = db.Column(db.Float)
+    current = db.Column(db.Float)
+    power = db.Column(db.Float)
+    temperature = db.Column(db.Float)
     timestamp = db.Column(db.Integer, index=True)
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'))
 
