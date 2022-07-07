@@ -33,7 +33,7 @@ pytz==2017.2
 PyYAML==3.10
 ratelim==0.1.6
 redis==2.10.5
-requests==2.2.1
+requests==2.20.0
 requests-oauthlib==0.6.1
 six==1.10.0
 SQLAlchemy==1.0.13
